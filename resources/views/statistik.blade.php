@@ -240,25 +240,26 @@
             font-weight: 600;
         }
 
-        /* Notification Popup */
-        .notification-popup {
+        /* Notification Drawer */
+        .notification-drawer {
             position: fixed;
             top: 0;
             right: -400px;
-            width: 380px;
+            width: 400px;
             height: 100vh;
             background: white;
-            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             transition: right 0.3s ease;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .notification-popup.show {
+        .notification-drawer.open {
             right: 0;
         }
 
-        .notification-header {
+        .notification-drawer-header {
             padding: 20px 24px;
             border-bottom: 1px solid #e5e7eb;
             display: flex;
@@ -266,29 +267,28 @@
             align-items: center;
         }
 
-        .notification-title {
+        .notification-drawer-title {
             font-size: 18px;
             font-weight: 600;
             color: #111827;
         }
 
-        .close-notification {
+        .notification-drawer-close {
             background: none;
             border: none;
-            font-size: 20px;
-            color: #6b7280;
             cursor: pointer;
-            padding: 4px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
         }
 
-        .close-notification:hover {
+        .notification-drawer-close:hover {
             background: #f3f4f6;
-            color: #374151;
         }
 
-        .notification-content {
+        .notification-drawer-content {
+            flex: 1;
+            overflow-y: auto;
             padding: 0;
         }
 
@@ -311,35 +311,17 @@
             background: #e0f2fe;
         }
 
-        .notification-item-header {
+        .notification-header {
             display: flex;
+            justify-content: space-between;
             align-items: flex-start;
-            gap: 12px;
             margin-bottom: 8px;
         }
 
-        .notification-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        .notification-info {
-            flex: 1;
-        }
-
-        .notification-text {
+        .notification-title {
             font-size: 14px;
-            color: #374151;
-            line-height: 1.4;
+            font-weight: 500;
+            color: #111827;
             margin-bottom: 4px;
         }
 
@@ -348,28 +330,40 @@
             color: #6b7280;
         }
 
-        .notification-unread-dot {
-            width: 8px;
-            height: 8px;
-            background: #3b82f6;
-            border-radius: 50%;
-            margin-top: 4px;
+        .notification-message {
+            font-size: 13px;
+            color: #4b5563;
+            line-height: 1.4;
         }
 
+        .notification-empty {
+            padding: 40px 24px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .notification-empty-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            opacity: 0.5;
+        }
+
+        /* Overlay */
         .notification-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3);
             z-index: 999;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
         }
 
-        .notification-overlay.show {
+        .notification-overlay.open {
             opacity: 1;
             visibility: visible;
         }
@@ -809,7 +803,7 @@
                     <h1 class="page-title">Statistik</h1>
                 </div>
                 <div class="header-right">
-                    <button class="notification-bell" onclick="toggleNotificationPopup()">
+                    <button class="notification-bell" onclick="toggleNotificationDrawer()">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clip-path="url(#clip0_399_2036)">
                             <path d="M13.73 21.5C13.5544 21.8033 13.3021 22.0552 12.9985 22.2302C12.6948 22.4053 12.3505 22.4974 12 22.4974C11.6495 22.4974 11.3052 22.4053 11.0015 22.2302C10.6979 22.0552 10.4456 21.8033 10.27 21.5M18.134 11.5C18.715 16.875 21 18.5 21 18.5H3C3 18.5 6 16.367 6 8.9C6 7.203 6.632 5.575 7.757 4.375C8.883 3.175 10.41 2.5 12 2.5C12.337 2.5 12.672 2.53 13 2.59L18.134 11.5ZM19 8.5C19.7956 8.5 20.5587 8.18393 21.1213 7.62132C21.6839 7.05871 22 6.29565 22 5.5C22 4.70435 21.6839 3.94129 21.1213 3.37868C20.5587 2.81607 19.7956 2.5 19 2.5C18.2044 2.5 17.4413 2.81607 16.8787 3.37868C16.3161 3.94129 16 4.70435 16 5.5C16 6.29565 16.3161 7.05871 16.8787 7.62132C17.4413 8.18393 18.2044 8.5 19 8.5Z" stroke="#282828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1013,87 +1007,53 @@
         </main>
     </div>
 
-    <!-- Notification Popup -->
-    <div class="notification-overlay" id="notificationOverlay" onclick="closeNotificationPopup()"></div>
-    <div class="notification-popup" id="notificationPopup">
-        <div class="notification-header">
-            <h3 class="notification-title">Notifikasi</h3>
-            <button class="close-notification" onclick="closeNotificationPopup()">×</button>
+    <!-- Notification Drawer -->
+    <div class="notification-overlay" id="notificationOverlay" onclick="closeNotificationDrawer()"></div>
+    <div class="notification-drawer" id="notificationDrawer">
+        <div class="notification-drawer-header">
+            <h3 class="notification-drawer-title">Notifikasi</h3>
+            <button class="notification-drawer-close" onclick="closeNotificationDrawer()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
-        <div class="notification-content">
+        <div class="notification-drawer-content">
             <div class="notification-item unread">
-                <div class="notification-item-header">
-                    <div class="notification-avatar">AS</div>
-                    <div class="notification-info">
-                        <div class="notification-text">
-                            <strong>Ahmad Suryadi</strong> melamar untuk posisi Frontend Developer
-                        </div>
-                        <div class="notification-time">2 menit yang lalu</div>
-                    </div>
-                    <div class="notification-unread-dot"></div>
+                <div class="notification-header">
+                    <div class="notification-title">Pelamar Baru</div>
+                    <div class="notification-time">2 menit yang lalu</div>
                 </div>
+                <div class="notification-message">Ahmad Fadillah telah melamar untuk posisi Frontend Developer</div>
             </div>
-            
             <div class="notification-item unread">
-                <div class="notification-item-header">
-                    <div class="notification-avatar">SD</div>
-                    <div class="notification-info">
-                        <div class="notification-text">
-                            <strong>Sarah Dewi</strong> melamar untuk posisi UI/UX Designer
-                        </div>
-                        <div class="notification-time">15 menit yang lalu</div>
-                    </div>
-                    <div class="notification-unread-dot"></div>
+                <div class="notification-header">
+                    <div class="notification-title">Lowongan Ditutup</div>
+                    <div class="notification-time">1 jam yang lalu</div>
                 </div>
+                <div class="notification-message">Lowongan Backend Developer telah ditutup dengan 25 pelamar</div>
             </div>
-            
-            <div class="notification-item unread">
-                <div class="notification-item-header">
-                    <div class="notification-avatar">RJ</div>
-                    <div class="notification-info">
-                        <div class="notification-text">
-                            <strong>Rizki Jaya</strong> melamar untuk posisi Backend Developer
-                        </div>
-                        <div class="notification-time">1 jam yang lalu</div>
-                    </div>
-                    <div class="notification-unread-dot"></div>
-                </div>
-            </div>
-            
             <div class="notification-item">
-                <div class="notification-item-header">
-                    <div class="notification-avatar">NP</div>
-                    <div class="notification-info">
-                        <div class="notification-text">
-                            <strong>Nina Putri</strong> melamar untuk posisi Product Manager
-                        </div>
-                        <div class="notification-time">2 jam yang lalu</div>
-                    </div>
+                <div class="notification-header">
+                    <div class="notification-title">Interview Dijadwalkan</div>
+                    <div class="notification-time">3 jam yang lalu</div>
                 </div>
+                <div class="notification-message">Interview untuk Sarah Johnson dijadwalkan besok jam 10:00 WIB</div>
             </div>
-            
             <div class="notification-item">
-                <div class="notification-item-header">
-                    <div class="notification-avatar">BK</div>
-                    <div class="notification-info">
-                        <div class="notification-text">
-                            <strong>Budi Kusuma</strong> melamar untuk posisi Data Analyst
-                        </div>
-                        <div class="notification-time">3 jam yang lalu</div>
-                    </div>
+                <div class="notification-header">
+                    <div class="notification-title">Lowongan Aktif</div>
+                    <div class="notification-time">1 hari yang lalu</div>
                 </div>
+                <div class="notification-message">Lowongan UI/UX Designer telah dipublikasikan</div>
             </div>
-            
             <div class="notification-item">
-                <div class="notification-item-header">
-                    <div class="notification-avatar">MW</div>
-                    <div class="notification-info">
-                        <div class="notification-text">
-                            <strong>Maya Wati</strong> melamar untuk posisi Mobile Developer
-                        </div>
-                        <div class="notification-time">5 jam yang lalu</div>
-                    </div>
+                <div class="notification-header">
+                    <div class="notification-title">Pelamar Diterima</div>
+                    <div class="notification-time">2 hari yang lalu</div>
                 </div>
+                <div class="notification-message">Michael Chen telah diterima untuk posisi Data Analyst</div>
             </div>
         </div>
     </div>
@@ -1179,37 +1139,44 @@
             }
         });
 
-        // Notification popup functions
-        function toggleNotificationPopup() {
-            const popup = document.getElementById('notificationPopup');
+        // Notification Drawer Functions
+        function toggleNotificationDrawer() {
+            const drawer = document.getElementById('notificationDrawer');
             const overlay = document.getElementById('notificationOverlay');
             
-            if (popup.classList.contains('show')) {
-                closeNotificationPopup();
+            if (drawer.classList.contains('open')) {
+                closeNotificationDrawer();
             } else {
-                openNotificationPopup();
+                openNotificationDrawer();
             }
         }
 
-        function openNotificationPopup() {
-            const popup = document.getElementById('notificationPopup');
+        function openNotificationDrawer() {
+            const drawer = document.getElementById('notificationDrawer');
             const overlay = document.getElementById('notificationOverlay');
             
-            popup.classList.add('show');
-            overlay.classList.add('show');
+            drawer.classList.add('open');
+            overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeNotificationPopup() {
-            const popup = document.getElementById('notificationPopup');
+        function closeNotificationDrawer() {
+            const drawer = document.getElementById('notificationDrawer');
             const overlay = document.getElementById('notificationOverlay');
             
-            popup.classList.remove('show');
-            overlay.classList.remove('show');
-            document.body.style.overflow = 'auto';
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
         }
 
-        // Close popup when clicking on notification items
+        // Close drawer when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNotificationDrawer();
+            }
+        });
+
+        // Close drawer when clicking on notification items
         document.addEventListener('click', function(e) {
             if (e.target.closest('.notification-item')) {
                 const item = e.target.closest('.notification-item');

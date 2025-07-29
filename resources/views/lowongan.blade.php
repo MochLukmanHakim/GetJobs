@@ -243,6 +243,134 @@
             font-weight: 600;
         }
 
+        /* Notification Drawer */
+        .notification-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notification-drawer.open {
+            right: 0;
+        }
+
+        .notification-drawer-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-drawer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .notification-drawer-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .notification-drawer-close:hover {
+            background: #f3f4f6;
+        }
+
+        .notification-drawer-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+        }
+
+        .notification-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .notification-item:hover {
+            background: #f9fafb;
+        }
+
+        .notification-item.unread {
+            background: #f0f9ff;
+        }
+
+        .notification-item.unread:hover {
+            background: #e0f2fe;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .notification-message {
+            font-size: 13px;
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        .notification-empty {
+            padding: 40px 24px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .notification-empty-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            opacity: 0.5;
+        }
+
+        /* Overlay */
+        .notification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .notification-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .logout-link {
             color: #111827;
             text-decoration: none;
@@ -1124,7 +1252,7 @@
                 <h1 class="page-title">Manajemen Lowongan</h1>
                 </div>
                 <div class="header-right">
-                    <button class="notification-bell">
+                    <button class="notification-bell" onclick="toggleNotificationDrawer()">
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <g clip-path="url(#clip0_399_2036)">
                             <path d="M13.73 21.5C13.5544 21.8033 13.3021 22.0552 12.9985 22.2302C12.6948 22.4053 12.3505 22.4974 12 22.4974C11.6495 22.4974 11.3052 22.4053 11.0015 22.2302C10.6979 22.0552 10.4456 21.8033 10.27 21.5M18.134 11.5C18.715 16.875 21 18.5 21 18.5H3C3 18.5 6 16.367 6 8.9C6 7.203 6.632 5.575 7.757 4.375C8.883 3.175 10.41 2.5 12 2.5C12.337 2.5 12.672 2.53 13 2.59L18.134 11.5ZM19 8.5C19.7956 8.5 20.5587 8.18393 21.1213 7.62132C21.6839 7.05871 22 6.29565 22 5.5C22 4.70435 21.6839 3.94129 21.1213 3.37868C20.5587 2.81607 19.7956 2.5 19 2.5C18.2044 2.5 17.4413 2.81607 16.8787 3.37868C16.3161 3.94129 16 4.70435 16 5.5C16 6.29565 16.3161 7.05871 16.8787 7.62132C17.4413 8.18393 18.2044 8.5 19 8.5Z" stroke="#282828" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1451,6 +1579,57 @@
         </div>
     </div>
 
+    <!-- Notification Drawer -->
+    <div class="notification-overlay" id="notificationOverlay" onclick="closeNotificationDrawer()"></div>
+    <div class="notification-drawer" id="notificationDrawer">
+        <div class="notification-drawer-header">
+            <h3 class="notification-drawer-title">Notifikasi</h3>
+            <button class="notification-drawer-close" onclick="closeNotificationDrawer()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="notification-drawer-content">
+            <div class="notification-item unread">
+                <div class="notification-header">
+                    <div class="notification-title">Pelamar Baru</div>
+                    <div class="notification-time">2 menit yang lalu</div>
+                </div>
+                <div class="notification-message">Ahmad Fadillah telah melamar untuk posisi Frontend Developer</div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-header">
+                    <div class="notification-title">Lowongan Ditutup</div>
+                    <div class="notification-time">1 jam yang lalu</div>
+                </div>
+                <div class="notification-message">Lowongan Backend Developer telah ditutup dengan 25 pelamar</div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-header">
+                    <div class="notification-title">Interview Dijadwalkan</div>
+                    <div class="notification-time">3 jam yang lalu</div>
+                </div>
+                <div class="notification-message">Interview untuk Sarah Johnson dijadwalkan besok jam 10:00 WIB</div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-header">
+                    <div class="notification-title">Lowongan Aktif</div>
+                    <div class="notification-time">1 hari yang lalu</div>
+                </div>
+                <div class="notification-message">Lowongan UI/UX Designer telah dipublikasikan</div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-header">
+                    <div class="notification-title">Pelamar Diterima</div>
+                    <div class="notification-time">2 hari yang lalu</div>
+                </div>
+                <div class="notification-message">Michael Chen telah diterima untuk posisi Data Analyst</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function toggleActionMenu(button) {
             // Close all other dropdowns first
@@ -1527,6 +1706,43 @@
             var menu = document.getElementById('profileDropdownMenu');
             if(menu && menu.classList.contains('show')) {
                 menu.classList.remove('show');
+            }
+        });
+
+        // Notification Drawer Functions
+        function toggleNotificationDrawer() {
+            const drawer = document.getElementById('notificationDrawer');
+            const overlay = document.getElementById('notificationOverlay');
+            
+            if (drawer.classList.contains('open')) {
+                closeNotificationDrawer();
+            } else {
+                openNotificationDrawer();
+            }
+        }
+
+        function openNotificationDrawer() {
+            const drawer = document.getElementById('notificationDrawer');
+            const overlay = document.getElementById('notificationOverlay');
+            
+            drawer.classList.add('open');
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNotificationDrawer() {
+            const drawer = document.getElementById('notificationDrawer');
+            const overlay = document.getElementById('notificationOverlay');
+            
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Close drawer when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeNotificationDrawer();
             }
         });
     </script>
