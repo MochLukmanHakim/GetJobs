@@ -948,7 +948,7 @@
                             <div class="applicant-item">
                                 <div class="applicant-avatar">LC</div>
                         <div class="applicant-info">
-                            <div class="applicant-name">Lionel Cristiano</div>
+                            <div class="applicant-name">Lionel Cristianoo</div>
                             <div class="applicant-status status-accepted">Diterima</div>
                         </div>
                             </div>
