@@ -192,7 +192,7 @@
             <img src="{{ asset('images/logo-getjobs.png') }}" alt="GetJobs Logo" class="login-logo" />
             <div class="login-form-container">
                 <div class="login-title">Holla,<br>Welcome back</div>
-                <form class="login-form" action="/login" method="POST">
+                <form class="login-form" action="/dashboard" method="POST">
                     @csrf
                     <div class="input-row">
                         <input type="email" name="email" id="email" placeholder="Email" required>
