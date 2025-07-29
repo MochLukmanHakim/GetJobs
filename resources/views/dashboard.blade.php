@@ -941,7 +941,7 @@
                             <div class="applicant-item">
                                 <div class="applicant-avatar">JJ</div>
                         <div class="applicant-info">
-                            <div class="applicant-name">Jamal bin Jamil</div>
+                            <div class="applicant-name">Jamal bin Jamilll</div>
                             <div class="applicant-status status-rejected">Ditolak</div>
                         </div>
                             </div>
