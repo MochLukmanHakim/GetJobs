@@ -865,7 +865,7 @@
                         <svg style="margin-left:4px;" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
                         <div class="profile-dropdown-menu" id="profileDropdownMenu">
                             <button class="profile-dropdown-item" onclick="window.location.href='/profile';return false;">Profile</button>
-                            <form method="POST" action="/logout" style="margin:0;">
+                            <form method="POST" action="{{ route('logout') }}" style="margin:0;">
                                 <button type="submit" class="profile-dropdown-item">Logout</button>
                             </form>
                         </div>
