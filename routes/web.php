@@ -34,4 +34,4 @@ Route::post('login', [UserController::class, 'logincheck']) ->name('logincheck')
 Route::post('signup', [UserController::class, 'registercheck']) ->name('registercheck');
 
 Route::get('/dashboard', [UserController::class, 'godashboard']) ->name('dashboard');
-Route::get('/logout', [UserController::class, 'logout']) ->name('logout');
+Route::post('/logout', [UserController::class, 'logout']) ->name('logout');

@@ -866,6 +866,7 @@
                         <div class="profile-dropdown-menu" id="profileDropdownMenu">
                             <button class="profile-dropdown-item" onclick="window.location.href='/profile';return false;">Profile</button>
                             <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                                @csrf
                                 <button type="submit" class="profile-dropdown-item">Logout</button>
                             </form>
                         </div>
