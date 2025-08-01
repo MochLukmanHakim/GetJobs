@@ -295,55 +295,6 @@
             color: #6B7280;
         }
 
-        /* Graph Card */
-        .graph-card {
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            border: 1px solid #E5E7EB;
-        }
-
-        .graph-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .graph-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 24px;
-        }
-
-        .graph-legend {
-            display: flex;
-            gap: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #6B7280;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.this-year {
-            background: #1F2937;
-        }
-
-        .legend-dot.last-year {
-            background: #9CA3AF;
-        }
-
         /* Profile Card */
         .profile-card {
             flex: 0 0 320px;
@@ -484,9 +435,10 @@
         }
 
         .branch-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: #111827;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.5;
         }
 
         .branch-location {
@@ -781,16 +733,12 @@
                             <div class="profile-info-value">{{ $companyProfile->alamat_perusahaan }}</div>
                             <div class="profile-info-label">Bidang Industri</div>
                             <div class="profile-info-value">{{ $companyProfile->bidang_industri }}</div>
-                            <div class="profile-info-label">Deskripsi</div>
-                            <div class="profile-info-value">{{ $companyProfile->deskripsi }}</div>
                         @else
                             <div class="profile-info-label">Telepon</div>
                             <div class="profile-info-value">-</div>
                             <div class="profile-info-label">Alamat</div>
                             <div class="profile-info-value">-</div>
                             <div class="profile-info-label">Bidang Industri</div>
-                            <div class="profile-info-value">-</div>
-                            <div class="profile-info-label">Deskripsi</div>
                             <div class="profile-info-value">-</div>
                         @endif
                     </div>
@@ -829,33 +777,21 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Cabang Perusahaan dan Media Sosial -->
+                    <!-- Deskripsi Perusahaan dan Media Sosial -->
                     <div class="branch-social-layout">
-                        <!-- Cabang Perusahaan -->
+                        <!-- Deskripsi Perusahaan -->
                         <div class="branch-card">
-                            <h3 class="branch-title">Cabang Perusahaan</h3>
+                            <h3 class="branch-title">Deskripsi Perusahaan</h3>
                             <div class="branch-list">
-                                <div class="branch-item">
-                                    <div class="branch-dot central"></div>
-                                    <div>
-                                        <div class="branch-name">Kantor Pusat</div>
-                                        <div class="branch-location">Jakarta Pusat</div>
+                                @if(isset($companyProfile) && $companyProfile->deskripsi)
+                                    <div class="branch-item">
+                                        <div class="branch-name">{{ $companyProfile->deskripsi }}</div>
                                     </div>
-                                </div>
-                                <div class="branch-item">
-                                    <div class="branch-dot bandung"></div>
-                                    <div>
-                                        <div class="branch-name">Cabang Bandung</div>
-                                        <div class="branch-location">Bandung</div>
+                                @else
+                                    <div class="branch-item">
+                                        <div class="branch-name">Belum ada deskripsi perusahaan</div>
                                     </div>
-                                </div>
-                                <div class="branch-item">
-                                    <div class="branch-dot surabaya"></div>
-                                    <div>
-                                        <div class="branch-name">Cabang Surabaya</div>
-                                        <div class="branch-location">Surabaya</div>
-                                    </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                         <!-- Media Sosial -->

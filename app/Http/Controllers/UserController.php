@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\CompanyProfile;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -52,6 +53,14 @@ class UserController extends Controller
         else{
             return redirect()->route('login');
         }
+    }
+
+    public function companyView(){
+        if(Auth::check() && Auth::user()->userType == 'perusahaan'){
+            $companyProfile = CompanyProfile::where('user_id', Auth::id())->first();
+            return view('company-view', compact('companyProfile'));
+        }
+        return redirect()->route('login');
     }
 
     public function logout(){

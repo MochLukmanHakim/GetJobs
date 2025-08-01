@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the company profile associated with the user.
+     */
+    public function companyProfile()
+    {
+        return $this->hasOne(CompanyProfile::class);
+    }
 }

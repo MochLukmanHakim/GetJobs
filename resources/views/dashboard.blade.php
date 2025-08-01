@@ -827,7 +827,7 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="/account" class="nav-link">
+                    <a href="/company-view" class="nav-link">
                         <span class="nav-icon">👤</span>
                         Account
                     </a>
