@@ -207,7 +207,7 @@
                     </div>
                     <div class="login-btn-group">
                         <button type="submit" class="login-btn login-btn-light">Sign In</button>
-                        <button type="button" class="login-btn login-btn-dark">Sign Up</button>
+                        <button type="button" class="login-btn login-btn-dark" onclick="window.location.href='{{ route('register') }}'">Sign Up</button>
                     </div>
                 </form>
             </div>

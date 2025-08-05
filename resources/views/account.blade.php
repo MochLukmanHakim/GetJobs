@@ -551,10 +551,6 @@
             background: #1da1f2;
         }
 
-        .social-icon.linkedin {
-            background: #0077b5;
-        }
-
         .social-name {
             font-size: 11px;
             font-weight: 600;
@@ -562,6 +558,7 @@
         }
 
         /* Job Listings */
+
         .job-title {
             font-size: 13px;
             font-weight: 600;
@@ -634,25 +631,6 @@
             font-weight: 500;
         }
 
-        /* Edit Button */
-        .edit-profile-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 16px;
-        }
-
-        .edit-profile-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -716,7 +694,7 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="/company-view" class="nav-link active">
+                    <a href="/account" class="nav-link active">
                         <span class="nav-icon">👤</span>
                         Account
                     </a>
@@ -749,13 +727,12 @@
                         <div class="notification-badge">3</div>
                     </button>
                     <div class="profile-mini profile-dropdown" id="profileDropdown" onclick="toggleProfileDropdown(event)">
-                        <div class="profile-mini-avatar">{{ substr(auth()->user()->name, 0, 2) }}</div>
-                        <span class="profile-mini-name">{{ auth()->user()->name }}</span>
+                        <div class="profile-mini-avatar">LH</div>
+                        <span class="profile-mini-name">Lukman Hakim</span>
                         <svg style="margin-left:4px;" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
                         <div class="profile-dropdown-menu" id="profileDropdownMenu">
                             <button class="profile-dropdown-item" onclick="window.location.href='/profile';return false;">Profile</button>
                             <form method="POST" action="/logout" style="margin:0;">
-                                @csrf
                                 <button type="submit" class="profile-dropdown-item">Logout</button>
                             </form>
                         </div>
@@ -769,36 +746,18 @@
                     <div class="profile-logo">
                         <img id="logoPreview" src="/images/logo-getjobs2.png" alt="Logo Perusahaan">
                     </div>
-                    <div class="profile-company-name">{{ auth()->user()->name }}</div>
+                    <div class="profile-company-name">PT. GetJobs Indonesia</div>
                     <div class="profile-status">Verified Company</div>
                     <div class="profile-info">
                         <div class="profile-info-label">Email</div>
-                        <div class="profile-info-value">{{ auth()->user()->email }}</div>
-                        @if(isset($companyProfile))
-                            <div class="profile-info-label">Telepon</div>
-                            <div class="profile-info-value">{{ $companyProfile->no_telp_perusahaan }}</div>
-                            <div class="profile-info-label">Alamat</div>
-                            <div class="profile-info-value">{{ $companyProfile->alamat_perusahaan }}</div>
-                            <div class="profile-info-label">Bidang Industri</div>
-                            <div class="profile-info-value">{{ $companyProfile->bidang_industri }}</div>
-                            <div class="profile-info-label">Deskripsi</div>
-                            <div class="profile-info-value">{{ $companyProfile->deskripsi }}</div>
-                        @else
-                            <div class="profile-info-label">Telepon</div>
-                            <div class="profile-info-value">-</div>
-                            <div class="profile-info-label">Alamat</div>
-                            <div class="profile-info-value">-</div>
-                            <div class="profile-info-label">Bidang Industri</div>
-                            <div class="profile-info-value">-</div>
-                            <div class="profile-info-label">Deskripsi</div>
-                            <div class="profile-info-value">-</div>
-                        @endif
+                        <div class="profile-info-value">info@getjobs.co.id</div>
+                        <div class="profile-info-label">Telepon</div>
+                        <div class="profile-info-value">021-12345678</div>
+                        <div class="profile-info-label">Alamat</div>
+                        <div class="profile-info-value">Jl. Merdeka No. 123, Jakarta</div>
+                        <div class="profile-info-label">Deskripsi</div>
+                        <div class="profile-info-value">GetJobs adalah platform rekrutmen modern yang menghubungkan perusahaan dengan talenta terbaik di Indonesia.</div>
                     </div>
-                    @if(isset($companyProfile))
-                        <button class="edit-profile-btn" onclick="window.location.href='/company-profiles/{{ $companyProfile->id }}/edit'">Edit Profil</button>
-                    @else
-                        <button class="edit-profile-btn" onclick="window.location.href='/company-profiles/create'">Buat Profil</button>
-                    @endif
                 </div>
                 <!-- Kanan: Metrik dan Info Tambahan -->
                 <div class="content-right">
@@ -862,27 +821,18 @@
                         <div class="social-card">
                             <h3 class="social-title">Media Sosial</h3>
                             <div class="social-list">
-                                @if(isset($companyProfile) && $companyProfile->media_sosial)
-                                    @foreach($companyProfile->media_sosial as $platform => $url)
-                                        <a href="{{ $url }}" target="_blank" class="social-item">
-                                            <div class="social-icon {{ $platform }}">{{ ucfirst($platform) }}</div>
-                                            <div class="social-name">{{ ucfirst($platform) }}</div>
-                                        </a>
-                                    @endforeach
-                                @else
-                                    <div class="social-item">
-                                        <div class="social-icon instagram">📷</div>
-                                        <div class="social-name">Instagram</div>
-                                    </div>
-                                    <div class="social-item">
-                                        <div class="social-icon facebook">📘</div>
-                                        <div class="social-name">Facebook</div>
-                                    </div>
-                                    <div class="social-item">
-                                        <div class="social-icon twitter">🐦</div>
-                                        <div class="social-name">Twitter</div>
-                                    </div>
-                                @endif
+                                <a href="https://instagram.com/getjobs.id" target="_blank" class="social-item">
+                                    <div class="social-icon instagram">📷</div>
+                                    <div class="social-name">Instagram</div>
+                                </a>
+                                <a href="https://facebook.com/getjobs.id" target="_blank" class="social-item">
+                                    <div class="social-icon facebook">📘</div>
+                                    <div class="social-name">Facebook</div>
+                                </a>
+                                <a href="https://twitter.com/getjobs_id" target="_blank" class="social-item">
+                                    <div class="social-icon twitter">🐦</div>
+                                    <div class="social-name">Twitter</div>
+                                </a>
                             </div>
                         </div>
                     </div>

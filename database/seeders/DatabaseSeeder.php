@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         // Jalankan CompanyProfileSeeder
         $this->call([
-            CompanyProfileSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

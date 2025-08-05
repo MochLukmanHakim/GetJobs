@@ -25,7 +25,9 @@ Route::get('/pelamar', function () {
 Route::get('/statistik', function () {
     return view('statistik');
 });
-Route::get('/account', [UserController::class, 'companyView']) ->name('account');
+Route::get('/account', function () {
+    return view('account');
+});
 
 Route::get('/', [UserController::class, 'login']) ->name('login');
 Route::get('/signup', [UserController::class, 'signup']) ->name('register');
@@ -35,8 +37,4 @@ Route::post('signup', [UserController::class, 'registercheck']) ->name('register
 Route::get('/dashboard', [UserController::class, 'godashboard']) ->name('dashboard');
 Route::post('/logout', [UserController::class, 'logout']) ->name('logout');
 
-// Company Profile Routes
-Route::resource('company-profiles', CompanyProfileController::class);
 
-// Company View Route
-Route::get('/company-view', [UserController::class, 'companyView']) ->name('company-view');

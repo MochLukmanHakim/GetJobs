@@ -22,22 +22,31 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+        
         if(Auth::attempt($credentials)){ 
             return redirect()->route('dashboard');
         }
+        
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->withInput($request->only('email'));
     }
 
     public function registercheck(Request $request){
         $validation = $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
         ]);
+
+        // Hash password dan set userType
+        $validation['password'] = bcrypt($validation['password']);
+        $validation['userType'] = 'user';
 
         $user = User::create($validation);
         Auth::login($user);
 
-        return redirect()->route('login');
+        return redirect()->route('dashboard');
     }
 
     public function godashboard(){
@@ -47,22 +56,12 @@ class UserController extends Controller
         else if(Auth::check() && Auth::user()->userType== 'perusahaan'){
             return view('dashboard');
         }
-        else if(Auth::check() && Auth::user()->userType== 'pelamar'){
-            return view('user.dashboard');
+        else if(Auth::check() && Auth::user()->userType== 'user'){
+            return view('dashboard.user');
         }
-        else{
-            return redirect()->route('login');
-        }
-    }
-
-    public function companyView(){
-        if(Auth::check() && Auth::user()->userType == 'perusahaan'){
-            $companyProfile = CompanyProfile::where('user_id', Auth::id())->first();
-            return view('company-view', compact('companyProfile'));
-        }
+        
         return redirect()->route('login');
     }
-
     public function logout(){
         Auth::logout();
         return redirect()->route('login');
