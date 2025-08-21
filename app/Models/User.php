@@ -53,4 +53,20 @@ class User extends Authenticatable
     {
         return $this->hasOne(CompanyProfile::class);
     }
+
+    /**
+     * Get the perusahaan profile associated with the user.
+     */
+    public function perusahaan()
+    {
+        return $this->hasOne(Perusahaan::class, 'id_user', 'id');
+    }
+
+    /**
+     * Get the pekerjaan for this user.
+     */
+    public function pekerjaan()
+    {
+        return $this->hasMany(Pekerjaan::class, 'user_id', 'id');
+    }
 }

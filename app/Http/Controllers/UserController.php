@@ -57,7 +57,7 @@ class UserController extends Controller
             return view('dashboard');
         }
         else if(Auth::check() && Auth::user()->userType== 'user'){
-            return view('dashboard.user');
+            return view('beranda');
         }
         
         return redirect()->route('login');
