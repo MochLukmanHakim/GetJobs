@@ -19,24 +19,29 @@
             display: none;
             position: fixed;
             top: 0;
-            left: 240px;
-            width: calc(100% - 240px);
+            left: 0;
+            width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(4px);
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .modal-content {
             background: white;
             border-radius: 12px;
-            padding: 20px;
-            width: 90%;
+            padding: 24px;
+            width: 100%;
             max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             border: 1px solid #e5e7eb;
+            margin: auto;
         }
 
         .modal-header {
@@ -119,52 +124,51 @@
         }
 
         .form-row-with-dropdowns {
-            display: flex;
-            gap: 20px;
-            align-items: flex-end;
-            margin-bottom: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
         .dropdown-item {
             display: flex;
             flex-direction: column;
             gap: 4px;
+            min-width: 0;
         }
 
         .dropdown-item label {
             display: none;
         }
 
-        .dropdown-item select {
-            padding: 6px 8px;
-            border: none;
-            border-radius: 0;
+        .form-row-with-dropdowns .form-group select {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
             font-size: 13px;
-            font-weight: 600;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: transparent;
+            background: white;
             cursor: pointer;
-            color: #6b7280;
+            color: #374151;
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 6px center;
-            background-size: 12px;
-            padding-right: 24px;
-            min-width: 100px;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 28px;
+            width: 100%;
         }
 
-        .dropdown-item select:focus {
+        .form-row-with-dropdowns .form-group select:focus {
             outline: none;
-            background: transparent;
-            color: #374151;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        .dropdown-item select option {
-            font-weight: 600;
+        .form-row-with-dropdowns .form-group select option {
             color: #374151;
             background: white;
             padding: 8px 12px;
@@ -470,14 +474,15 @@
         /* Responsive Modal */
         @media (max-width: 768px) {
             .modal-overlay {
-                left: 0;
-                width: 100%;
+                padding: 16px;
             }
             
             .modal-content {
-                width: 95%;
-                padding: 24px;
-                margin: 20px;
+                width: 100%;
+                max-width: none;
+                padding: 20px;
+                margin: 0;
+                border-radius: 8px;
             }
             
             .modal-header {
@@ -487,7 +492,7 @@
             }
             
             .modal-category {
-            width: 100%;
+                width: 100%;
             }
             
             .modal-category select {
@@ -495,9 +500,14 @@
             }
             
             .form-row,
-            .form-row-2 {
+            .form-row-2,
+            .form-row-with-dropdowns {
                 grid-template-columns: 1fr;
                 gap: 12px;
+            }
+            
+            .dropdown-item {
+                width: 100%;
             }
             
             /* View Modal Responsive */
@@ -512,6 +522,38 @@
             
             .detail-actions {
                 justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-overlay {
+                padding: 12px;
+            }
+            
+            .modal-content {
+                padding: 16px;
+                max-height: 95vh;
+            }
+            
+            .modal-title {
+                font-size: 18px;
+            }
+            
+            .form-group label {
+                font-size: 12px;
+            }
+            
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .btn-cancel,
+            .btn-save {
+                padding: 12px 16px;
+                font-size: 14px;
             }
         }
 
@@ -798,6 +840,26 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn:disabled:hover {
+            background: transparent;
+            color: #6B7280;
+        }
+
+        a.page-btn {
+            text-decoration: none;
+            color: #6B7280;
+        }
+
+        a.page-btn:hover {
+            background: #F3F4F6;
+            color: #374151;
+        }
+
 
         /* Responsive Design for Card Layout */
         @media (max-width: 1200px) {
@@ -844,7 +906,7 @@
             }
             
             .job-position::before {
-                content: "Posisi: ";
+                content: "Kategori: ";
                 font-weight: 600;
                 color: #374151;
             }
@@ -852,7 +914,7 @@
             .job-status::before {
                 content: "Status: ";
                 font-weight: 600;
-                color: #374151;
+ color: #374151;
             }
             
             .applicant-count::before {
@@ -872,12 +934,27 @@
                 justify-content: center;
                 margin-top: 12px;
             }
+            
+            /* Responsive tab design */
+            .tab-container {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 4px;
+            }
+            
+            .tab-item {
+                text-align: left;
+                padding: 8px 0;
+                min-width: auto;
+                flex: none;
+            }
         }
         .table-actions-flex {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 18px;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 32px;
         }
         .search-input-group {
             position: relative;
@@ -926,6 +1003,104 @@
         .filter-btn svg {
             display: block;
         }
+        .add-job-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(90deg, #6a879c 0%, #223046 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .add-job-btn:hover {
+            background: linear-gradient(90deg, #223046 0%, #6a879c 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .add-job-btn svg {
+            flex-shrink: 0;
+        }
+        
+        /* Job Filter Tabs - Matching Applicant Page Design */
+        .job-filter-tabs {
+            margin: 0;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .tab-container {
+            display: flex;
+            background: transparent;
+            border: none;
+            padding: 0;
+            gap: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            -webkit-overflow-scrolling: touch;
+            max-width: calc(3 * 140px + 2 * 16px);
+            justify-content: flex-start;
+        }
+
+        .tab-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-item {
+            flex: none;
+            min-width: 140px;
+            max-width: 140px;
+            white-space: nowrap;
+            padding: 12px 0;
+            border: none;
+            background: transparent;
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 0;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tab-item:hover {
+            background: transparent;
+            color: #6b7280;
+        }
+
+        .tab-item.active {
+            background: transparent;
+            color: #2F4157;
+            font-weight: 600;
+            box-shadow: none;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #2F4157;
+            border-radius: 0;
+        }
+
+        .tab-item.active:hover {
+            background: transparent;
+            color: #2F4157;
+        }
+        
         @media (max-width: 600px) {
             .table-actions-flex {
                 flex-direction: column;
@@ -935,6 +1110,57 @@
             .search-input-group {
                 width: 100%;
             }
+            .add-job-btn {
+                justify-content: center;
+            }
+            .job-filter-tabs {
+                justify-content: center;
+            }
+            .tab-container {
+                justify-content: center;
+                max-width: none;
+            }
+            .tab-item {
+                min-width: auto;
+                flex: 1;
+                text-align: center;
+                padding: 8px 0;
+            }
+        }
+
+        /* Center alignment for headers and table/card columns */
+        .table-header-row .header-item {
+            text-align: center;
+        }
+        .job-card-content > div {
+            text-align: center;
+        }
+        /* EXCEPTION: title column (job-info) should be left-aligned */
+        .job-info {
+            justify-content: flex-start;
+            padding-left: 0px; /* move titles more to the left */
+        }
+        .job-details,
+        .job-details h4,
+        .job-details p {
+            text-align: left;
+        }
+        .job-details { padding-left: 2px; }
+        .job-details h4 { margin-left: 0; }
+        @media (max-width: 600px) {
+            .job-info { padding-left: 10px; }
+            .job-details { padding-left: 0; }
+        }
+        .job-position,
+        .applicant-count,
+        .posting-date {
+            justify-self: center;
+        }
+        .action-menu {
+            justify-self: center;
+        }
+        .job-status {
+            justify-content: center;
         }
 </style>
 @endpush
@@ -945,15 +1171,15 @@
 
 
 <div class="table-actions-flex">
-    <div class="search-input-group">
-        <input type="text" class="search-input" placeholder="Cari pekerjaan...">
-        <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </div>
-    <button class="filter-btn" title="Filter">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 11H17V13H7V11ZM4 7H20V9H4V7ZM10 15H14V17H10V15Z" fill="#9CA3AF"/>
+    <!-- Modern Search Component -->
+    @include('components.modern-search', ['pageType' => 'pekerjaan', 'categories' => $categories ?? []])
+    
+    <a href="{{ route('pekerjaan.create') }}" class="add-job-btn" title="Tambah Pekerjaan">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-    </button>
+        Tambah
+    </a>
 </div>
 
             <!-- Job Management Table -->
@@ -963,28 +1189,47 @@
                 <!-- Table Header -->
                 <div class="table-header-row">
                     <div class="header-item">Judul Pekerjaan</div>
-                    <div class="header-item">Posisi</div>
-                    <div class="header-item">Status</div>
+                    <div class="header-item">Kategori</div>
                     <div class="header-item">Pelamar</div>
                     <div class="header-item">Tanggal Posting</div>
                     <div class="header-item">Aksi</div>
+                    <div class="header-item">Status</div>
                 </div>
                 
                 <div class="job-cards">
+                    {{-- Debug: Show job count --}}
+                    <script>console.log('Total jobs from server:', {{ count($pekerjaan) }});</script>
                     @forelse($pekerjaan as $job)
-                    <div class="job-card">
+                    <div class="job-card" data-status="{{ $job->status }}">
                         <div class="job-card-content">
                             <div class="job-info">
-                                <div class="job-avatar">{{ substr($job->judul_pekerjaan, 0, 2) }}</div>
                                 <div class="job-details">
-                                    <h4>{{ $job->judul_pekerjaan }}</h4>
-                                    <p class="job-id">#{{ $job->id_pekerjaan }}</p>
+                                    @php
+                                        $rawTitle = trim(preg_replace('/\s+/', ' ', $job->judul_pekerjaan ?? ''));
+                                        $words = $rawTitle !== '' ? preg_split('/\s+/', $rawTitle, -1, PREG_SPLIT_NO_EMPTY) : [];
+                                        $displayTitle = $rawTitle;
+                                        if (count($words) === 2) {
+                                            $catText = ucwords(str_replace(['-', '_'], ' ', $job->kategori_pekerjaan ?? ''));
+                                            if ($catText !== '') {
+                                                $displayTitle = $rawTitle.' '.$catText;
+                                            }
+                                        }
+                                    @endphp
+                                    <h4>{{ $displayTitle }}</h4>
                                 </div>
                             </div>
-                            <div class="job-position">{{ $job->kategori_pekerjaan }}</div>
-                            <div class="job-status">
-                                <div class="status-dot {{ $job->status }}"></div>
-                                <span class="status-text {{ $job->status }}">{{ ucfirst($job->status) }}</span>
+                            <div class="job-position">
+                                @php
+                                    $categoryMap = [
+                                        'technology' => 'Technology',
+                                        'design' => 'Design',
+                                        'marketing' => 'Marketing',
+                                        'finance' => 'Finance',
+                                        'hr' => 'Human Resources'
+                                    ];
+                                    $displayCategory = $categoryMap[$job->kategori_pekerjaan] ?? ucfirst($job->kategori_pekerjaan);
+                                @endphp
+                                {{ $displayCategory }}
                             </div>
                             <div class="applicant-count">0</div>
                             <div class="posting-date">{{ $job->created_at->format('d M Y') }}</div>
@@ -996,6 +1241,10 @@
                                     <div class="action-item close" onclick="closeJob({{ $job->id_pekerjaan }}, '{{ $job->judul_pekerjaan }}')">Tutup</div>
                                 </div>
                             </div>
+                            <div class="job-status">
+                                <div class="status-dot {{ $job->status }}"></div>
+                                <span class="status-text {{ $job->status }}">{{ ucfirst($job->status) }}</span>
+                            </div>
                         </div>
                     </div>
                     @empty
@@ -1005,15 +1254,7 @@
                     @endforelse
                 </div>
 
-                <!-- Pagination -->
-                <div class="pagination">
-                    <button class="page-btn">‹</button>
-                    <button class="page-btn">1</button>
-                    <button class="page-btn active">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn">4</button>
-                    <button class="page-btn">›</button>
-                </div>
+                {{-- Pagination removed since we're showing only 10 jobs total --}}
             </div>
     <!-- Add Job Modal -->
     <div id="addJobModal" class="modal-overlay">
@@ -1049,17 +1290,30 @@
                 
                 <div class="form-group full-width">
                     <label for="judul_pekerjaan">Nama Pekerjaan</label>
-                    <input type="text" id="judul_pekerjaan" name="judul_pekerjaan" value="{{ old('judul_pekerjaan') }}" required>
+                    <input type="text" id="judul_pekerjaan" name="judul_pekerjaan" value="{{ old('judul_pekerjaan') }}" 
+                           placeholder="Contoh: Senior Software Engineer Backend" required 
+                           class="@error('judul_pekerjaan') is-invalid @enderror"
+                           oninput="validateJobTitle(this)">
+                    <div id="word-count-feedback" style="font-size: 12px; margin-top: 4px; color: #6b7280;">Harus 3-4 kata</div>
+                    @error('judul_pekerjaan')
+                        <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="gaji_pekerjaan">Gaji</label>
+                    <input type="text" id="gaji_pekerjaan" name="gaji_pekerjaan" value="{{ old('gaji_pekerjaan') }}" placeholder="Rp 5.000.000" required
+                           class="@error('gaji_pekerjaan') is-invalid @enderror">
+                    @error('gaji_pekerjaan')
+                        <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                    @enderror
                 </div>
                 
                 <div class="form-row-with-dropdowns">
                     <div class="form-group">
-                        <label for="gaji_pekerjaan">Gaji</label>
-                        <input type="text" id="gaji_pekerjaan" name="gaji_pekerjaan" value="{{ old('gaji_pekerjaan') }}" placeholder="Rp 5.000.000" required>
-                    </div>
-                    <div class="dropdown-item">
                         <label for="lokasi_pekerjaan">Lokasi</label>
-                        <select id="lokasi_pekerjaan" name="lokasi_pekerjaan" required>
+                        <select id="lokasi_pekerjaan" name="lokasi_pekerjaan" required
+                                class="@error('lokasi_pekerjaan') is-invalid @enderror">
                             <option value="">Pilih Lokasi</option>
                             <option value="jakarta" {{ old('lokasi_pekerjaan') == 'jakarta' ? 'selected' : '' }}>Jakarta</option>
                             <option value="bandung" {{ old('lokasi_pekerjaan') == 'bandung' ? 'selected' : '' }}>Bandung</option>
@@ -1067,10 +1321,14 @@
                             <option value="yogyakarta" {{ old('lokasi_pekerjaan') == 'yogyakarta' ? 'selected' : '' }}>Yogyakarta</option>
                             <option value="medan" {{ old('lokasi_pekerjaan') == 'medan' ? 'selected' : '' }}>Medan</option>
                         </select>
+                        @error('lokasi_pekerjaan')
+                            <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="dropdown-item">
+                    <div class="form-group">
                         <label for="kategori_pekerjaan">Kategori</label>
-                        <select id="kategori_pekerjaan" name="kategori_pekerjaan" required>
+                        <select id="kategori_pekerjaan" name="kategori_pekerjaan" required
+                                class="@error('kategori_pekerjaan') is-invalid @enderror">
                             <option value="">Pilih Kategori</option>
                             <option value="technology" {{ old('kategori_pekerjaan') == 'technology' ? 'selected' : '' }}>Technology</option>
                             <option value="design" {{ old('kategori_pekerjaan') == 'design' ? 'selected' : '' }}>Design</option>
@@ -1078,12 +1336,19 @@
                             <option value="finance" {{ old('kategori_pekerjaan') == 'finance' ? 'selected' : '' }}>Finance</option>
                             <option value="hr" {{ old('kategori_pekerjaan') == 'hr' ? 'selected' : '' }}>Human Resources</option>
                         </select>
+                        @error('kategori_pekerjaan')
+                            <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 
                 <div class="form-group full-width">
                     <label for="deskripsi_pekerjaan">Detail Pekerjaan</label>
-                    <textarea id="deskripsi_pekerjaan" name="deskripsi_pekerjaan" rows="4" placeholder="Masukkan detail pekerjaan..." required>{{ old('deskripsi_pekerjaan') }}</textarea>
+                    <textarea id="deskripsi_pekerjaan" name="deskripsi_pekerjaan" rows="4" placeholder="Masukkan detail pekerjaan..." required
+                              class="@error('deskripsi_pekerjaan') is-invalid @enderror">{{ old('deskripsi_pekerjaan') }}</textarea>
+                    @error('deskripsi_pekerjaan')
+                        <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                    @enderror
                 </div>
                 
                 <div class="form-actions">
@@ -1129,7 +1394,10 @@
                 
                 <div class="form-group full-width">
                     <label for="edit_judul_pekerjaan">Nama Pekerjaan</label>
-                    <input type="text" id="edit_judul_pekerjaan" name="judul_pekerjaan" value="{{ old('judul_pekerjaan') }}" required>
+                    <input type="text" id="edit_judul_pekerjaan" name="judul_pekerjaan" value="{{ old('judul_pekerjaan') }}" 
+                           placeholder="Contoh: Senior Software Engineer Backend" required
+                           oninput="validateJobTitle(this, 'edit')">
+                    <div id="edit-word-count-feedback" style="font-size: 12px; margin-top: 4px; color: #6b7280;">Harus 3-4 kata</div>
                 </div>
                 
                 <div class="form-row-with-dropdowns">
@@ -1278,6 +1546,51 @@
 
 @push('scripts')
 <script>
+        // Filter Jobs Function
+        function filterJobs(status) {
+            const jobCards = document.querySelectorAll('.job-card');
+            const filterTabs = document.querySelectorAll('.tab-item');
+            
+            // Update active tab
+            filterTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-filter') === status) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Filter job cards
+            jobCards.forEach(card => {
+                if (status === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const cardStatus = card.getAttribute('data-status');
+                    if (cardStatus === status) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Check if no jobs are visible
+            const visibleCards = document.querySelectorAll('.job-card[style="display: block"], .job-card:not([style*="display: none"])');
+            const noJobsMessage = document.querySelector('.no-jobs');
+            
+            if (visibleCards.length === 0 && !noJobsMessage) {
+                const jobCardsContainer = document.querySelector('.job-cards');
+                const tempMessage = document.createElement('div');
+                tempMessage.className = 'no-jobs temp-message';
+                tempMessage.innerHTML = '<p>Tidak ada pekerjaan dengan status ' + (status === 'aktif' ? 'aktif' : status === 'tutup' ? 'tutup' : '') + '</p>';
+                jobCardsContainer.appendChild(tempMessage);
+            } else if (visibleCards.length > 0) {
+                const tempMessage = document.querySelector('.temp-message');
+                if (tempMessage) {
+                    tempMessage.remove();
+                }
+            }
+        }
+
         function toggleActionMenu(button) {
             // Close all other dropdowns first
             const allDropdowns = document.querySelectorAll('.action-dropdown');
@@ -1503,6 +1816,31 @@
                 }
             });
             
+            // Validate job title word count (must be 3-4 words) and auto-append category if only 2 words
+            let titleInput = document.getElementById('judul_pekerjaan');
+            let judulPekerjaan = titleInput.value.trim();
+            let words = judulPekerjaan.split(/\s+/).filter(w => w.length > 0);
+            let wordCount = words.length;
+
+            if (wordCount === 2) {
+                const kategoriSelect = document.getElementById('kategori_pekerjaan');
+                const kategoriText = kategoriSelect && kategoriSelect.selectedIndex > 0
+                    ? kategoriSelect.options[kategoriSelect.selectedIndex].text.trim()
+                    : '';
+                if (kategoriText) {
+                    judulPekerjaan = judulPekerjaan + ' ' + kategoriText;
+                    titleInput.value = judulPekerjaan;
+                    words = judulPekerjaan.split(/\s+/).filter(w => w.length > 0);
+                    wordCount = words.length;
+                }
+            }
+
+            if (wordCount < 3 || wordCount > 4) {
+                e.preventDefault();
+                showToast('Judul pekerjaan harus terdiri dari 3-4 kata', 'error');
+                return;
+            }
+            
             if (!isValid) {
                 e.preventDefault();
                 showToast('Mohon isi semua field yang diperlukan: ' + missingFields.join(', '), 'error');
@@ -1543,6 +1881,31 @@
                     isValid = false;
                 }
             });
+            
+            // Validate job title word count (must be 3-4 words) and auto-append category if only 2 words
+            let titleInput = this.querySelector('[name="judul_pekerjaan"]');
+            let judulPekerjaan = titleInput.value.trim();
+            let words = judulPekerjaan.split(/\s+/).filter(w => w.length > 0);
+            let wordCount = words.length;
+
+            if (wordCount === 2) {
+                const kategoriSelect = document.getElementById('edit_kategori_pekerjaan');
+                const kategoriText = kategoriSelect && kategoriSelect.selectedIndex > 0
+                    ? kategoriSelect.options[kategoriSelect.selectedIndex].text.trim()
+                    : '';
+                if (kategoriText) {
+                    judulPekerjaan = judulPekerjaan + ' ' + kategoriText;
+                    titleInput.value = judulPekerjaan;
+                    words = judulPekerjaan.split(/\s+/).filter(w => w.length > 0);
+                    wordCount = words.length;
+                }
+            }
+
+            if (wordCount < 3 || wordCount > 4) {
+                e.preventDefault();
+                showToast('Judul pekerjaan harus terdiri dari 3-4 kata', 'error');
+                return;
+            }
             
             if (!isValid) {
                 e.preventDefault();
@@ -1621,6 +1984,57 @@
                     toastContainer.removeChild(toast);
                 }, 300);
             }, 3000);
+        }
+
+        // Function to validate job title in real-time
+        function validateJobTitle(input, prefix = '') {
+            const value = input.value.trim();
+            const words = value.split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+            
+            const feedbackId = prefix ? `${prefix}-word-count-feedback` : 'word-count-feedback';
+            const feedback = document.getElementById(feedbackId);
+            
+            if (!feedback) return;
+            
+            if (wordCount === 0) {
+                feedback.textContent = 'Harus 3-4 kata';
+                feedback.style.color = '#6b7280';
+                input.style.borderColor = '#e5e7eb';
+            } else if (wordCount < 3) {
+                feedback.textContent = `${wordCount} kata (perlu ${3 - wordCount} kata lagi)`;
+                feedback.style.color = '#f59e0b';
+                input.style.borderColor = '#f59e0b';
+            } else if (wordCount <= 4) {
+                feedback.textContent = `${wordCount} kata ✓`;
+                feedback.style.color = '#10b981';
+                input.style.borderColor = '#10b981';
+            } else {
+                feedback.textContent = `Maksimal 4 kata (kelebihan ${wordCount - 4})`;
+                feedback.style.color = '#dc2626';
+                input.style.borderColor = '#dc2626';
+            }
+        }
+
+        // Function to open add job modal
+        function openAddJobModal() {
+            const modal = document.getElementById('addJobModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                // Reset validation feedback
+                const feedback = document.getElementById('word-count-feedback');
+                if (feedback) {
+                    feedback.textContent = 'Harus 3-4 kata';
+                    feedback.style.color = '#6b7280';
+                }
+                const input = document.getElementById('judul_pekerjaan');
+                if (input) {
+                    input.style.borderColor = '#e5e7eb';
+                }
+            } else {
+                console.error('Add job modal not found');
+            }
         }
 
         // Show toast on page load if there are session messages

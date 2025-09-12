@@ -20,6 +20,7 @@ Route::get('/welcome', function () {
 
 // Rute untuk pekerjaan
 Route::get('/pekerjaan', [PekerjaanController::class, 'index'])->name('pekerjaan.index');
+Route::get('/pekerjaan/create', [PekerjaanController::class, 'create'])->name('pekerjaan.create');
 Route::post('/pekerjaan', [PekerjaanController::class, 'store'])->name('pekerjaan.store');
 Route::put('/pekerjaan/{id}', [PekerjaanController::class, 'update'])->name('pekerjaan.update');
 Route::delete('/pekerjaan/{id}', [PekerjaanController::class, 'destroy'])->name('pekerjaan.destroy');
@@ -38,7 +39,19 @@ Route::get('/perusahaan/dashboard', [PerusahaanController::class, 'profile'])->n
 
 // Rute untuk halaman lainnya
 Route::get('/pelamar', function () {
-    return view('pelamar');
+    // Get only 10 latest jobs and their job titles for search dropdown
+    $pekerjaan = \App\Models\Pekerjaan::orderBy('created_at', 'desc')->limit(10)->get();
+    
+    // Get unique job titles from the displayed jobs
+    $categories = $pekerjaan->pluck('judul_pekerjaan')
+        ->filter(function($title) {
+            return !empty($title);
+        })
+        ->unique()
+        ->values()
+        ->toArray();
+    
+    return view('pelamar', compact('categories'));
 })->name('pelamar');
 
 Route::get('/statistik', function () {
@@ -57,5 +70,10 @@ Route::post('/signup', [UserController::class, 'registercheck'])->name('register
 
 Route::get('/dashboard', [UserController::class, 'godashboard'])->name('dashboard');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+// Rute untuk halaman standalone find job
+Route::get('/findjob-standalone', function () {
+    return view('findjob-standalone');
+})->name('findjob.standalone');
 
 

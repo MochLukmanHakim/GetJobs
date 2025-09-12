@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CompanyProfile;
+use App\Models\Pekerjaan;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -54,7 +55,8 @@ class UserController extends Controller
             return view('admin.dashboard');
         }
         else if(Auth::check() && Auth::user()->userType== 'perusahaan'){
-            return view('dashboard');
+            $pekerjaan = Pekerjaan::orderBy('created_at', 'desc')->take(5)->get();
+            return view('dashboard', compact('pekerjaan'));
         }
         else if(Auth::check() && Auth::user()->userType== 'user'){
             return view('beranda');

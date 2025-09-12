@@ -29,20 +29,97 @@
         z-index: 1000;
     }
 
+    /* Simple sidebar width animation */
+    .sidebar {
+        transition: width 0.3s ease;
+    }
+
     .sidebar.collapsed {
         width: 70px;
     }
 
     .sidebar.collapsed .sidebar-header {
-        padding: 20px 10px;
+        height: 100px;
+        padding-top: 20px;
+    }
+
+    /* Logo Section Styles */
+    .logo-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    /* Smooth logo section transition */
+    .sidebar.collapsed .logo-section {
+        padding: 0 5px;
+    }
+
+    .logo-image {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+    .logo-text {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1f2937;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        white-space: nowrap;
+        opacity: 1;
+    }
+
+    /* Collapsed state styles */
+    .sidebar.collapsed .logo-section {
+        justify-content: center;
+        padding: 20px 15px;
     }
 
     .sidebar.collapsed .logo-image {
-        width: 50px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .sidebar.collapsed .logo-text {
+        opacity: 0;
+        transform: translateX(-10px);
+        width: 0;
+        overflow: hidden;
+    }
+
+
+
+    /* Natural logo animation */
+    .logo-image {
+        transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        transform-origin: center;
+    }
+
+    /* Logo scaling for natural resize */
+    .sidebar:not(.collapsed) .logo-image {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    .sidebar.collapsed .logo-image {
+        transform: scale(0.75);
+        opacity: 0.9;
     }
 
     .sidebar.collapsed .nav-link span:not(.nav-icon) {
-        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar:not(.collapsed) .nav-link span:not(.nav-icon) {
+        opacity: 1;
+        transition: opacity 0.3s ease;
     }
 
     .sidebar.collapsed .nav-link {
@@ -50,16 +127,25 @@
         padding: 12px 8px;
     }
 
+    /* Animate nav link padding and icon margins only when transitioning */
+    .sidebar.transitioning .nav-link {
+        transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
     .sidebar.collapsed .nav-icon {
         margin: 0;
     }
 
-    /* Tooltip for collapsed sidebar */
-    .sidebar.collapsed .nav-link {
+    .sidebar.transitioning .nav-icon {
+        transition: margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Tooltip for both collapsed and expanded sidebar */
+    .nav-link {
         position: relative;
     }
 
-    .sidebar.collapsed .nav-link:hover::after {
+    .nav-link:hover::after {
         content: attr(data-tooltip);
         position: absolute;
         left: 100%;
@@ -76,7 +162,7 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    .sidebar.collapsed .nav-link::after {
+    .nav-link::after {
         content: '';
         position: absolute;
         left: 100%;
@@ -89,7 +175,7 @@
         opacity: 0;
     }
 
-    .sidebar.collapsed .nav-link:hover::after {
+    .nav-link:hover::after {
         opacity: 1;
     }
 
@@ -108,13 +194,11 @@
         justify-content: center;
         cursor: pointer;
         z-index: 1001;
-        transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
     .sidebar-toggle:hover {
         background: #1d4ed8;
-        transform: scale(1.1);
     }
 
     .sidebar-toggle svg {
@@ -128,9 +212,13 @@
     }
 
     .sidebar-header {
-        padding: 29px 20px 20px;
-        border-bottom: 1px solid #f1f5f9;
+        text-align: left;
         margin-bottom: 20px;
+        height: 100px;
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 0px;
+        padding-top: 20px;
     }
 
     .profile-section {
@@ -156,7 +244,6 @@
         width: 140px;
         height: auto;
         object-fit: contain;
-        transition: all 0.3s ease;
     }
 
     /* Logo becomes clickable toggle when collapsed */
@@ -166,12 +253,10 @@
         border-radius: 8px;
         padding: 8px;
         margin-bottom: 0;
-        transition: all 0.3s ease;
     }
 
     .sidebar.collapsed .profile-avatar:hover {
         background: rgba(255, 255, 255, 0.2);
-        transform: scale(1.05);
     }
 
     .sidebar.collapsed .logo-image {
@@ -183,35 +268,6 @@
     /* Responsive layout adjustments when sidebar is collapsed */
     .sidebar.collapsed ~ .main-content {
         margin-left: 70px;
-    }
-
-    .sidebar.collapsed ~ .main-content .content-layout {
-        max-width: calc(100vw - 70px - 64px);
-    }
-
-    .sidebar.collapsed ~ .main-content .profile-card {
-        flex: 0 0 280px;
-        max-width: 280px;
-    }
-
-    .sidebar.collapsed ~ .main-content .content-right {
-        flex: 1;
-        min-width: 250px;
-    }
-
-    .sidebar.collapsed ~ .main-content .branch-social-layout {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .sidebar.collapsed ~ .main-content .branch-card,
-    .sidebar.collapsed ~ .main-content .social-card {
-        min-width: 100%;
-        flex: 1;
-    }
-
-    .sidebar.collapsed ~ .main-content .metrics-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
 
@@ -264,12 +320,103 @@
         color: white;
     }
 
+    /* Sidebar Footer & Logout Button */
+    .sidebar-footer {
+        margin-top: auto;
+        padding: 16px;
+    }
+
+    .logout-form {
+        width: 100%;
+    }
+
+    .logout-btn {
+        width: 100%;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        color: #577C8E;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        
+    }
+
+    .logout-btn:hover {
+        background: #C7E0F6;
+        color: #2F4157;
+    }
+
+    .logout-btn .nav-icon {
+        color: #ef4444;
+        font-size: 16px;
+    }
+
+    .logout-btn:hover .nav-icon {
+        color: #dc2626;
+    }
+
+    /* Collapsed sidebar logout button */
+    .sidebar.collapsed .sidebar-footer {
+        padding: 16px 10px;
+    }
+
+    /* Animate sidebar footer padding only when transitioning */
+    .sidebar.transitioning .sidebar-footer {
+        transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.collapsed .logout-btn {
+        justify-content: center;
+        padding: 12px 8px;
+    }
+
+    /* Animate logout button only when transitioning */
+    .sidebar.transitioning .logout-btn {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar.collapsed .logout-btn span:not(.nav-icon) {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    /* Animate logout text only when transitioning */
+    .sidebar.transitioning .logout-btn span:not(.nav-icon) {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Show logout text with animation when sidebar is expanded */
+    .sidebar:not(.collapsed) .logout-btn span:not(.nav-icon) {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* Hide scrollbar when sidebar is collapsed */
+    .sidebar.collapsed {
+        overflow: hidden;
+    }
+
+    .sidebar.collapsed .nav-menu {
+        overflow: hidden;
+    }
+
     /* Main Content */
     .main-content {
         flex: 1;
         margin-left: 240px;
         padding: 24px 32px;
         background: #F9FAFB;
+    }
+
+    /* Smooth main content margin animation */
+    .main-content {
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .main-content.expanded {
@@ -359,39 +506,8 @@
         background: #f3f4f6;
     }
 
-    .notification-icon {
-        position: relative;
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: none;
-        font-size: 14px;
-        background: none;
-    }
+    /* Notification Icon styling moved to notification-styles.blade.php to avoid conflicts */
 
-    .notification-icon:hover {
-        transform: scale(1.05);
-    }
-
-    .notification-badge {
-        position: absolute;
-        top: -2px;
-        right: -2px;
-        width: 14px;
-        height: 14px;
-        background: #ef4444;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 9px;
-        color: white;
-        font-weight: 600;
-    }
 
     .page-title {
         font-size: 28px;
@@ -415,166 +531,6 @@
         cursor: pointer;
     }
 
-    /* Notification Sidebar Styles */
-    .notification-sidebar {
-        position: fixed;
-        top: 0;
-        right: -400px;
-        width: 400px;
-        height: 100vh;
-        background: white;
-        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1001;
-        transition: right 0.3s ease;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .notification-sidebar.show {
-        right: 0;
-    }
-
-    .notification-header {
-        padding: 20px;
-        border-bottom: 1px solid #e5e7eb;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-        color: white;
-    }
-
-    .notification-header h3 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .close-notification-btn {
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        padding: 4px;
-        border-radius: 4px;
-        transition: background 0.2s ease;
-    }
-
-    .close-notification-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .notification-content {
-        flex: 1;
-        overflow-y: auto;
-        padding: 0;
-    }
-
-    .notification-item {
-        padding: 16px 20px;
-        border-bottom: 1px solid #f3f4f6;
-        display: flex;
-        gap: 12px;
-        transition: background 0.2s ease;
-        cursor: pointer;
-    }
-
-    .notification-item:hover {
-        background: #f9fafb;
-    }
-
-    .notification-item.unread {
-        background: #eff6ff;
-        border-left: 3px solid #2563eb;
-    }
-
-    .notification-item.unread:hover {
-        background: #dbeafe;
-    }
-
-    .notification-icon {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #f3f4f6;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .notification-details {
-        flex: 1;
-    }
-
-    .notification-title {
-        font-weight: 600;
-        font-size: 14px;
-        color: #111827;
-        margin-bottom: 4px;
-    }
-
-    .notification-message {
-        font-size: 13px;
-        color: #6b7280;
-        line-height: 1.4;
-        margin-bottom: 4px;
-    }
-
-    .notification-time {
-        font-size: 12px;
-        color: #9ca3af;
-    }
-
-    .notification-footer {
-        padding: 16px 20px;
-        border-top: 1px solid #e5e7eb;
-        background: #f9fafb;
-    }
-
-    .mark-all-read-btn {
-        width: 100%;
-        background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .mark-all-read-btn:hover {
-        background: linear-gradient(135deg, #475569 0%, #334155 100%);
-        transform: translateY(-1px);
-    }
-
-    .notification-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-    }
-
-    .notification-overlay.show {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-        .notification-sidebar {
-            width: 100%;
-            right: -100%;
-        }
-    }
 
     /* Sidebar Overlay for Mobile */
     .sidebar-overlay {

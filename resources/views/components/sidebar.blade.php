@@ -21,10 +21,8 @@
 <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-header">
-        <div class="profile-section">
-            <div class="profile-avatar" onclick="toggleSidebar()" id="logoToggle">
-                <img src="/images/logo-getjobs2.png" alt="GetJobs Logo" class="logo-image">
-            </div>
+        <div class="logo-section" onclick="toggleSidebar()" id="logoToggle">
+            <img src="/images/logo-getjobs2.png" alt="GetJobs Logo" class="logo-image">
         </div>
     </div>
     
@@ -53,23 +51,38 @@
                 <span>Pelamar</span>
             </a>
         </div>
-        <div class="nav-item">
+        <!-- <div class="nav-item">
             <a href="/statistik" class="nav-link {{ $activePage === 'statistik' ? 'active' : '' }}" data-tooltip="Statistik">
                 <span class="nav-icon">
                     <i class="bi bi-bar-chart"></i>
                 </span>
                 <span>Statistik</span>
             </a>
-        </div>
+        </div> -->
         <div class="nav-item">
             <a href="/perusahaan" class="nav-link {{ $activePage === 'perusahaan.profile' ? 'active' : '' }}" data-tooltip="Perusahaan">
                 <span class="nav-icon">
                     <i class="bi bi-buildings"></i>
                 </span>
-                <span>Perusahaan</span>
+                <span>Profile</span>
             </a>
         </div>
     </nav>
+    
+    <!-- Logout Section -->
+    <div class="sidebar-footer">
+        <div class="nav-item">
+            <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                @csrf
+                <button type="submit" class="nav-link logout-btn" data-tooltip="Logout">
+                    <span class="nav-icon">
+                        <i class="bi bi-box-arrow-right"></i>
+                    </span>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </div>
 </aside>
 
 <script>
@@ -77,9 +90,31 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.querySelector('.main-content');
+        const headerContainer = document.querySelector('.header-container');
         
         sidebar.classList.toggle('collapsed');
         mainContent.classList.toggle('expanded');
+        
+        // Update header padding based on sidebar state
+        if (headerContainer) {
+            if (sidebar.classList.contains('collapsed')) {
+                headerContainer.style.paddingLeft = '32px';
+                headerContainer.style.paddingRight = '40px';
+            } else {
+                headerContainer.style.paddingLeft = '32px';
+                headerContainer.style.paddingRight = '140px';
+            }
+        }
+        
+        // Update header left padding based on sidebar state
+        const headerLeft = document.querySelector('.header-left');
+        if (headerLeft) {
+            if (sidebar.classList.contains('collapsed')) {
+                headerLeft.style.paddingLeft = '80px';
+            } else {
+                headerLeft.style.paddingLeft = '160px';
+            }
+        }
         
         // Save state to localStorage
         const isCollapsed = sidebar.classList.contains('collapsed');
@@ -106,11 +141,34 @@
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.querySelector('.main-content');
+        const headerContainer = document.querySelector('.header-container');
         const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         
         if (isCollapsed && sidebar && mainContent) {
             sidebar.classList.add('collapsed');
             mainContent.classList.add('expanded');
+            
+            // Update header padding for collapsed state
+            if (headerContainer) {
+                headerContainer.style.paddingLeft = '32px';
+                headerContainer.style.paddingRight = '40px';
+            }
+            
+            // Update header left padding for collapsed state
+            const headerLeft = document.querySelector('.headerLeft');
+            if (headerLeft) {
+                headerLeft.style.paddingLeft = '80px';
+            }
+        } else if (headerContainer) {
+            // Ensure header padding is correct for expanded state
+            headerContainer.style.paddingLeft = '32px';
+            headerContainer.style.paddingRight = '140px';
+            
+            // Ensure header left padding is correct for expanded state
+            const headerLeft = document.querySelector('.header-left');
+            if (headerLeft) {
+                headerLeft.style.paddingLeft = '160px';
+            }
         }
     });
 

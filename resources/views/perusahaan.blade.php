@@ -17,14 +17,35 @@
 
         .metric-card {
             background: white;
-            padding: 16px;
-            border-radius: 6px;
-            border: 1px solid #E5E7EB;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+
+
+        .metric-card:nth-child(1) {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+        }
+
+        .metric-card:nth-child(2) {
+            background: linear-gradient(135deg, #F3E8FF 0%, #E9D5FF 100%);
+        }
+
+        .metric-card:nth-child(3) {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-1px);
         }
 
         .metric-title {
             font-size: 12px;
-            color: #6B7280;
+            color: #374151;
             margin-bottom: 6px;
             font-weight: 500;
         }
@@ -56,12 +77,126 @@
             color: #6B7280;
         }
 
+        /* Job Cards Styling */
+        .job-section {
+            margin-top: 24px;
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .job-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .job-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .job-card:hover {
+            transform: translateY(-1px);
+        }
+
+        .job-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.25);
+        }
+
+        .job-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .job-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2px;
+            line-height: 1.3;
+        }
+
+        .job-details {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 0;
+            flex-wrap: wrap;
+        }
+
+
+
+        .job-status {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .status-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .status-text {
+            font-size: 10px;
+            color: #10b981;
+            font-weight: 500;
+        }
+
         /* Graph Card */
         .graph-card {
             background: white;
             padding: 24px;
-            border-radius: 8px;
-            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .graph-card:hover {
+            transform: translateY(-1px);
         }
 
         .graph-header {
@@ -110,15 +245,19 @@
             flex: 0 0 320px;
             max-width: 320px;
             width: 100%;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
             padding: 28px 18px 18px 18px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 340px;
-            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-1px);
         }
 
         .profile-logo {
@@ -197,11 +336,15 @@
         .branch-card {
             flex: 1;
             min-width: 200px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-            padding: 16px;
+            background: white;
+            border-radius: 16px;
             border: 1px solid #e5e7eb;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .branch-card:hover {
+            transform: translateY(-1px);
         }
 
         .branch-title {
@@ -260,11 +403,15 @@
         .social-card {
             flex: 0 0 200px;
             max-width: 200px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-            padding: 16px;
+            background: white;
+            border-radius: 16px;
             border: 1px solid #e5e7eb;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .social-card:hover {
+            transform: translateY(-1px);
         }
 
         .social-title {
@@ -320,78 +467,89 @@
             color: #111827;
         }
 
-        /* Job Listings */
 
-        .job-title {
+
+        /* Company Description Styling */
+        .company-description {
+            width: 100%;
+        }
+
+        .desc-section {
+            margin-bottom: 20px;
+        }
+
+        .desc-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .desc-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+
+        .desc-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #4b5563;
+            margin-bottom: 0;
+            text-align: justify;
+        }
+
+        .company-details {
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #374151;
             font-size: 13px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 8px;
+            min-width: 120px;
         }
 
-        .job-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .job-card {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            background: #fff;
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .job-avatar {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .job-info {
-            flex: 1;
-        }
-
-        .job-name {
+        .detail-value {
+            color: #1f2937;
             font-size: 13px;
-            font-weight: 600;
-            color: #111827;
-        }
-
-        .job-details {
-            font-size: 11px;
-            color: #6b7280;
-        }
-
-        .job-status {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .status-dot {
-            width: 5px;
-            height: 5px;
-            background: #10b981;
-            border-radius: 50%;
-        }
-
-        .status-text {
-            font-size: 10px;
-            color: #10b981;
+            text-align: right;
             font-weight: 500;
+        }
+
+        .vision-mission {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .vision, .mission {
+            background: #f0f9ff;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #0ea5e9;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #0c4a6e;
+        }
+
+        .mission {
+            background: #f0fdf4;
+            border-left-color: #10b981;
+            color: #064e3b;
         }
 
         /* Profile Actions */
@@ -399,6 +557,61 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid #e5e7eb;
+        }
+
+        /* Profile Social Media Section */
+        .profile-social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .profile-social-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-social-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateX(2px);
+        }
+
+        .profile-social-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .profile-social-icon.instagram {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .profile-social-icon.facebook {
+            background: #1877f2;
+        }
+
+        .profile-social-icon.twitter {
+            background: #1da1f2;
+        }
+
+        .profile-social-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
         }
 
         .edit-btn, .create-btn {
@@ -419,29 +632,24 @@
             box-shadow: 0 4px 12px rgba(87, 124, 142, 0.3);
         }
 
-        /* Responsive adjustments when sidebar is collapsed */
-        @media (min-width: 769px) {
-            .sidebar.collapsed ~ .main-content .content-layout {
-                max-width: calc(100vw - 70px - 64px);
-            }
-            
-            .sidebar.collapsed ~ .main-content .profile-card {
-                flex: 0 0 300px;
-                max-width: 300px;
-            }
-            
-            .sidebar.collapsed ~ .main-content .content-right {
-                flex: 1;
-                min-width: 280px;
-            }
-            
-            .sidebar.collapsed ~ .main-content .branch-social-layout {
+        /* Responsive layout for smaller screens */
+        @media (max-width: 900px) {
+            .content-layout {
                 flex-direction: column;
             }
             
-            .sidebar.collapsed ~ .main-content .branch-card,
-            .sidebar.collapsed ~ .main-content .social-card {
-                min-width: 100%;
+            .profile-card {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .branch-social-layout {
+                flex-direction: column;
+            }
+            
+            .branch-card,
+            .social-card {
+                max-width: 100%;
             }
         }
 
@@ -724,6 +932,29 @@
                         <div class="profile-info-value">{{ $perusahaan->alamat_perusahaan ?? 'Belum diisi' }}</div>
                         <div class="profile-info-label">Bidang Industri</div>
                         <div class="profile-info-value">{{ $perusahaan->bidang_industri ?? 'Belum diisi' }}</div>
+                        
+                        <!-- Media Sosial Section -->
+                        <div class="profile-info-label" style="margin-top: 16px;">Media Sosial</div>
+                        <div class="profile-social-links">
+                            <a href="https://instagram.com/getjobs.id" target="_blank" class="profile-social-item">
+                                <div class="profile-social-icon instagram">
+                                    <i class="bi bi-instagram"></i>
+                                </div>
+                                <div class="profile-social-name">Instagram</div>
+                            </a>
+                            <a href="https://facebook.com/getjobs.id" target="_blank" class="profile-social-item">
+                                <div class="profile-social-icon facebook">
+                                    <i class="bi bi-facebook"></i>
+                                </div>
+                                <div class="profile-social-name">Facebook</div>
+                            </a>
+                            <a href="https://twitter.com/getjobs_id" target="_blank" class="profile-social-item">
+                                <div class="profile-social-icon twitter">
+                                    <i class="bi bi-twitter"></i>
+                                </div>
+                                <div class="profile-social-name">Twitter</div>
+                            </a>
+                        </div>
                     </div>
                     @if($perusahaan)
                         <div class="profile-actions">
@@ -770,35 +1001,32 @@
                         <div class="branch-card">
                             <h3 class="branch-title">Deskripsi Perusahaan</h3>
                             <div class="branch-list">
-                                <div class="branch-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                                    <div class="branch-location" style="font-size: 13px; line-height: 1.5;">
-                                        {{ $perusahaan->deskripsi_perusahaan ?? 'Deskripsi perusahaan belum diisi' }}
+                                                                    <div class="branch-item" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                                        <div class="company-description">
+                                            <div class="desc-section">
+                                                <p class="desc-text">
+                                                    PT. Tambang Maju Sejahtera adalah perusahaan tambang batu bara yang beroperasi di Kalimantan Timur. 
+                                                    Berdiri sejak tahun 2010, perusahaan kami fokus pada pertambangan batu bara dengan komitmen terhadap 
+                                                    keselamatan dan lingkungan.
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="company-details">
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Berdiri:</span>
+                                                    <span class="detail-value">2010</span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Lokasi:</span>
+                                                    <span class="detail-value">Kalimantan Timur</span>
+                                                </div>
+                                                <div class="detail-row">
+                                                    <span class="detail-label">Bidang:</span>
+                                                    <span class="detail-value">Pertambangan Batu Bara</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Media Sosial -->
-                        <div class="social-card">
-                            <h3 class="social-title">Media Sosial</h3>
-                            <div class="social-list">
-                                <a href="https://instagram.com/getjobs.id" target="_blank" class="social-item">
-                                    <div class="social-icon instagram">
-                                        <i class="bi bi-instagram"></i>
-                                    </div>
-                                    <div class="social-name">Instagram</div>
-                                </a>
-                                <a href="https://facebook.com/getjobs.id" target="_blank" class="social-item">
-                                    <div class="social-icon facebook">
-                                        <i class="bi bi-facebook"></i>
-                                    </div>
-                                    <div class="social-name">Facebook</div>
-                                </a>
-                                <a href="https://twitter.com/getjobs_id" target="_blank" class="social-item">
-                                    <div class="social-icon twitter">
-                                        <i class="bi bi-twitter"></i>
-                                    </div>
-                                    <div class="social-name">Twitter</div>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -822,8 +1050,10 @@
                                      </div>
                                  </div>
                              @empty
-                                 <div class="job-card" style="justify-content: center; color: #6b7280; font-style: italic;">
-                                     Belum ada pekerjaan aktif
+                                 <div class="job-card" style="text-align: center; color: #6b7280; font-style: italic; padding: 40px 20px;">
+                                     <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                                     <div style="font-size: 16px;">Belum ada pekerjaan aktif</div>
+                                     <div style="font-size: 14px; margin-top: 8px; color: #9ca3af;">Buat pekerjaan pertama Anda untuk mulai merekrut</div>
                                  </div>
                              @endforelse
                          </div>

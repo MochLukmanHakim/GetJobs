@@ -10,6 +10,294 @@
 @push('styles')
 <style>
     /* Dashboard specific styles */
+    
+    /* Dashboard specific styles - removed forced animation/transition disabling */
+
+    /* Welcome Section Styles */
+    .welcome-section {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border: none;
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 50%, rgba(30, 41, 59, 0.95) 100%);
+        z-index: 1;
+    }
+
+    .welcome-content,
+    .notifications-panel {
+        position: relative;
+        z-index: 2;
+    }
+
+    .welcome-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    
+    }
+
+    .welcome-greeting {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+
+    .greeting-text h1 {
+        font-size: 48px;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 12px 0;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .greeting-text p {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .greeting-illustration {
+        flex-shrink: 0;
+    }
+
+
+
+    /* Quick Actions */
+    .quick-actions {
+        display: flex;
+        gap: 16px;
+        margin-top: 24px;
+        justify-content: flex-start;
+    }
+
+    .action-card {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        padding: 16px;
+        min-height: 100px;
+        width: 180px;
+        flex-shrink: 0;
+    }
+
+    .action-card:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+    }
+
+    .action-card-header h4 {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-card-content p {
+        font-size: 12px;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+
+    /* Notifications Panel */
+    .notifications-panel {
+        width: 320px;
+        flex-shrink: 0;
+    }
+
+    .notifications-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    .notifications-header h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+        margin: 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .see-all {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .see-all:hover {
+        color: white;
+        border-bottom-color: white;
+    }
+
+    .notifications-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        border: none;
+        backdrop-filter: blur(10px);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .notification-item:hover {
+        background: rgba(51, 65, 85, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .notification-content {
+        flex: 1;
+    }
+
+    .notification-content p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .notification-badge {
+        width: 20px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Responsive Welcome Section */
+    @media (max-width: 1024px) {
+        .welcome-section {
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .notifications-panel {
+            width: 100%;
+        }
+
+        .quick-actions {
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .action-card {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .action-card {
+            min-height: 80px;
+            padding: 12px;
+        }
+        
+        .action-card-header h4 {
+            font-size: 13px;
+        }
+        
+        .action-card-content p {
+            font-size: 11px;
+        }
+
+        .welcome-section {
+            padding: 24px;
+        }
+
+        .welcome-greeting {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .greeting-text h1 {
+            font-size: 36px;
+        }
+        
+        .greeting-text p {
+            font-size: 18px;
+        }
+        
+        .professional-character {
+            width: 100px;
+            height: 100px;
+        }
+
+        .greeting-text h1 {
+            font-size: 28px;
+        }
+
+        .quick-actions {
+            justify-content: center;
+        }
+
+        .action-item {
+            flex-direction: column;
+            text-align: center;
+            padding: 12px;
+            min-width: 80px;
+        }
+
+        .notifications-list {
+            gap: 8px;
+        }
+
+        .notification-item {
+            padding: 12px;
+        }
+    }
 
 
 
@@ -23,9 +311,14 @@
 
         .metric-card {
             background: white;
-            padding: 16px;
-            border-radius: 6px;
-            border: 1px solid #E5E7EB;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-1px);
         }
 
         .metric-title {
@@ -62,54 +355,6 @@
             color: #6B7280;
         }
 
-        /* Graph Card */
-        .graph-card {
-            background: white;
-            padding: 24px;
-            border-radius: 8px;
-            border: 1px solid #E5E7EB;
-        }
-
-        .graph-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .graph-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 24px;
-        }
-
-        .graph-legend {
-            display: flex;
-            gap: 20px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #6B7280;
-        }
-
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.this-year {
-            background: #1F2937;
-        }
-
-        .legend-dot.last-year {
-            background: #9CA3AF;
-        }
 
         .section-title {
             font-size: 16px;
@@ -125,21 +370,19 @@
 
 
 
-        /* Chart container */
-        #applicantChart {
-            width: 100% !important;
-            height: 300px !important;
-        }
 
         /* Job Vacancies Table */
         .table-card {
             background: white;
             padding: 32px;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border: 1px solid #f1f5f9;
+            border: 1px solid #e5e7eb;
             margin-left: 0;
+            transition: all 0.3s ease;
+        }
 
+        .table-card:hover {
+            transform: translateY(-1px);
         }
 
         .table-header {
@@ -155,40 +398,41 @@
             font-size: 18px;
             font-weight: 600;
             color: #111827;
+
         }
 
         /* Table Header Row */
         .table-header-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 16px;
             align-items: center;
-            padding: 12px 20px;
+            padding: 16px 24px;
             background: white;
-            border-radius: 8px;
-            margin-top: 32px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            margin-top: -20px;
+            margin-bottom: -10px;
             border: 1px solid #e5e7eb;
         }
 
         .header-item {
             font-weight: 600;
             color: #374151;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         /* Card-based Table Design */
         .job-cards {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .job-card {
-            background: #ffffff;
+            background: white;
+            border-radius: 16px;
+            padding: 20px 24px;
             border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px 20px;
             transition: all 0.3s ease;
         }
 
@@ -198,7 +442,7 @@
 
         .job-card-content {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             gap: 16px;
             align-items: center;
         }
@@ -223,32 +467,38 @@
         }
 
         .job-details h4 {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             color: #111827;
             margin-bottom: 2px;
         }
 
         .job-details p {
-            font-size: 11px;
+            font-size: 12px;
             color: #6b7280;
             margin: 0;
         }
 
         .job-id {
-            font-size: 11px;
+            font-size: 12px;
             color: #6b7280;
             font-weight: 500;
         }
 
+        .job-position {
+            font-size: 14px;
+            color: #374151;
+            font-weight: 500;
+        }
+
         .job-location {
-            font-size: 12px;
+            font-size: 14px;
             color: #374151;
             font-weight: 500;
         }
 
         .job-salary {
-            font-size: 12px;
+            font-size: 14px;
             color: #059669;
             font-weight: 600;
         }
@@ -282,7 +532,7 @@
         }
 
         .status-text {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 500;
         }
 
@@ -303,15 +553,73 @@
         }
 
         .applicant-count {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
             color: #3b82f6;
         }
 
         .posting-date {
-            font-size: 11px;
+            font-size: 12px;
             color: #6b7280;
             font-weight: 500;
+        }
+
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 32px;
+            padding-right: 16px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            color: #6B7280;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn:hover {
+            background: #F3F4F6;
+            color: #374151;
+        }
+
+        .page-btn.active {
+            background: #374151;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn:disabled:hover {
+            background: transparent;
+            color: #6B7280;
+        }
+
+        a.page-btn {
+            text-decoration: none;
+            color: #6B7280;
+        }
+
+        a.page-btn:hover {
+            background: #F3F4F6;
+            color: #374151;
         }
 
 
@@ -320,7 +628,7 @@
         @media (max-width: 1200px) {
             .table-header-row,
             .job-card-content {
-                grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+                grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
                 gap: 12px;
             }
         }
@@ -473,7 +781,7 @@
         /* Applicant Content */
         .dashboard-row {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             align-items: flex-start;
             margin-bottom: 32px;
         }
@@ -486,10 +794,15 @@
         .applicant-content {
             width: 240px;
             background: white;
-            border-radius: 8px;
+            border-radius: 16px;
             border: 1px solid #e5e7eb;
-            padding: 16px;
+            padding: 24px;
             height: fit-content;
+            transition: all 0.3s ease;
+        }
+
+        .applicant-content:hover {
+            transform: translateY(-1px);
         }
         .applicant-section {
             margin-bottom: 18px;
@@ -555,7 +868,7 @@
         .status-pending {
             color: #d97706;
         }
-        @media (max-width: 1100px) {
+        @media (max-width: 900px) {
             .dashboard-row {
                 flex-direction: column;
             }
@@ -579,6 +892,69 @@
 @endpush
 
 @section('content')
+
+<!-- Welcome Section -->
+<div class="welcome-section">
+    <div class="welcome-content">
+        <div class="welcome-greeting">
+            <div class="greeting-text">
+                <h1>Hi, {{ Auth::user()->name ?? 'User' }}!</h1>
+                <p>Apa yang akan anda lakukan hari ini?</p>
+            </div>
+        </div>
+        <div class="quick-actions">
+            <div class="action-card">
+                <div class="action-card-header">
+                    <h4>Kelola Pekerjaan</h4>
+                </div>
+                <div class="action-card-content">
+                    <p>Kelola lowongan</p>
+                </div>
+            </div>
+            <div class="action-card">
+                <div class="action-card-header">
+                    <h4>Kelola Pelamar</h4>
+                </div>
+                <div class="action-card-content">
+                    <p>Review aplikasi</p>
+                </div>
+            </div>
+            <div class="action-card">
+                <div class="action-card-header">
+                    <h4>Kelola Perusahaan</h4>
+                </div>
+                <div class="action-card-content">
+                    <p>Atur profil</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notifications-panel">
+        <div class="notifications-header">
+            <h3>Notifications</h3>
+            <a href="#" class="see-all">See all</a>
+        </div>
+        <div class="notifications-list">
+            <div class="notification-item">
+                <div class="notification-content">
+                    <p>Lowongan Backend Developer ditambahkan.</p>
+                </div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-content">
+                    <p>Pelamar baru untuk Frontend Developer.</p>
+                </div>
+                
+            </div>
+            <div class="notification-item">
+                <div class="notification-content">
+                    <p>Deadline UI/UX Designer dalam 2 hari.</p>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Gabungan Metric, Grafik, dan Daftar Pelamar -->
             <div class="dashboard-row">
@@ -609,21 +985,42 @@
                     </div>
                 </div>
             </div>
-            <div class="graph-card">
-                <div class="graph-header">
-                    <h2 class="graph-title">Grafik Pelamar</h2>
-                    <div class="graph-legend">
-                        <div class="legend-item">
-                            <div class="legend-dot this-year"></div>
-                            <span>This Year</span>
+            
+            <!-- Job Vacancies Table -->
+            <h2 class="graph-title">Daftar Pekerjaan</h2>
+            <!-- Table Header -->
+            <div class="table-header-row">
+                <div class="header-item">Judul Pekerjaan</div>
+                <div class="header-item">Posisi</div>
+                <div class="header-item">Status</div>
+                <div class="header-item">Pelamar</div>
+                <div class="header-item">Tanggal Posting</div>
+            </div>
+            
+            <div class="job-cards">
+                @forelse($pekerjaan as $job)
+                <div class="job-card">
+                    <div class="job-card-content">
+                        <div class="job-info">
+                            <div class="job-details">
+                                <h4>{{ $job->judul_pekerjaan }}</h4>
+                                <p class="job-id">#{{ $job->id_pekerjaan }}</p>
+                            </div>
                         </div>
-                        <div class="legend-item">
-                            <div class="legend-dot last-year"></div>
-                            <span>Last Year</span>
+                        <div class="job-position">{{ $job->kategori_pekerjaan }}</div>
+                        <div class="job-status">
+                            <div class="status-dot {{ $job->status }}"></div>
+                            <span class="status-text {{ $job->status }}">{{ ucfirst($job->status) }}</span>
                         </div>
+                        <div class="applicant-count">0</div>
+                        <div class="posting-date">{{ $job->created_at->format('d M Y') }}</div>
                     </div>
                 </div>
-                <canvas id="applicantChart"></canvas>
+                @empty
+                <div class="no-jobs">
+                    <p>Belum ada pekerjaan yang ditambahkan</p>
+                </div>
+                @endforelse
             </div>
                 </div>
                 <div class="applicant-content">
@@ -700,205 +1097,25 @@
                                     <div class="applicant-status status-pending">Menunggu</div>
                                 </div>
                             </div>
-                            <div class="applicant-item">
+                            <!-- <div class="applicant-item">
                                 <div class="applicant-avatar">AS</div>
                                 <div class="applicant-info">
                                     <div class="applicant-name">Alam Walker</div>
                                     <div class="applicant-status status-pending">Menunggu</div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Job Vacancies Table -->
-                            <h2 class="graph-title">Daftar Pekerjaan</h2>
-            <!-- Table Header -->
-            <div class="table-header-row">
-                <div class="header-item">Posisi</div>
-                <div class="header-item">Lokasi</div>
-                <div class="header-item">Gaji</div>
-                <div class="header-item">Status</div>
-                <div class="header-item">Pelamar</div>
-                <div class="header-item">Tanggal Posting</div>
-            </div>
-            
-            <div class="job-cards">
-                    <!-- Job Card 1 -->
-                    <div class="job-card">
-                        <div class="job-card-content">
-                            <div class="job-info">
-                                <div class="job-avatar">FD</div>
-                                <div class="job-details">
-                                    <h4>Frontend Developer</h4>
-                                    <p class="job-id">#2632</p>
-                                </div>
-                            </div>
-                            <div class="job-location">Jakarta</div>
-                            <div class="job-salary">Rp 8.000.000</div>
-                            <div class="job-status">
-                                <div class="status-dot active"></div>
-                                <span class="status-text active">Aktif</span>
-                            </div>
-                            <div class="applicant-count">12</div>
-                            <div class="posting-date">15 Mar 2024</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Job Card 2 -->
-                    <div class="job-card">
-                        <div class="job-card-content">
-                            <div class="job-info">
-                                <div class="job-avatar">BD</div>
-                                <div class="job-details">
-                                    <h4>Backend Developer</h4>
-                                    <p class="job-id">#2633</p>
-                                </div>
-                            </div>
-                            <div class="job-location">Bandung</div>
-                            <div class="job-salary">Rp 10.000.000</div>
-                            <div class="job-status">
-                                <div class="status-dot active"></div>
-                                <span class="status-text active">Aktif</span>
-                            </div>
-                            <div class="applicant-count">8</div>
-                            <div class="posting-date">12 Mar 2024</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Job Card 3 -->
-                    <div class="job-card">
-                        <div class="job-card-content">
-                            <div class="job-info">
-                                <div class="job-avatar">UX</div>
-                                <div class="job-details">
-                                    <h4>UI/UX Designer</h4>
-                                    <p class="job-id">#2634</p>
-                                </div>
-                            </div>
-                            <div class="job-location">Surabaya</div>
-                            <div class="job-salary">Rp 7.500.000</div>
-                            <div class="job-status">
-                                <div class="status-dot closed"></div>
-                                <span class="status-text closed">Ditutup</span>
-                            </div>
-                            <div class="applicant-count">15</div>
-                            <div class="posting-date">10 Mar 2024</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Job Card 4 -->
-                    <div class="job-card">
-                        <div class="job-card-content">
-                            <div class="job-info">
-                                <div class="job-avatar">PM</div>
-                                <div class="job-details">
-                                    <h4>Product Manager</h4>
-                                    <p class="job-id">#2635</p>
-                                </div>
-                            </div>
-                            <div class="job-location">Yogyakarta</div>
-                            <div class="job-salary">Rp 15.000.000</div>
-                            <div class="job-status">
-                                <div class="status-dot draft"></div>
-                                <span class="status-text draft">Draft</span>
-                            </div>
-                            <div class="applicant-count">0</div>
-                            <div class="posting-date">08 Mar 2024</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Job Card 5 -->
-                    <div class="job-card">
-                        <div class="job-card-content">
-                            <div class="job-info">
-                                <div class="job-avatar">DA</div>
-                                <div class="job-details">
-                                    <h4>Data Analyst</h4>
-                                    <p class="job-id">#2636</p>
-                                </div>
-                            </div>
-                            <div class="job-location">Medan</div>
-                            <div class="job-salary">Rp 9.000.000</div>
-                            <div class="job-status">
-                                <div class="status-dot active"></div>
-                                <span class="status-text active">Aktif</span>
-                            </div>
-                            <div class="applicant-count">6</div>
-                            <div class="posting-date">05 Mar 2024</div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('applicantChart').getContext('2d');
-        const applicantChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                datasets: [
-                    {
-                        label: 'This Year',
-                        data: [5, 12, 8, 15, 20, 18, 25],
-                        borderColor: '#1F2937',
-                        backgroundColor: 'rgba(31, 41, 55, 0.1)',
-                        tension: 0.4,
-                        fill: true,
-                        pointRadius: 4,
-                        pointBackgroundColor: '#1F2937',
-                        pointBorderColor: '#1F2937',
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Last Year',
-                        data: [3, 8, 6, 10, 12, 14, 16],
-                        borderColor: '#9CA3AF',
-                        backgroundColor: 'transparent',
-                        tension: 0.4,
-                        fill: false,
-                        borderDash: [5, 5],
-                        pointRadius: 4,
-                        pointBackgroundColor: '#9CA3AF',
-                        pointBorderColor: '#9CA3AF',
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            color: '#6B7280'
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        max: 30,
-                        ticks: {
-                            stepSize: 10,
-                            color: '#6B7280'
-                        },
-                        grid: {
-                            color: '#F3F4F6'
-                        }
-                    }
-                }
-            }
-        });
+
+        // Action menu functionality removed
     </script>
 @endpush

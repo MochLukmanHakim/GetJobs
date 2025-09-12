@@ -156,9 +156,41 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.querySelector('.main-content');
+        const headerContainer = document.querySelector('.header-container');
+        
+        // Add transitioning class before toggle
+        sidebar.classList.add('transitioning');
+        mainContent.classList.add('transitioning');
         
         sidebar.classList.toggle('collapsed');
         mainContent.classList.toggle('expanded');
+        
+        // Update header padding based on sidebar state
+        if (headerContainer) {
+            if (sidebar.classList.contains('collapsed')) {
+                headerContainer.style.paddingLeft = '32px';
+                headerContainer.style.paddingRight = '40px';
+            } else {
+                headerContainer.style.paddingLeft = '32px';
+                headerContainer.style.paddingRight = '140px';
+            }
+        }
+        
+        // Update header left padding based on sidebar state
+        const headerLeft = document.querySelector('.header-left');
+        if (headerLeft) {
+            if (sidebar.classList.contains('collapsed')) {
+                headerLeft.style.paddingLeft = '80px';
+            } else {
+                headerLeft.style.paddingLeft = '160px';
+            }
+        }
+        
+        // Remove transitioning class after animation completes
+        setTimeout(() => {
+            sidebar.classList.remove('transitioning');
+            mainContent.classList.remove('transitioning');
+        }, 300);
         
         // Save state to localStorage
         const isCollapsed = sidebar.classList.contains('collapsed');
@@ -185,11 +217,44 @@
     document.addEventListener('DOMContentLoaded', function() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.querySelector('.main-content');
+        const headerContainer = document.querySelector('.header-container');
         const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
         
         if (isCollapsed && sidebar && mainContent) {
+            // Temporarily disable transitions during page load
+            sidebar.style.transition = 'none';
+            mainContent.style.transition = 'none';
+            
             sidebar.classList.add('collapsed');
             mainContent.classList.add('expanded');
+            
+            // Update header padding for collapsed state
+            if (headerContainer) {
+                headerContainer.style.paddingLeft = '32px';
+                headerContainer.style.paddingRight = '40px';
+            }
+            
+            // Update header left padding for collapsed state
+            const headerLeft = document.querySelector('.header-left');
+            if (headerLeft) {
+                headerLeft.style.paddingLeft = '80px';
+            }
+            
+            // Re-enable transitions after a brief delay
+            setTimeout(() => {
+                sidebar.style.transition = '';
+                mainContent.style.transition = '';
+            }, 50);
+        } else if (headerContainer) {
+            // Ensure header padding is correct for expanded state
+            headerContainer.style.paddingLeft = '32px';
+            headerContainer.style.paddingRight = '140px';
+            
+            // Ensure header left padding is correct for expanded state
+            const headerLeft = document.querySelector('.header-left');
+            if (headerLeft) {
+                headerLeft.style.paddingLeft = '160px';
+            }
         }
     });
 
