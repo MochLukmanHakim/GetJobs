@@ -20,6 +20,7 @@ class Pekerjaan extends Model
         'kategori_pekerjaan',
         'deskripsi_pekerjaan',
         'batas_waktu_pekerjaan',
+        'jumlah_pelamar_diinginkan',
         'status',
         'tanggal_dibuat'
     ];

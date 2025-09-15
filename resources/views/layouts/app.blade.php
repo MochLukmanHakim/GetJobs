@@ -69,54 +69,6 @@
             }
         }
 
-        /* Beautiful Loading overlay */
-        .page-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(2px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s ease;
-        }
-
-        .page-loading.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Hide sidebar when loading overlay is active */
-        body.page-transitioning .sidebar {
-            display: none !important;
-        }
-        
-        /* Hide entire dashboard container during transition */
-        body.page-transitioning .dashboard-container {
-            display: none !important;
-        }
-        
-        /* Also hide mobile menu button during transition */
-        body.page-transitioning .mobile-menu-btn {
-            display: none !important;
-        }
-        
-        /* Ensure pure white background during loading */
-        body.page-transitioning {
-            background: #ffffff !important;
-        }
-        
-        .page-loading.active .dashboard-container {
-            margin-top: 0;
-            padding-top: 0;
-        }
 
         .main-content {
             margin-top: 0;
@@ -130,44 +82,6 @@
             transition: transform 0.3s ease;
         }
 
-        .loading-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Pulse Wave Animation */
-        .loading-waves {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .loading-wave {
-            width: 4px;
-            height: 40px;
-            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
-            border-radius: 2px;
-            animation: waveAnimation 1.2s ease-in-out infinite;
-        }
-
-        .loading-wave:nth-child(1) { animation-delay: 0s; }
-        .loading-wave:nth-child(2) { animation-delay: 0.1s; }
-        .loading-wave:nth-child(3) { animation-delay: 0.2s; }
-        .loading-wave:nth-child(4) { animation-delay: 0.3s; }
-        .loading-wave:nth-child(5) { animation-delay: 0.4s; }
-
-        @keyframes waveAnimation {
-            0%, 100% { 
-                height: 20px;
-                opacity: 0.4;
-            }
-            50% { 
-                height: 60px;
-                opacity: 1;
-            }
-        }
 
 
         /* Stagger animation for cards and elements */
@@ -524,18 +438,6 @@
     @stack('styles')
 </head>
 <body class="preload" style="margin: 0; padding: 0; overflow-x: hidden;">
-    {{-- Page Loading Overlay --}}
-    <div class="page-loading" id="pageLoading">
-        <div class="loading-container">
-            <div class="loading-waves">
-                <div class="loading-wave"></div>
-                <div class="loading-wave"></div>
-                <div class="loading-wave"></div>
-                <div class="loading-wave"></div>
-                <div class="loading-wave"></div>
-            </div>
-        </div>
-    </div>
 
     {{-- Include sidebar drawer functionality --}}
     @include('components.sidebar-drawer')
@@ -612,13 +514,6 @@
                 document.body.classList.remove('preload');
             }, 100);
 
-            // Hide loading overlay
-            const pageLoading = document.getElementById('pageLoading');
-            if (pageLoading) {
-                setTimeout(() => {
-                    pageLoading.classList.remove('active');
-                }, 200);
-            }
         });
 
         // Smooth page transitions for navigation links
@@ -644,12 +539,6 @@
                     
                     // Add page transitioning class to body
                     document.body.classList.add('page-transitioning');
-                    
-                    // Show loading overlay
-                    const pageLoading = document.getElementById('pageLoading');
-                    if (pageLoading) {
-                        pageLoading.classList.add('active');
-                    }
 
                     // Close notification sidebar if open
                     const notificationSidebar = document.getElementById('notificationSidebar');
@@ -702,10 +591,6 @@
                 }
             }
 
-            const pageLoading = document.getElementById('pageLoading');
-            if (pageLoading) {
-                pageLoading.classList.add('active');
-            }
             
             setTimeout(() => {
                 location.reload();
@@ -755,11 +640,6 @@
                 form.addEventListener('submit', function() {
                     // Add page transitioning class to body
                     document.body.classList.add('page-transitioning');
-                    
-                    const pageLoading = document.getElementById('pageLoading');
-                    if (pageLoading) {
-                        pageLoading.classList.add('active');
-                    }
                 });
             });
         });

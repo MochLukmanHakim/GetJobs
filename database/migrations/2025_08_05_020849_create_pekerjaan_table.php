@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('kategori_pekerjaan');
             $table->text('deskripsi_pekerjaan')->nullable();
             $table->date('batas_waktu_pekerjaan')->nullable();
+            $table->integer('jumlah_pelamar_diinginkan')->default(5);
             $table->enum('status', ['draft', 'aktif', 'tutup'])->default('draft');
             $table->dateTime('tanggal_dibuat')->nullable();
             $table->timestamps();

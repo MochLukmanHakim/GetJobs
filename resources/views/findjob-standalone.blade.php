@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GetJobs - header findjob</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -339,100 +338,6 @@
     </div>
   </div>
 </section>
-
-<!-- Talent Needs Section (4 Grid with Meeting + Badge Moved) -->
-<section class="py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-
-            <!-- Left: Images Grid -->
-            <div class="relative w-full h-80">
-                
-                <!-- Large Card (Left Side - Professional Man) -->
-                <div class="absolute top-0 left-0 w-56 h-72 bg-green-200 overflow-hidden shadow-lg" style="border-radius: 0 50px 50px 0;">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop&crop=face"
-                        alt="Professional Man" class="w-full h-full object-cover" />
-                    <div class="absolute top-4 right-4 bg-white text-gray-800 px-3 py-2 rounded-lg text-xs font-medium shadow flex items-center">
-                        <span class="mr-2">1k+ Lowongan Terpenuhi</span>
-                        <div class="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
-                            <svg class="w-2 h-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12l-5-5h10l-5 5z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <!-- Decorative dots pattern -->
-                    <div class="absolute top-16 right-6">
-                        <div class="grid grid-cols-6 gap-1">
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                            <div class="w-1 h-1 bg-gray-400 rounded-full opacity-60"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Medium Card (Top Right - Professional Woman) -->
-                <div class="absolute top-0 right-0 w-44 h-56 bg-pink-200 overflow-hidden shadow-lg" style="border-radius: 50px 0 0 50px;">
-                    <img src="https://images.unsplash.com/photo-1494790108755-2616c9c8b8b1?w=400&h=500&fit=crop&crop=face"
-                        alt="Professional Woman" class="w-full h-full object-cover" />
-                </div>
-
-                <!-- Small Card (Bottom Left - Young Professional) -->
-                <div class="absolute bottom-0 left-16 w-36 h-44 bg-blue-200 overflow-hidden shadow-lg z-10" style="border-radius: 50px 0 50px 0;">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=400&fit=crop&crop=face"
-                        alt="Young Professional" class="w-full h-full object-cover" />
-                    <div class="absolute bottom-3 left-3 bg-white text-gray-800 px-2 py-1 rounded-lg text-xs font-medium shadow flex items-center">
-                        <span class="mr-2">18k+ Kandidat</span>
-                        <div class="flex -space-x-1">
-                            <div class="w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
-                            <div class="w-4 h-4 rounded-full bg-green-500 border-2 border-white"></div>
-                            <div class="w-4 h-4 rounded-full bg-yellow-400 border-2 border-white"></div>
-                            <div class="w-4 h-4 rounded-full bg-red-400 border-2 border-white"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Right: Text Content -->
-            <div class="lg:pl-8">
-                <div class="text-sm text-blue-600 font-semibold mb-3">Mengapa Harus Kami?</div>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-snug">
-                    Kebutuhan Talenta Anda, Tepat di Ujung Jari
-                </h2>
-                <p class="text-lg text-gray-700 mb-3 font-medium">
-                    Talenta yang Anda Butuhkan, Ada dalam Genggaman
-                </p>
-                <p class="text-gray-600 mb-8 max-w-xl leading-relaxed">
-                    Dalam 5 menit, semuanya siap. Pengaturan simpel dan desain halaman yang fleksibel
-                    akan memanjakan mata Anda.
-                </p>
-                <button
-                    class="bg-gray-900 text-white px-6 py-3 rounded-xl font-medium hover:bg-gray-800 transition-all shadow-md">
-                    Unggah Kerja
-                </button>
-            </div>
-        </div>
-    </div>
-</section>
-
-@php
-    // Opsi cepat: definisikan array gambar langsung di Blade
-    $testimonialProfiles = [
-        'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&h=200&fit=crop&crop=face',
-        'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&h=200&fit=crop&crop=face',
-        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop&crop=face',
-        'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=200&h=200&fit=crop&crop=face',
-    ];
-@endphp
 
 </body>
 </html> 

@@ -23,58 +23,43 @@ class PekerjaanController extends Controller
         return view('pekerjaan', compact('pekerjaan', 'categories'));
     }
 
-    public function create()
-    {
-        return view('tambah-pekerjaan');
-    }
-
     public function store(Request $request)
     {
+        // Normalize and auto-append category if title only has 2 words
+        $title = trim(preg_replace('/\s+/', ' ', $request->input('judul_pekerjaan', '')));
+        $kategori = trim(preg_replace('/\s+/', ' ', $request->input('kategori_pekerjaan', '')));
+        if ($title !== '') {
+            $wordCount = preg_match_all('/\S+/', $title);
+            if ($wordCount === 2 && $kategori !== '') {
+                // Make 3 words by appending category (beautify hyphen/underscore)
+                $kategoriWord = ucwords(str_replace(['-', '_'], ' ', $kategori));
+                $request->merge(['judul_pekerjaan' => $title.' '.$kategoriWord]);
+            }
+        }
+
         $request->validate([
-            'judul_pekerjaan' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'lokasi' => 'required|string|max:255',
-            'tipe_pekerjaan' => 'required|string|max:255',
-            'level' => 'required|string|max:255',
-            'gaji_min' => 'nullable|numeric|min:0',
-            'gaji_max' => 'nullable|numeric|min:0',
-            'deskripsi' => 'required|string',
-            'persyaratan' => 'required|string',
-            'benefit' => 'nullable|string',
-            'batas_lamaran' => 'required|date|after:today',
-            'status' => 'required|in:active,inactive,draft',
+            'judul_pekerjaan' => 'required|string|max:255|regex:/(\S+\s+){2,3}\S+$/',
+            'lokasi_pekerjaan' => 'required|string|max:255',
+            'gaji_pekerjaan' => 'required|string|max:255',
+            'kategori_pekerjaan' => 'required|string|max:255',
+            'deskripsi_pekerjaan' => 'required|string',
         ], [
             'judul_pekerjaan.required' => 'Judul pekerjaan wajib diisi.',
-            'kategori.required' => 'Kategori wajib dipilih.',
-            'lokasi.required' => 'Lokasi wajib diisi.',
-            'tipe_pekerjaan.required' => 'Tipe pekerjaan wajib dipilih.',
-            'level.required' => 'Level wajib dipilih.',
-            'deskripsi.required' => 'Deskripsi pekerjaan wajib diisi.',
-            'persyaratan.required' => 'Persyaratan wajib diisi.',
-            'batas_lamaran.required' => 'Batas waktu lamaran wajib diisi.',
-            'batas_lamaran.after' => 'Batas waktu lamaran harus setelah hari ini.',
-            'status.required' => 'Status wajib dipilih.',
+            'judul_pekerjaan.regex' => 'Judul pekerjaan harus terdiri dari 3-4 kata.',
+            'lokasi_pekerjaan.required' => 'Lokasi pekerjaan wajib diisi.',
+            'gaji_pekerjaan.required' => 'Gaji pekerjaan wajib diisi.',
+            'kategori_pekerjaan.required' => 'Kategori pekerjaan wajib diisi.',
+            'deskripsi_pekerjaan.required' => 'Deskripsi pekerjaan wajib diisi.',
         ]);
-
-        // Format gaji
-        $gaji = '';
-        if ($request->gaji_min && $request->gaji_max) {
-            $gaji = 'Rp ' . number_format($request->gaji_min, 0, ',', '.') . ' - Rp ' . number_format($request->gaji_max, 0, ',', '.');
-        } elseif ($request->gaji_min) {
-            $gaji = 'Mulai dari Rp ' . number_format($request->gaji_min, 0, ',', '.');
-        } else {
-            $gaji = 'Negotiable';
-        }
 
         Pekerjaan::create([
             'user_id' => 1, // Temporary user ID
             'judul_pekerjaan' => $request->judul_pekerjaan,
-            'lokasi_pekerjaan' => $request->lokasi,
-            'gaji_pekerjaan' => $gaji,
-            'kategori_pekerjaan' => $request->kategori,
-            'deskripsi_pekerjaan' => $request->deskripsi . "\n\nPersyaratan:\n" . $request->persyaratan . 
-                                   ($request->benefit ? "\n\nBenefit:\n" . $request->benefit : ''),
-            'status' => $request->status,
+            'lokasi_pekerjaan' => $request->lokasi_pekerjaan,
+            'gaji_pekerjaan' => $request->gaji_pekerjaan,
+            'kategori_pekerjaan' => $request->kategori_pekerjaan,
+            'deskripsi_pekerjaan' => $request->deskripsi_pekerjaan,
+            'status' => 'draft',
             'tanggal_dibuat' => now(),
         ]);
 

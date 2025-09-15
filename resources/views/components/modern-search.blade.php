@@ -177,7 +177,9 @@
     z-index: 50;
     display: none;
     margin-top: 4px;
-    min-width: 180px;
+    min-width: 280px;
+    max-width: 350px;
+    width: max-content;
 }
 
 .dropdown-menu.show {
@@ -185,12 +187,16 @@
 }
 
 .dropdown-option {
-    padding: 10px 12px;
+    padding: 12px 16px;
     font-size: 14px;
     color: #374151;
     cursor: pointer;
     transition: background 0.2s ease;
     border-bottom: 1px solid #f3f4f6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
 }
 
 .dropdown-option:last-child {
@@ -261,6 +267,8 @@
         left: 0;
         right: 0;
         min-width: auto;
+        max-width: 100%;
+        width: 100%;
     }
     
     .search-button {

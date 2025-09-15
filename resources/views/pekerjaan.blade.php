@@ -1174,12 +1174,12 @@
     <!-- Modern Search Component -->
     @include('components.modern-search', ['pageType' => 'pekerjaan', 'categories' => $categories ?? []])
     
-    <a href="{{ route('pekerjaan.create') }}" class="add-job-btn" title="Tambah Pekerjaan">
+    <button class="add-job-btn" onclick="openAddJobModal()" title="Tambah Pekerjaan">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 5V19M5 12H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Tambah
-    </a>
+    </button>
 </div>
 
             <!-- Job Management Table -->
@@ -1231,13 +1231,13 @@
                                 @endphp
                                 {{ $displayCategory }}
                             </div>
-                            <div class="applicant-count">0</div>
+                            <div class="applicant-count">0/{{ $job->jumlah_pelamar_diinginkan ?? 5 }}</div>
                             <div class="posting-date">{{ $job->created_at->format('d M Y') }}</div>
                             <div class="action-menu">
                                 <button class="action-toggle" onclick="toggleActionMenu(this)">⋯</button>
                                 <div class="action-dropdown">
                                     <div class="action-item detail" onclick="openDetailJobModal({{ $job->id_pekerjaan }}, '{{ $job->judul_pekerjaan }}', '{{ $job->kategori_pekerjaan }}', '{{ $job->deskripsi_pekerjaan }}', '{{ $job->status }}', '{{ $job->created_at->format('d M Y H:i') }}')">Detail</div>
-                                    <div class="action-item edit" onclick="openEditJobModal({{ $job->id_pekerjaan }}, '{{ $job->judul_pekerjaan }}', '{{ $job->kategori_pekerjaan }}', '{{ $job->deskripsi_pekerjaan }}', '{{ $job->status }}')">Edit</div>
+                                    <div class="action-item edit" onclick="openEditJobModal({{ $job->id_pekerjaan }}, '{{ $job->judul_pekerjaan }}', '{{ $job->lokasi_pekerjaan }}', '{{ $job->gaji_pekerjaan }}', '{{ $job->kategori_pekerjaan }}', '{{ $job->deskripsi_pekerjaan }}', '{{ $job->status }}', {{ $job->jumlah_pelamar_diinginkan ?? 5 }})">Edit</div>
                                     <div class="action-item close" onclick="closeJob({{ $job->id_pekerjaan }}, '{{ $job->judul_pekerjaan }}')">Tutup</div>
                                 </div>
                             </div>
@@ -1300,13 +1300,25 @@
                     @enderror
                 </div>
                 
-                <div class="form-group">
-                    <label for="gaji_pekerjaan">Gaji</label>
-                    <input type="text" id="gaji_pekerjaan" name="gaji_pekerjaan" value="{{ old('gaji_pekerjaan') }}" placeholder="Rp 5.000.000" required
-                           class="@error('gaji_pekerjaan') is-invalid @enderror">
-                    @error('gaji_pekerjaan')
-                        <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
-                    @enderror
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gaji_pekerjaan">Gaji</label>
+                        <input type="text" id="gaji_pekerjaan" name="gaji_pekerjaan" value="{{ old('gaji_pekerjaan') }}" placeholder="Rp 5.000.000" required
+                               class="@error('gaji_pekerjaan') is-invalid @enderror">
+                        @error('gaji_pekerjaan')
+                            <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jumlah_pelamar_diinginkan">Jumlah Pelamar Diinginkan</label>
+                        <input type="number" id="jumlah_pelamar_diinginkan" name="jumlah_pelamar_diinginkan" 
+                               value="{{ old('jumlah_pelamar_diinginkan') }}" placeholder="5" min="1" max="100" required
+                               class="@error('jumlah_pelamar_diinginkan') is-invalid @enderror">
+                        @error('jumlah_pelamar_diinginkan')
+                            <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
                 
                 <div class="form-row-with-dropdowns">
@@ -1400,11 +1412,20 @@
                     <div id="edit-word-count-feedback" style="font-size: 12px; margin-top: 4px; color: #6b7280;">Harus 3-4 kata</div>
                 </div>
                 
-                <div class="form-row-with-dropdowns">
+                <div class="form-row">
                     <div class="form-group">
                         <label for="edit_gaji_pekerjaan">Gaji</label>
                         <input type="text" id="edit_gaji_pekerjaan" name="gaji_pekerjaan" value="{{ old('gaji_pekerjaan') }}" placeholder="Rp 5.000.000" required>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="edit_jumlah_pelamar_diinginkan">Jumlah Pelamar Diinginkan</label>
+                        <input type="number" id="edit_jumlah_pelamar_diinginkan" name="jumlah_pelamar_diinginkan" 
+                               value="{{ old('jumlah_pelamar_diinginkan') }}" placeholder="5" min="1" max="100" required>
+                    </div>
+                </div>
+                
+                <div class="form-row-with-dropdowns">
                     <div class="dropdown-item">
                         <label for="edit_lokasi_pekerjaan">Lokasi</label>
                         <select id="edit_lokasi_pekerjaan" name="lokasi_pekerjaan" required>
@@ -1642,7 +1663,7 @@
             document.body.style.overflow = 'auto';
         }
         
-        function openEditJobModal(id, judul, lokasi, gaji, kategori, deskripsi, status) {
+        function openEditJobModal(id, judul, lokasi, gaji, kategori, deskripsi, status, jumlahPelamar) {
             // Set form action
             const form = document.querySelector('.edit-job-form');
             form.action = `/pekerjaan/${id}`;
@@ -1652,6 +1673,7 @@
             document.getElementById('edit_lokasi_pekerjaan').value = lokasi;
             document.getElementById('edit_gaji_pekerjaan').value = gaji;
             document.getElementById('edit_kategori_pekerjaan').value = kategori;
+            document.getElementById('edit_jumlah_pelamar_diinginkan').value = jumlahPelamar;
             document.getElementById('edit_deskripsi_pekerjaan').value = deskripsi;
             document.getElementById('edit_status').value = status;
             

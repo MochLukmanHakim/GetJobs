@@ -55,7 +55,33 @@
     .welcome-greeting {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 32px;
+        position: relative;
+    }
+
+    .welcome-decoration {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .decoration-element {
+        width: 100%;
+        height: auto;
+        opacity: 0.15;
+        filter: brightness(1.5);
+        transition: all 0.3s ease;
+    }
+
+    .greeting-text {
+        position: relative;
+        z-index: 2;
+        flex: 1;
     }
 
     .greeting-text h1 {
@@ -261,6 +287,10 @@
             text-align: center;
             gap: 20px;
         }
+
+        .decoration-element {
+            opacity: 0.1;
+        }
         
         .greeting-text h1 {
             font-size: 36px;
@@ -404,46 +434,59 @@
         /* Table Header Row */
         .table-header-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            gap: 16px;
+            grid-template-columns: 2.5fr 1.2fr 0.8fr 1fr 0.8fr;
+            gap: 20px;
             align-items: center;
-            padding: 16px 24px;
+            padding: 18px 24px;
             background: white;
             border-radius: 12px;
             margin-top: -20px;
             margin-bottom: -10px;
             border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .header-item {
             font-weight: 600;
             color: #374151;
             font-size: 14px;
+            text-align: left;
+        }
+
+        .header-item:nth-child(3) {
+            text-align: center;
+        }
+
+        .header-item:nth-child(5) {
+            text-align: center;
         }
 
         /* Card-based Table Design */
         .job-cards {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 10px;
         }
 
         .job-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px 24px;
+            background: #ffffff;
             border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 18px 24px;
             transition: all 0.3s ease;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
 
         .job-card:hover {
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: #d1d5db;
         }
 
         .job-card-content {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            gap: 16px;
+            grid-template-columns: 2.5fr 1.2fr 0.8fr 1fr 0.8fr;
+            gap: 20px;
             align-items: center;
         }
 
@@ -491,6 +534,19 @@
             font-weight: 500;
         }
 
+        .applicant-count {
+            font-size: 14px;
+            color: #3b82f6;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .posting-date {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
         .job-location {
             font-size: 14px;
             color: #374151;
@@ -507,6 +563,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            justify-content: center;
         }
 
         .status-dot {
@@ -517,6 +574,10 @@
 
         .status-dot.active {
             background: #10b981;
+        }
+
+        .status-dot.ditutup {
+            background: #ef4444;
         }
 
         .status-dot.closed {
@@ -540,6 +601,10 @@
             color: #059669;
         }
 
+        .status-text.ditutup {
+            color: #dc2626;
+        }
+
         .status-text.closed {
             color: #dc2626;
         }
@@ -550,18 +615,6 @@
 
         .status-text.pending {
             color: #d97706;
-        }
-
-        .applicant-count {
-            font-size: 14px;
-            font-weight: 600;
-            color: #3b82f6;
-        }
-
-        .posting-date {
-            font-size: 12px;
-            color: #6b7280;
-            font-weight: 500;
         }
 
 
@@ -625,6 +678,73 @@
 
 
         /* Responsive */
+        /* Action Menu Styles */
+        .action-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .action-toggle {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .action-toggle:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .action-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 120px;
+            z-index: 10;
+            display: none;
+        }
+
+        .action-dropdown.show {
+            display: block;
+        }
+
+        .action-item {
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .action-item:last-child {
+            border-bottom: none;
+        }
+
+        .action-item:hover {
+            background: #f9fafb;
+        }
+
+        .action-item.view {
+            color: #3b82f6;
+        }
+
+        .action-item.edit {
+            color: #f59e0b;
+        }
+
+        .action-item.delete {
+            color: #ef4444;
+        }
+
         @media (max-width: 1200px) {
             .table-header-row,
             .job-card-content {
@@ -687,7 +807,7 @@
             }
             
             .job-card {
-                padding: 20px;
+                padding: 12px 16px;
             }
             
             .job-info {
@@ -778,7 +898,7 @@
             display: none;
         }
 
-        /* Applicant Content */
+        /* Professional Applicant Content */
         .dashboard-row {
             display: flex;
             gap: 12px;
@@ -792,82 +912,153 @@
             gap: 32px;
         }
         .applicant-content {
-            width: 240px;
-            background: white;
-            border-radius: 16px;
-            border: 1px solid #e5e7eb;
-            padding: 24px;
+            width: 320px;
             height: fit-content;
-            transition: all 0.3s ease;
         }
 
-        .applicant-content:hover {
-            transform: translateY(-1px);
-        }
         .applicant-section {
-            margin-bottom: 18px;
+            margin-bottom: 24px;
         }
+
         .applicant-section-title {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 600;
-            color: #111827;
-            margin-bottom: 25px;
+            color: #0f172a;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
         }
+
         .applicant-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
+
         .applicant-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.15s ease;
+        }
+
+        .applicant-item:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .applicant-card-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            position: relative;
+            gap: 12px;
+            margin-bottom: 0;
         }
-        .applicant-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 16px;
-            top: 32px;
-            width: 1px;
-            height: 12px;
-            background: #e5e7eb;
-        }
-        .applicant-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        .applicant-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: #64748b;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 600;
-            font-size: 12px;
+            font-weight: 500;
+            font-size: 14px;
             flex-shrink: 0;
+            overflow: hidden;
         }
+
+        .applicant-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .applicant-info {
             flex: 1;
+            min-width: 0;
         }
+
+        .applicant-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .applicant-details {
+            flex: 1;
+            min-width: 0;
+        }
+
         .applicant-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 2px;
-        }
-        .applicant-status {
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 500;
+            color: #0f172a;
+            margin: 0 0 2px 0;
+            line-height: 1.3;
         }
-        .status-rejected {
-            color: #dc2626;
+
+        .applicant-position {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.2;
         }
-        .status-accepted {
+
+        .applicant-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
             color: #059669;
+            flex-shrink: 0;
         }
-        .status-pending {
-            color: #d97706;
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            flex-shrink: 0;
         }
+
+        .applicant-announcement {
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.4;
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .no-applicants {
+            text-align: center;
+            padding: 32px 20px;
+            color: #64748b;
+            font-size: 14px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .no-applicants-icon {
+            width: 48px;
+            height: 48px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: #94a3b8;
+            font-size: 20px;
+        }
+        /* Responsive adjustments */
         @media (max-width: 900px) {
             .dashboard-row {
                 flex-direction: column;
@@ -877,6 +1068,7 @@
                 margin-top: 24px;
             }
         }
+
         @media (max-width: 768px) {
             .dashboard-row {
                 flex-direction: column;
@@ -884,6 +1076,16 @@
             .applicant-content {
                 width: 100%;
                 margin-top: 24px;
+            }
+            
+            .applicant-item {
+                padding: 14px;
+            }
+            
+            .applicant-photo {
+                width: 36px;
+                height: 36px;
+                font-size: 13px;
             }
         }
 
@@ -900,6 +1102,9 @@
             <div class="greeting-text">
                 <h1>Hi, {{ Auth::user()->name ?? 'User' }}!</h1>
                 <p>Apa yang akan anda lakukan hari ini?</p>
+            </div>
+            <div class="welcome-decoration">
+                <img src="{{ asset('images/elemen-removebg-preview.png') }}" alt="Decoration" class="decoration-element">
             </div>
         </div>
         <div class="quick-actions">
@@ -986,34 +1191,56 @@
                 </div>
             </div>
             
-            <!-- Job Vacancies Table -->
-            <h2 class="graph-title">Daftar Pekerjaan</h2>
+            <!-- Job History Table -->
+            <h2 class="graph-title">Riwayat Pekerjaan</h2>
             <!-- Table Header -->
             <div class="table-header-row">
                 <div class="header-item">Judul Pekerjaan</div>
-                <div class="header-item">Posisi</div>
-                <div class="header-item">Status</div>
+                <div class="header-item">Kategori</div>
                 <div class="header-item">Pelamar</div>
                 <div class="header-item">Tanggal Posting</div>
+                <div class="header-item">Status</div>
             </div>
             
             <div class="job-cards">
                 @forelse($pekerjaan as $job)
-                <div class="job-card">
+                <div class="job-card" data-status="{{ $job->status }}">
                     <div class="job-card-content">
                         <div class="job-info">
                             <div class="job-details">
-                                <h4>{{ $job->judul_pekerjaan }}</h4>
-                                <p class="job-id">#{{ $job->id_pekerjaan }}</p>
+                                @php
+                                    $rawTitle = trim(preg_replace('/\s+/', ' ', $job->judul_pekerjaan ?? ''));
+                                    $words = $rawTitle !== '' ? preg_split('/\s+/', $rawTitle, -1, PREG_SPLIT_NO_EMPTY) : [];
+                                    $displayTitle = $rawTitle;
+                                    if (count($words) === 2) {
+                                        $catText = ucwords(str_replace(['-', '_'], ' ', $job->kategori_pekerjaan ?? ''));
+                                        if ($catText !== '') {
+                                            $displayTitle = $rawTitle.' '.$catText;
+                                        }
+                                    }
+                                @endphp
+                                <h4>{{ $displayTitle }}</h4>
                             </div>
                         </div>
-                        <div class="job-position">{{ $job->kategori_pekerjaan }}</div>
+                        <div class="job-position">
+                            @php
+                                $categoryMap = [
+                                    'technology' => 'Technology',
+                                    'design' => 'Design',
+                                    'marketing' => 'Marketing',
+                                    'finance' => 'Finance',
+                                    'hr' => 'Human Resources'
+                                ];
+                                $displayCategory = $categoryMap[$job->kategori_pekerjaan] ?? ucfirst($job->kategori_pekerjaan);
+                            @endphp
+                            {{ $displayCategory }}
+                        </div>
+                        <div class="applicant-count">{{ $job->jumlah_pelamar_diinginkan ?? 5 }}/{{ $job->jumlah_pelamar_diinginkan ?? 5 }}</div>
+                        <div class="posting-date">{{ $job->created_at->format('d M Y') }}</div>
                         <div class="job-status">
                             <div class="status-dot {{ $job->status }}"></div>
                             <span class="status-text {{ $job->status }}">{{ ucfirst($job->status) }}</span>
                         </div>
-                        <div class="applicant-count">0</div>
-                        <div class="posting-date">{{ $job->created_at->format('d M Y') }}</div>
                     </div>
                 </div>
                 @empty
@@ -1024,86 +1251,44 @@
             </div>
                 </div>
                 <div class="applicant-content">
-                    <!-- Daftar Pelamar -->
+                    <!-- Riwayat Pelamar -->
                     <div class="applicant-section">
-                        <h3 class="applicant-section-title">Daftar pelamar</h3>
+                        <h3 class="applicant-section-title">Riwayat pelamar</h3>
                         <div class="applicant-list">
+                            @php
+                                $acceptedApplicants = $applicants->filter(function($applicant) {
+                                    return $applicant['status'] === 'accepted';
+                                })->take(4);
+                            @endphp
+                            
+                            @forelse($acceptedApplicants as $applicant)
                             <div class="applicant-item">
-                                <div class="applicant-avatar">AG</div>
-                        <div class="applicant-info">
-                            <div class="applicant-name">Aziz Gagap</div>
-                            <div class="applicant-status status-rejected">Ditolak</div>
-                        </div>
-                            </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">DS</div>
-                        <div class="applicant-info">
-                            <div class="applicant-name">Deny Sumargo</div>
-                            <div class="applicant-status status-rejected">Ditolak</div>
-                        </div>
-                            </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">JJ</div>
-                        <div class="applicant-info">
-                            <div class="applicant-name">Jamal bin Jamil</div>
-                            <div class="applicant-status status-rejected">Ditolak</div>
-                        </div>
-                            </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">LC</div>
-                        <div class="applicant-info">
-                            <div class="applicant-name">Lionel Cristiano</div>
-                            <div class="applicant-status status-accepted">Diterima</div>
-                        </div>
-                            </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">DY</div>
-                        <div class="applicant-info">
-                            <div class="applicant-name">Dio YusufTzy</div>
-                            <div class="applicant-status status-accepted">Diterima</div>
-                        </div>
-                            </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">DY</div>
-                        <div class="applicant-info">
-                                    <div class="applicant-name">Calmboy Sigma</div>
-                                    <div class="applicant-status status-accepted">Diterima</div>
+                                <div class="applicant-card-header">
+                                    <div class="applicant-photo">
+                                        {{ $applicant['avatar'] }}
+                                    </div>
+                                    <div class="applicant-info">
+                                        <div class="applicant-meta">
+                                            <div class="applicant-details">
+                                                <div class="applicant-name">{{ $applicant['name'] }}</div>
+                                                <div class="applicant-position">{{ $applicant['position'] }}</div>
+                                            </div>
+                                            <div class="applicant-status">
+                                                <div class="status-dot"></div>
+                                                Diterima
+                                            </div>
+                                        </div>
+                                        <div class="applicant-announcement">
+                                            {{ $applicant['last_announcement'] }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Menunggu Status -->
-                    <div class="applicant-section">
-                        <h3 class="applicant-section-title">Menunggu status</h3>
-                        <div class="applicant-list">
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">CS</div>
-                                <div class="applicant-info">
-                                    <div class="applicant-name">Tulang Beton</div>
-                            <div class="applicant-status status-pending">Menunggu</div>
-                        </div>
-            </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">AS</div>
-                                <div class="applicant-info">
-                                    <div class="applicant-name">Kak Gem Elite</div>
-                                    <div class="applicant-status status-pending">Menunggu</div>
-                                </div>
+                            @empty
+                            <div class="no-applicants">
+                                <p>Tidak ada pelamar yang diterima</p>
                             </div>
-                            <div class="applicant-item">
-                                <div class="applicant-avatar">AS</div>
-                                <div class="applicant-info">
-                                    <div class="applicant-name">Kim Jong Un</div>
-                                    <div class="applicant-status status-pending">Menunggu</div>
-                                </div>
-                            </div>
-                            <!-- <div class="applicant-item">
-                                <div class="applicant-avatar">AS</div>
-                                <div class="applicant-info">
-                                    <div class="applicant-name">Alam Walker</div>
-                                    <div class="applicant-status status-pending">Menunggu</div>
-                                </div>
-                            </div> -->
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -1115,7 +1300,29 @@
 
 @push('scripts')
     <script>
+        // Action menu functionality
+        function toggleActionMenu(button) {
+            const dropdown = button.nextElementSibling;
+            const isShown = dropdown.classList.contains('show');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.action-dropdown.show').forEach(dd => {
+                dd.classList.remove('show');
+            });
+            
+            // Toggle current dropdown
+            if (!isShown) {
+                dropdown.classList.add('show');
+            }
+        }
 
-        // Action menu functionality removed
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.action-menu')) {
+                document.querySelectorAll('.action-dropdown.show').forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            }
+        });
     </script>
 @endpush

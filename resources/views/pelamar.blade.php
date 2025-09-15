@@ -235,10 +235,9 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 8px;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            
+            
+            
         }
         
         .table-card {
@@ -815,6 +814,121 @@
             color: #2F4157;
         }
 
+        /* CV Modal Styles */
+        .cv-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width, 280px);
+            width: calc(100% - var(--sidebar-width, 280px));
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(2px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            box-sizing: border-box;
+            transition: left 0.3s ease, width 0.3s ease;
+        }
+
+        .cv-modal-content {
+            background: transparent;
+            border-radius: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            box-shadow: none;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .cv-modal-header {
+            display: none;
+        }
+
+        .cv-modal-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cv-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cv-modal-close:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .cv-modal-body {
+            padding: 0;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* Responsive Modal */
+        @media (max-width: 768px) {
+            .cv-modal {
+                left: 0 !important;
+                width: 100% !important;
+                padding: 0;
+            }
+            
+            .cv-modal-content {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .cv-modal-header {
+                display: none;
+            }
+            
+            .cv-modal-body {
+                padding: 0;
+            }
+            
+            .cv-modal-title {
+                font-size: 10px;
+            }
+        }
+
         /* Announcement Area Styles */
         .announcement-area {
             display: none;
@@ -1010,8 +1124,11 @@
             padding: 10px 12px;
             border: 1px solid #d1d5db;
             border-radius: 10px;
-            background: #ffffff;
+            background: transparent;
             font-size: 14px;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
         .announcement-meta {
             display: flex;
@@ -1908,7 +2025,7 @@
                                 </svg>
                                 <span>+62 812-3456-7890</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Jamal.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -1992,7 +2109,7 @@
                                 </svg>
                                 <span>+62 821-9876-5432</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Siti.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2034,7 +2151,7 @@
                                 </svg>
                                 <span>+62 815-1357-9024</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Rina.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2112,7 +2229,7 @@
                                 </svg>
                                 <span>+62 816-8024-6813</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Dewi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2195,7 +2312,7 @@
                                 </svg>
                                 <span>+62 817-3691-4725</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Ahmad.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2273,7 +2390,7 @@
                                 </svg>
                                 <span>+62 818-7531-9642</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Nina.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2354,7 +2471,7 @@
                                 </svg>
                                 <span>+62 819-4628-1739</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Fajar.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2364,6 +2481,7 @@
                                 </svg>
                                 <span>CV_Fajar.pdf</span>
                             </div>
+
                             <div class="applicant-status">
                                 <span class="status-text review" id="status-label-7" style="display:none;">Review</span>
                                 <span class="status-chooser">
@@ -2396,7 +2514,7 @@
                                 </svg>
                                 <span>+62 820-5739-2846</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Rizki.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2441,7 +2559,7 @@
                                 </svg>
                                 <span>+62 813-2468-1357</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Budi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2483,7 +2601,7 @@
                                 </svg>
                                 <span>+62 821-6284-3951</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Linda.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2525,7 +2643,7 @@
                                 </svg>
                                 <span>+62 822-7395-4062</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Maya.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2570,7 +2688,7 @@
                                 </svg>
                                 <span>+62 814-5679-2468</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Andi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2612,7 +2730,7 @@
                                 </svg>
                                 <span>+62 823-8406-5173</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Indra.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2655,7 +2773,7 @@
                                 </svg>
                                 <span>+62 824-9517-6284</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Sari.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2697,7 +2815,7 @@
                                 </svg>
                                 <span>+62 825-0628-7395</span>
                             </div>
-                            <div class="applicant-cv">
+                            <div class="applicant-cv" onclick="openCVModal('CV_Dedi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2781,6 +2899,21 @@
 
             </div>
 @endsection
+
+    <!-- CV Modal -->
+    <div id="cvModal" class="cv-modal">
+        <div class="cv-modal-content">
+            <div class="cv-modal-body">
+                <div id="cvModalContent">
+                    <!-- CV content will be loaded here -->
+                </div>
+            </div>
+            <!-- Close button positioned absolutely -->
+            <button class="cv-modal-close" onclick="closeCVModal()" aria-label="Close modal" style="position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.7); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; z-index: 1001;">
+                ×
+            </button>
+        </div>
+    </div>
 
     <script>
         function toggleActionMenu(button) {
@@ -3317,6 +3450,89 @@
             document.getElementById('select-all').checked = false;
             updateSelectionUI();
         }
+
+        // CV Modal Functions
+        function openCVModal(fileName, filePath) {
+            const modal = document.getElementById('cvModal');
+            const modalContent = document.getElementById('cvModalContent');
+            
+            // Update modal position based on sidebar state
+            updateModalPosition();
+            
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            
+            if (fileExtension === 'pdf') {
+                modalContent.innerHTML = `
+                    <iframe src="${filePath}#view=FitV&zoom=page-width" 
+                            style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;">
+                        <p>Browser Anda tidak mendukung tampilan PDF. 
+                           <a href="${filePath}" target="_blank">Klik di sini untuk membuka PDF</a>
+                        </p>
+                    </iframe>
+                `;
+            } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExtension)) {
+                modalContent.innerHTML = `
+                    <img src="${filePath}" 
+                         alt="${fileName}"
+                         style="width: 100%; height: 100vh; object-fit: cover;">
+                `;
+            } else {
+                modalContent.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #6b7280;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 16px;">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14,2 14,8 20,8"></polyline>
+                        </svg>
+                        <p>File tidak dapat ditampilkan dalam preview</p>
+                        <a href="${filePath}" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                            Klik untuk mengunduh ${fileName}
+                        </a>
+                    </div>
+                `;
+            }
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateModalPosition() {
+            const modal = document.getElementById('cvModal');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (sidebar) {
+                const sidebarWidth = sidebar.offsetWidth;
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    modal.style.left = '80px'; // Collapsed sidebar width
+                    modal.style.width = 'calc(100% - 80px)';
+                } else {
+                    modal.style.left = sidebarWidth + 'px';
+                    modal.style.width = `calc(100% - ${sidebarWidth}px)`;
+                }
+            }
+        }
+
+        function closeCVModal() {
+            const modal = document.getElementById('cvModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('cvModal');
+            if (e.target === modal) {
+                closeCVModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCVModal();
+            }
+        });
     </script>
 </body>
 </html> 
