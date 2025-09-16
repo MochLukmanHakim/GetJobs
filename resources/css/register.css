@@ -1,0 +1,122 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #e6f0fa;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.left-panel {
+  flex: 1;
+  background: linear-gradient(to bottom right, #2c3e50, #4ca1af);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.left-panel h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.left-panel p {
+  margin-bottom: 20px;
+}
+
+.btn-secondary {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 12px;
+  background-color: #dfeeff;
+  color: #1c3e79;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.right-panel {
+  flex: 1;
+  background-color: #f1f8ff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-panel h2 {
+  margin-bottom: 20px;
+  color: #0d223f;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 350px;
+}
+
+.form input {
+  margin-bottom: 15px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.role-select {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.role-select label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.continue-text {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #003366;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
