@@ -1,0 +1,229 @@
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #ffffff;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand img {
+            height: 70px;
+            width: auto;
+            margin-left: 15px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .navbar-menu a:hover {
+            color: #444;
+        }
+
+        .navbar-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-login {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 6px 16px;
+        }
+
+        .btn-login:hover {
+            background-color: #f2f2f2;
+        }
+
+        .btn-unggah {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 6px 16px;
+        }
+
+        .btn-unggah:hover {
+            background-color: #333;
+        }
+
+        /* Hero */
+        .hero {
+            background: #f9f9f9;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        /* Search Box */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .search-box input,
+        .search-box select {
+            border-radius: 8px;
+        }
+
+        /* Lowongan */
+        .lowongan {
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        .lowongan a {
+            color: #002746;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Profil Animasi */
+        .profile {
+            position: absolute;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 70px;
+            height: 70px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: floatProfile 4s ease-in-out infinite alternate;
+        }
+
+        .profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes floatProfile {
+            0% {
+                transform: translateY(0px);
+            }
+
+            100% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Posisi Profil */
+        .profile.p1 {
+            top: 20%;
+            left: 8%;
+        }
+
+        .profile.p2 {
+            top: 45%;
+            left: 4%;
+        }
+
+        .profile.p3 {
+            bottom: 20%;
+            left: 10%;
+        }
+
+        .profile.p4 {
+            top: 20%;
+            right: 8%;
+        }
+
+        .profile.p5 {
+            top: 45%;
+            right: 5%;
+        }
+
+        .profile.p6 {
+            bottom: 20%;
+            right: 12%;
+        }
+
+        /* Bubble */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .bubble.b1 {
+            width: 20px;
+            height: 20px;
+            background: #93B3C0;
+            top: 25%;
+            left: 15%;
+        }
+
+        .bubble.b2 {
+            width: 15px;
+            height: 15px;
+            background: #B381AA;
+            top: 50%;
+            left: 12%;
+        }
+
+        .bubble.b3 {
+            width: 25px;
+            height: 25px;
+            background: #76C0A4;
+            bottom: 22%;
+            left: 18%;
+        }
+
+        .bubble.b4 {
+            width: 20px;
+            height: 20px;
+            background: #93B3C0;
+            top: 25%;
+            right: 15%;
+        }
+
+        .bubble.b5 {
+            width: 15px;
+            height: 15px;
+            background: #B381AA;
+            top: 50%;
+            right: 12%;
+        }
+
+        .bubble.b6 {
+            width: 25px;
+            height: 25px;
+            background: #76C0A4;
+            bottom: 22%;
+            right: 18%;
+        }
