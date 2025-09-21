@@ -16,7 +16,20 @@
         </button>
         <div class="profile-section">
             <div class="profile-avatar">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'User') }}&background=3B82F6&color=fff&size=32" alt="Profile">
+                @php
+                    $user = Auth::user();
+                    $isIndoGroup = $user && $user->email === 'indo@gmail.com';
+                    $hasLogo = $user && !empty($user->logo);
+                @endphp
+                
+                {{-- Force show Indo Group logo --}}
+                @if($isIndoGroup)
+                    <img src="{{ asset('images/indogroup.png') }}" alt="Indo Group" class="company-logo" title="Indo Group Logo">
+                @elseif($hasLogo)
+                    <img src="{{ $user->logo_url }}" alt="{{ $user->name }}" class="company-logo" title="Logo: {{ $user->logo }}">
+                @else
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name ?? 'User') }}&background=3B82F6&color=fff&size=32" alt="Profile" title="Fallback Avatar">
+                @endif
             </div>
             <div class="profile-info">
                 <div class="profile-name">{{ Auth::user()->name ?? 'User Name' }}</div>
@@ -25,3 +38,46 @@
         </div>
     </div>
 </div>
+
+{{-- Debug script untuk memaksa refresh logo (hapus di production) --}}
+@if(config('app.debug'))
+<script>
+    // Function to force refresh header logo
+    function forceRefreshHeaderLogo() {
+        fetch('/refresh-header')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Header refresh data:', data);
+                if (data.success && data.user.is_indo_group) {
+                    const avatar = document.querySelector('.profile-avatar img');
+                    if (avatar && !avatar.classList.contains('company-logo')) {
+                        avatar.src = '{{ asset("images/indogroup.png") }}';
+                        avatar.alt = 'Indo Group';
+                        avatar.className = 'company-logo';
+                        avatar.title = 'Indo Group Logo';
+                        console.log('✅ Header logo updated to Indo Group');
+                    }
+                }
+            })
+            .catch(error => console.error('Header refresh error:', error));
+    }
+
+    // Auto-refresh on page load if user is Indo Group
+    document.addEventListener('DOMContentLoaded', function() {
+        const userEmail = '{{ Auth::user()->email ?? "" }}';
+        if (userEmail === 'indo@gmail.com') {
+            setTimeout(forceRefreshHeaderLogo, 500);
+        }
+    });
+
+    // Add refresh button for debugging (remove in production)
+    if (window.location.hostname === 'localhost') {
+        const refreshBtn = document.createElement('button');
+        refreshBtn.innerHTML = '🔄';
+        refreshBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;background:#4F46E5;color:white;border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;';
+        refreshBtn.onclick = forceRefreshHeaderLogo;
+        refreshBtn.title = 'Refresh Header Logo';
+        document.body.appendChild(refreshBtn);
+    }
+</script>
+@endif

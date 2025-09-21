@@ -82,6 +82,7 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
+
     .greeting-illustration {
         flex-shrink: 0;
     }
@@ -131,6 +132,32 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
+    /* Action Icons */
+    .action-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        flex-shrink: 0;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .action-icon svg,
+    .action-icon i {
+        color: rgba(255, 255, 255, 0.9);
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+        font-size: 18px;
+    }
+
+    .action-card:hover .action-icon {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
     .action-card-content p {
         font-size: 12px;
         line-height: 1.4;
@@ -161,6 +188,16 @@
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
+    /* Notifications Title with Icon */
+    .notifications-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+  
+   
+
     .see-all {
         font-size: 14px;
         color: rgba(255, 255, 255, 0.9);
@@ -183,7 +220,6 @@
     .notifications-panel .notification-item {
         display: flex;
         align-items: flex-start;
-        gap: 12px;
         padding: 16px;
         background: rgba(255, 255, 255, 0.15);
         border-radius: 12px;
@@ -211,6 +247,7 @@
         margin: 0;
         line-height: 1.4;
     }
+
 
     .notification-badge {
         width: 20px;
@@ -1082,6 +1119,9 @@
         <div class="quick-actions">
             <div class="action-card">
                 <div class="action-card-header">
+                    <div class="action-icon">
+                        <i class="bi bi-briefcase"></i>
+                    </div>
                     <h4>Kelola Pekerjaan</h4>
                 </div>
                 <div class="action-card-content">
@@ -1090,6 +1130,9 @@
             </div>
             <div class="action-card">
                 <div class="action-card-header">
+                    <div class="action-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
                     <h4>Kelola Pelamar</h4>
                 </div>
                 <div class="action-card-content">
@@ -1098,7 +1141,10 @@
             </div>
             <div class="action-card">
                 <div class="action-card-header">
-                    <h4>Kelola Perusahaan</h4>
+                    <div class="action-icon">
+                        <i class="bi bi-buildings"></i>
+                    </div>
+                    <h4>Kelola Profile</h4>
                 </div>
                 <div class="action-card-content">
                     <p>Atur profil</p>
@@ -1108,8 +1154,11 @@
     </div>
     <div class="notifications-panel">
         <div class="notifications-header">
-            <h3>Notifications</h3>
-            <a href="#" class="see-all">See all</a>
+            <div class="notifications-title">
+                
+                <h3>Notifications</h3>
+            </div>
+           
         </div>
         <div class="notifications-list">
             <div class="notification-item">
@@ -1121,13 +1170,11 @@
                 <div class="notification-content">
                     <p>Pelamar baru untuk Frontend Developer.</p>
                 </div>
-                
             </div>
             <div class="notification-item">
                 <div class="notification-content">
                     <p>Deadline UI/UX Designer dalam 2 hari.</p>
                 </div>
-               
             </div>
         </div>
     </div>

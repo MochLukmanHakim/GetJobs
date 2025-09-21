@@ -80,6 +80,15 @@
             object-fit: cover;
         }
 
+        .profile-avatar img.company-logo {
+            object-fit: contain;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            padding: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
         .profile-info {
             display: flex;
             flex-direction: column;

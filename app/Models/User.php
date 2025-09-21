@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'logo',
         'role',
         'userType',
     ];
@@ -71,5 +72,39 @@ class User extends Authenticatable
     public function pekerjaan()
     {
         return $this->hasMany(Pekerjaan::class, 'user_id', 'id');
+    }
+
+    /**
+     * Get the logo URL for the user.
+     */
+    public function getLogoUrlAttribute()
+    {
+        if ($this->logo) {
+            $url = asset('images/' . $this->logo);
+            \Log::info('Logo URL generated', [
+                'user_id' => $this->id,
+                'user_name' => $this->name,
+                'logo' => $this->logo,
+                'url' => $url
+            ]);
+            return $url;
+        }
+        
+        \Log::info('No logo found, using default', [
+            'user_id' => $this->id,
+            'user_name' => $this->name,
+            'logo' => $this->logo
+        ]);
+        
+        // Default company logo if no logo is set
+        return asset('images/default-company-logo.png');
+    }
+
+    /**
+     * Get the logo path for the user.
+     */
+    public function getLogoPathAttribute()
+    {
+        return $this->logo ? 'images/' . $this->logo : 'images/default-company-logo.png';
     }
 }

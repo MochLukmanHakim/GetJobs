@@ -141,9 +141,29 @@
         padding: 24px;
         border-radius: 8px;
         border: 1px solid #e5e7eb;
-        white-space: pre-wrap;
         margin: 0;
     }
+
+    .description-content p {
+        margin-bottom: 16px;
+    }
+
+    .description-content p:last-child {
+        margin-bottom: 0;
+    }
+
+    .description-content strong {
+        color: #111827;
+        font-weight: 600;
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 8px;
+    }
+
+    .description-content strong:first-child {
+        margin-top: 0;
+    }
+
 
     /* Sidebar Cards */
     .sidebar-content {
@@ -902,7 +922,7 @@
         
         <div class="job-meta">
             <div class="meta-item">
-                <div class="meta-icon location">📍</div>
+                <div class="meta-icon location"><i class="bi bi-geo-alt-fill"></i></div>
                 <div class="meta-content">
                     <h4>Lokasi</h4>
                     <p>{{ ucfirst($pekerjaan->lokasi_pekerjaan) }}</p>
@@ -910,7 +930,7 @@
             </div>
             
             <div class="meta-item">
-                <div class="meta-icon salary">💵</div>
+                <div class="meta-icon salary"><i class="bi bi-cash-stack"></i></div>
                 <div class="meta-content">
                     <h4>Gaji</h4>
                     <p>{{ $pekerjaan->gaji_pekerjaan }}</p>
@@ -918,7 +938,7 @@
             </div>
             
             <div class="meta-item">
-                <div class="meta-icon category">📋</div>
+                <div class="meta-icon category"><i class="bi bi-briefcase-fill"></i></div>
                 <div class="meta-content">
                     <h4>Kategori</h4>
                     <p>@php
@@ -936,7 +956,7 @@
             </div>
             
             <div class="meta-item">
-                <div class="meta-icon applicants">👥</div>
+                <div class="meta-icon applicants"><i class="bi bi-people-fill"></i></div>
                 <div class="meta-content">
                     <h4>Pelamar</h4>
                     <p>{{ $pekerjaan->pelamars_count ?? 0 }}/{{ $pekerjaan->jumlah_pelamar_diinginkan }}</p>
@@ -951,18 +971,42 @@
         <div class="main-content-card">
             <div class="card-header">
                 <h2>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14,2 14,8 20,8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10,9 9,9 8,9"></polyline>
-                    </svg>
+                    <i class="bi bi-file-text-fill"></i>
                     Deskripsi Pekerjaan
                 </h2>
             </div>
             <div class="card-content">
-                <div class="description-content">{{ $pekerjaan->deskripsi_pekerjaan }}</div>
+                <div class="description-content">
+                    @if(strlen($pekerjaan->deskripsi_pekerjaan) < 200)
+                        <p>{{ $pekerjaan->deskripsi_pekerjaan }}</p>
+                        
+                        <p>Kami mencari kandidat yang memiliki passion di bidang {{ $displayCategory }} untuk bergabung dengan tim kami. Posisi ini menawarkan kesempatan untuk berkembang dalam lingkungan kerja yang dinamis dan supportif.</p>
+
+                        <strong>Tanggung Jawab Utama:</strong>
+                        <p>• Melaksanakan tugas sesuai dengan bidang keahlian {{ $displayCategory }}<br>
+                        • Berkolaborasi dengan tim untuk mencapai target perusahaan<br>
+                        • Mengikuti standar operasional prosedur yang telah ditetapkan<br>
+                        • Melaporkan progress pekerjaan secara berkala kepada atasan<br>
+                        • Berkontribusi dalam pengembangan dan inovasi di bidang {{ $displayCategory }}</p>
+
+                        <strong>Kualifikasi yang Dibutuhkan:</strong>
+                        <p>• Pendidikan minimal S1 atau yang setara<br>
+                        • Pengalaman kerja minimal 1-2 tahun di bidang terkait<br>
+                        • Memiliki kemampuan komunikasi yang baik<br>
+                        • Mampu bekerja dalam tim maupun individu<br>
+                        • Menguasai tools dan teknologi yang relevan dengan posisi<br>
+                        • Memiliki motivasi tinggi dan kemampuan adaptasi yang baik</p>
+
+                        <strong>Fasilitas & Benefit:</strong>
+                        <p>• Gaji kompetitif sesuai pengalaman dan kualifikasi<br>
+                        • Tunjangan kesehatan dan BPJS<br>
+                        • Pelatihan dan pengembangan karir<br>
+                        • Lingkungan kerja yang supportif dan dinamis<br>
+                        • Kesempatan untuk berkembang dan berkarir</p>
+                    @else
+                        <p>{{ $pekerjaan->deskripsi_pekerjaan }}</p>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -972,11 +1016,7 @@
             <div class="info-card">
                 <div class="info-card-header">
                     <h3>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
+                        <i class="bi bi-info-circle-fill"></i>
                         Informasi Lowongan
                     </h3>
                 </div>
@@ -990,9 +1030,9 @@
                         <span class="info-label">Status</span>
                         <span class="status-badge {{ $pekerjaan->status }}">
                             @if($pekerjaan->status === 'aktif')
-                                ✅ Aktif
+                                <i class="bi bi-check-circle-fill"></i> Aktif
                             @elseif($pekerjaan->status === 'tutup')
-                                ❌ Tutup
+                                <i class="bi bi-x-circle-fill"></i> Tutup
                             @endif
                         </span>
                     </div>
@@ -1013,9 +1053,7 @@
             <div class="info-card">
                 <div class="info-card-header">
                     <h3>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
+                        <i class="bi bi-bar-chart-fill"></i>
                         Statistik Pelamar
                     </h3>
                 </div>
@@ -1058,11 +1096,7 @@
             <div class="info-card">
                 <div class="info-card-header">
                     <h3>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <path d="M20 8v6M23 11l-3 3-3-3"></path>
-                        </svg>
+                        <i class="bi bi-person-lines-fill"></i>
                         Status Pelamar
                     </h3>
                 </div>
@@ -1093,11 +1127,7 @@
                         
                         <div class="info-item" style="border-top: 1px solid #f3f4f6; padding-top: 16px; margin-top: 8px;">
                             <a href="{{ route('pelamar.index', ['pekerjaan_id' => $pekerjaan->id_pekerjaan]) }}" class="view-applicants-btn">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
-                                    <circle cx="8.5" cy="7" r="4"></circle>
-                                    <path d="M20 8v6M23 11l-3 3-3-3"></path>
-                                </svg>
+                                <i class="bi bi-eye-fill"></i>
                                 Lihat Semua Pelamar
                             </a>
                         </div>
@@ -1110,215 +1140,12 @@
     <!-- Action Buttons -->
     <div class="action-buttons">
         <a href="{{ route('pekerjaan.index') }}" class="btn btn-secondary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M15 18l-6-6 6-6"></path>
-            </svg>
+            <i class="bi bi-arrow-left"></i>
             Kembali
         </a>
-        
-        <a href="{{ route('pekerjaan.index') }}#edit-{{ $pekerjaan->id_pekerjaan }}" class="btn btn-primary" onclick="event.preventDefault(); window.location.href='{{ route('pekerjaan.index') }}'; setTimeout(() => { openEditJobModal({{ $pekerjaan->id_pekerjaan }}, {{ json_encode($pekerjaan->judul_pekerjaan) }}, {{ json_encode($pekerjaan->lokasi_pekerjaan) }}, {{ json_encode($pekerjaan->gaji_pekerjaan) }}, {{ json_encode($pekerjaan->kategori_pekerjaan) }}, {{ json_encode($pekerjaan->deskripsi_pekerjaan) }}, {{ json_encode($pekerjaan->status) }}, {{ $pekerjaan->jumlah_pelamar_diinginkan ?? 5 }}); }, 500);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
-            Edit Lowongan
-        </a>
     </div>
 
-    <!-- Job History Button -->
-    <div class="job-history-button-section">
-        <button onclick="openJobHistoryModal()" class="history-job-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-                <polyline points="9,22 9,12 15,12 15,22"></polyline>
-            </svg>
-            <span class="btn-text">Riwayat Pekerjaan</span>
-        </button>
-    </div>
-
-    <!-- Job History Modal -->
-    <div id="jobHistoryModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
-                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                    </svg>
-                    Riwayat Pekerjaan
-                </h2>
-                <button class="close-btn" onclick="closeJobHistoryModal()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Table Header -->
-                <div class="history-table-header">
-                    <div class="history-header-item">Judul Pekerjaan</div>
-                    <div class="history-header-item">Kategori</div>
-                    <div class="history-header-item">Pelamar</div>
-                    <div class="history-header-item">Diterima</div>
-                    <div class="history-header-item">Tanggal Posting</div>
-                    <div class="history-header-item">Status</div>
-                </div>
-                
-                <div id="historyJobCards" class="history-job-cards">
-                    <!-- Content will be loaded by JavaScript -->
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-
-<script>
-// Job History Modal Functions
-function openJobHistoryModal() {
-    const modal = document.getElementById('jobHistoryModal');
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    loadJobHistory();
-}
-
-function closeJobHistoryModal() {
-    const modal = document.getElementById('jobHistoryModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-function loadJobHistory() {
-    const historyContainer = document.getElementById('historyJobCards');
-    if (!historyContainer) return;
-
-    // Show loading state
-    historyContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #6b7280;">Memuat riwayat pekerjaan...</div>';
-
-    // Fetch job history from API
-    fetch('/api/job-history')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success && data.data.length > 0) {
-                // Convert ISO date strings back to Date objects
-                const jobsWithDates = data.data.map(job => ({
-                    ...job,
-                    created_at: new Date(job.created_at),
-                    closed_at: new Date(job.closed_at)
-                }));
-                
-                renderJobHistory(jobsWithDates);
-            } else {
-                // Show dummy data if no real jobs exist
-                const dummyJobs = [
-                    {
-                        id_pekerjaan: 1,
-                        judul_pekerjaan: 'UI/UX Designer',
-                        kategori_pekerjaan: 'design',
-                        pelamars_count: 6,
-                        pelamars_accepted_count: 2,
-                        jumlah_pelamar_diinginkan: 6,
-                        created_at: new Date('2024-01-15'),
-                        status: 'tutup'
-                    },
-                    {
-                        id_pekerjaan: 2,
-                        judul_pekerjaan: 'Marketing Specialist',
-                        kategori_pekerjaan: 'marketing',
-                        pelamars_count: 8,
-                        pelamars_accepted_count: 3,
-                        jumlah_pelamar_diinginkan: 8,
-                        created_at: new Date('2024-01-10'),
-                        status: 'tutup'
-                    },
-                    {
-                        id_pekerjaan: 3,
-                        judul_pekerjaan: 'Senior Backend Developer',
-                        kategori_pekerjaan: 'technology',
-                        pelamars_count: 12,
-                        pelamars_accepted_count: 4,
-                        jumlah_pelamar_diinginkan: 10,
-                        created_at: new Date('2024-01-05'),
-                        status: 'tutup'
-                    }
-                ];
-                renderJobHistory(dummyJobs);
-            }
-        })
-        .catch(error => {
-            console.error('Error loading job history:', error);
-            historyContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: #dc2626;">Terjadi kesalahan saat memuat data</div>';
-        });
-}
-
-function renderJobHistory(jobs) {
-    const historyContainer = document.getElementById('historyJobCards');
-    
-    if (jobs.length === 0) {
-        historyContainer.innerHTML = '<div class="no-jobs"><p>Belum ada riwayat pekerjaan yang tersedia</p></div>';
-        return;
-    }
-
-    const categoryMap = {
-        'technology': 'Technology',
-        'design': 'Design',
-        'marketing': 'Marketing',
-        'finance': 'Finance',
-        'hr': 'Human Resources'
-    };
-
-    const jobsHTML = jobs.map(job => {
-        const displayCategory = categoryMap[job.kategori_pekerjaan] || job.kategori_pekerjaan.charAt(0).toUpperCase() + job.kategori_pekerjaan.slice(1);
-        const jobAvatar = job.judul_pekerjaan.substring(0, 2).toUpperCase();
-        const formattedDate = job.created_at.toLocaleDateString('id-ID', { 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric' 
-        });
-
-        return `
-            <a href="/pekerjaan/${job.id_pekerjaan}" class="history-job-link">
-                <div class="history-job-card" data-status="${job.status}">
-                    <div class="history-job-card-content">
-                        <div class="history-job-info">
-                            <div class="history-job-avatar">${jobAvatar}</div>
-                            <div class="history-job-details">
-                                <h4>${job.judul_pekerjaan}</h4>
-                                <p>ID: #${job.id_pekerjaan}</p>
-                            </div>
-                        </div>
-                        <div class="history-job-position">${displayCategory}</div>
-                        <div class="history-applicant-count">${job.pelamars_count || 0}/${job.jumlah_pelamar_diinginkan || 5}</div>
-                        <div class="history-accepted-count" style="color: #059669; font-weight: 600;">${job.pelamars_accepted_count || 0}</div>
-                        <div class="history-posting-date">${formattedDate}</div>
-                        <div class="history-job-status">
-                            <div class="history-status-dot ${job.status}"></div>
-                            <span class="history-status-text ${job.status}">${job.status.charAt(0).toUpperCase() + job.status.slice(1)}</span>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        `;
-    }).join('');
-
-    historyContainer.innerHTML = jobsHTML;
-}
-
-// Close modal when clicking outside
-document.addEventListener('click', function(event) {
-    const modal = document.getElementById('jobHistoryModal');
-    if (event.target === modal) {
-        closeJobHistoryModal();
-    }
-});
-
-// Close modal with Escape key
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeJobHistoryModal();
-    }
-});
-</script>
 
 @endsection
                                             

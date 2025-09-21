@@ -2271,7 +2271,7 @@
                                 </svg>
                                 <span>{{ $pelamar->formatted_phone }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path ?? 'sample-cv.pdf') }}', '{{ $pelamar->cv_path ? route('pelamar.viewCV', $pelamar) : '/images/contohcv.pdf' }}')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal()" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -3008,44 +3008,24 @@
             }
         }
 
-        // CV Modal functionality
-        function openCVModal(fileName, filePath) {
+        // CV Modal functionality - Always show contohcv.pdf
+        function openCVModal() {
             const modal = document.getElementById('cvModal');
             const modalContent = document.getElementById('cvModalContent');
             
             updateModalPosition();
             
-            const fileExtension = fileName.split('.').pop().toLowerCase();
+            // Always display contohcv.pdf
+            const pdfPath = '/images/contohcv.pdf';
             
-            if (fileExtension === 'pdf') {
-                modalContent.innerHTML = `
-                    <iframe src="${filePath}#view=FitV&zoom=page-width" 
-                            style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;">
-                        <p>Browser Anda tidak mendukung tampilan PDF. 
-                           <a href="${filePath}" target="_blank">Klik di sini untuk membuka PDF</a>
-                        </p>
-                    </iframe>
-                `;
-            } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExtension)) {
-                modalContent.innerHTML = `
-                    <img src="${filePath}" 
-                         alt="${fileName}"
-                         style="width: 100%; height: 100vh; object-fit: cover;">
-                `;
-            } else {
-                modalContent.innerHTML = `
-                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #6b7280;">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 16px;">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14,2 14,8 20,8"></polyline>
-                        </svg>
-                        <p>File tidak dapat ditampilkan dalam preview</p>
-                        <a href="${filePath}" target="_blank" style="color: #3b82f6; text-decoration: none;">
-                            Klik untuk mengunduh ${fileName}
-                        </a>
-                    </div>
-                `;
-            }
+            modalContent.innerHTML = `
+                <iframe src="${pdfPath}#view=FitV&zoom=page-width" 
+                        style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;">
+                    <p>Browser Anda tidak mendukung tampilan PDF. 
+                       <a href="${pdfPath}" target="_blank">Klik di sini untuk membuka PDF</a>
+                    </p>
+                </iframe>
+            `;
             
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -3138,7 +3118,7 @@
                                 </svg>
                                 <span>{{ $pelamar->no_telepon }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path) }}', '{{ asset($pelamar->cv_path) }}')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal()" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -3205,7 +3185,7 @@
                                 </svg>
                                 <span>{{ $pelamar->no_telepon }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path) }}', '{{ asset($pelamar->cv_path) }}')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal()" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -3272,7 +3252,7 @@
                                 </svg>
                                 <span>{{ $pelamar->no_telepon }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path) }}', '{{ asset($pelamar->cv_path) }}')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal()" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>

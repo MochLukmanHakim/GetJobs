@@ -283,7 +283,11 @@
         .profile-logo img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            padding: 4px;
         }
 
         .profile-company-info {
@@ -1003,7 +1007,11 @@
                     <!-- Profile Header with Logo and Company Info Side by Side -->
                     <div class="profile-header">
                         <div class="profile-logo">
-                            <img id="logoPreview" src="/images/logo-getjobs2.png" alt="Logo Perusahaan">
+                            @if(Auth::user() && Auth::user()->logo)
+                                <img id="logoPreview" src="{{ Auth::user()->logo_url }}" alt="{{ Auth::user()->name }}">
+                            @else
+                                <img id="logoPreview" src="/images/logo-getjobs2.png" alt="Logo Perusahaan">
+                            @endif
                         </div>
                         <div class="profile-company-info">
                             <div class="profile-company-name">{{ Auth::user()->name ?? 'Nama Perusahaan' }}</div>

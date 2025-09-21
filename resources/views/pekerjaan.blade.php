@@ -7,6 +7,10 @@
     $activePage = 'pekerjaan';
 @endphp
 
+@push('head')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @push('styles')
 <style>
     /* Pekerjaan page specific styles */
@@ -398,69 +402,211 @@
         }
 
         /* Close Modal Styles */
+        .close-job-modal {
+            max-width: 480px;
+            width: 90%;
+            margin: auto;
+        }
+
         .close-confirmation-content {
-            padding: 0;
+            padding: 24px;
         }
 
         .close-warning {
             text-align: center;
-            padding: 20px 0;
         }
 
         .warning-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            border: 3px solid #f59e0b;
+        }
+
+        .warning-icon i {
+            font-size: 28px;
+            color: #f59e0b;
         }
 
         .close-warning h3 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: #1f2937;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            line-height: 1.3;
         }
 
         .job-title-to-close {
-            font-size: 16px;
-            font-weight: 600;
-            color: #f59e0b;
-            background: #fffbeb;
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #fed7aa;
-            margin: 12px 0;
-            display: inline-block;
+            font-size: 18px;
+            font-weight: 700;
+            color: #dc2626;
+            background: #fef2f2;
+            padding: 16px 20px;
+            border-radius: 8px;
+            border: 2px solid #fecaca;
+            margin: 20px 0 24px 0;
+            display: block;
+            text-align: center;
+            max-width: 100%;
+            word-break: break-word;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .close-warning-text {
+        .close-info-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0 24px 0;
+            text-align: left;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
             font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-item i {
             color: #6b7280;
-            line-height: 1.5;
-            margin-top: 12px;
+            font-size: 16px;
+            width: 18px;
+            flex-shrink: 0;
         }
 
         .close-actions {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
-            padding-top: 16px;
-            border-top: 1px solid #f1f5f9;
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
         }
 
-        .btn-close {
-            padding: 10px 20px;
-            background: #f59e0b;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
+        .btn-cancel {
+            padding: 12px 20px;
+            background: #ffffff;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+            color: #374151;
+            transform: translateY(-1px);
+        }
+
+        .btn-close {
+            padding: 12px 20px;
+            background: #dc2626;
+            color: white;
+            border: 1px solid #dc2626;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 140px;
+            justify-content: center;
         }
 
         .btn-close:hover {
-            background: #d97706;
+            background: #b91c1c;
+            border-color: #b91c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+
+        /* Toast Notifications */
+        #toastContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        }
+
+        .toast {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 300px;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .toast.info {
+            border-left: 4px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .toast::before {
+            font-family: 'bootstrap-icons';
+            font-size: 16px;
+        }
+
+        .toast.success::before {
+            content: '\F26A'; /* bi-check-circle-fill */
+            color: #10b981;
+        }
+
+        .toast.error::before {
+            content: '\F659'; /* bi-x-circle-fill */
+            color: #ef4444;
+        }
+
+        .toast.info::before {
+            content: '\F431'; /* bi-info-circle-fill */
+            color: #3b82f6;
         }
 
         .form-group {
@@ -1240,7 +1386,11 @@
 
         /* Job History Modal Styles */
         .job-history-content {
-            padding: 0;
+            padding: 20px;
+            max-height: 70vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .history-table-header {
@@ -1254,6 +1404,7 @@
             margin-bottom: 16px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
         }
 
         .history-header-item {
@@ -1275,8 +1426,29 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 400px;
+            flex: 1;
             overflow-y: auto;
+            padding-right: 8px;
+            min-height: 0;
+        }
+
+        /* Custom scrollbar for history cards */
+        .history-job-cards::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .history-job-cards::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .history-job-cards::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .history-job-cards::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
 
         .history-job-card {
@@ -1499,7 +1671,31 @@
             
             /* Job History Modal Responsive */
             .history-table-header {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 16px;
+                background: #f8fafc;
+                border-radius: 8px;
+                margin-bottom: 12px;
+                text-align: center;
+            }
+
+            .history-table-header .history-header-item {
                 display: none;
+            }
+
+            .history-table-header .history-header-item:first-child {
+                display: block;
+                font-size: 16px;
+                font-weight: 700;
+                color: #1f2937;
+            }
+
+            .history-table-header .history-header-item:first-child::after {
+                content: " - Riwayat Pekerjaan Tutup";
+                font-weight: 500;
+                color: #6b7280;
             }
             
             .history-job-card-content {
@@ -1655,7 +1851,7 @@
                     {{-- Debug: Show job count --}}
                     <script>console.log('Total jobs from server:', {{ count($pekerjaan) }});</script>
                     @forelse($pekerjaan as $job)
-                    <div class="job-card" data-status="{{ $job->status }}">
+                    <div class="job-card" data-status="{{ $job->status }}" data-job-id="{{ $job->id_pekerjaan }}">
                         <div class="job-card-content">
                             <div class="job-info">
                                 <div class="job-details">
@@ -2064,7 +2260,7 @@
 
     <!-- Close Job Modal -->
     <div id="closeJobModal" class="modal-overlay">
-        <div class="modal-content">
+        <div class="modal-content close-job-modal">
             <div class="modal-header">
                 <h2 class="modal-title">Konfirmasi Tutup Lowongan</h2>
                 <button type="button" class="close" onclick="closeCloseJobModal()">&times;</button>
@@ -2072,19 +2268,37 @@
             
             <div class="close-confirmation-content">
                 <div class="close-warning">
-                    <div class="warning-icon">⚠️</div>
-                    <h3>Apakah Anda yakin ingin menutup lowongan ini?</h3>
-                    <p class="job-title-to-close" id="jobTitleToClose"></p>
-                    <p class="close-warning-text">Lowongan akan ditutup dan tidak akan muncul lagi di pencarian. Data pekerjaan tetap tersimpan.</p>
+                    <div class="warning-icon">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <h3>Yakin ingin menutup lowongan ini?</h3>
+                    <div class="job-title-to-close" id="jobTitleToClose"></div>
+                    
+                    <div class="close-info-box">
+                        <div class="info-item">
+                            <i class="bi bi-archive-fill"></i>
+                            <span>Dipindahkan ke riwayat</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-eye-slash-fill"></i>
+                            <span>Tidak muncul di pencarian</span>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="close-actions">
-                    <button type="button" class="btn-cancel" onclick="closeCloseJobModal()">Batal</button>
+                    <button type="button" class="btn-cancel" onclick="closeCloseJobModal()">
+                        <i class="bi bi-x-circle"></i>
+                        Batal
+                    </button>
                     <form id="closeJobForm" method="POST" style="display: inline;">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="status" value="tutup">
-                        <button type="submit" class="btn-close">Tutup Lowongan</button>
+                        <button type="submit" class="btn-close">
+                            <i class="bi bi-lock-fill"></i>
+                            Tutup Lowongan
+                        </button>
                     </form>
                 </div>
             </div>
@@ -2536,22 +2750,100 @@
         
         // Handle close form submission
         document.getElementById('closeJobForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
             console.log('Close form submitted');
+            
+            // Get job ID from form action
+            const formAction = this.action;
+            const jobId = formAction.split('/').pop();
+            
+            console.log('Form action:', formAction);
+            console.log('Job ID:', jobId);
             
             // Show loading state
             const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Menutup...';
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Menutup...';
             submitBtn.disabled = true;
             
-            // Show success message
-            showToast('Menutup lowongan...', 'success');
+            // Show loading toast
+            showToast('Menutup lowongan...', 'info');
             
-            // Form will be submitted to the server
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
+            // Prepare form data
+            const formData = new FormData(this);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || 
+                             document.querySelector('input[name="_token"]')?.value;
+            
+            console.log('CSRF Token:', csrfToken);
+            console.log('Form data:', Object.fromEntries(formData));
+            
+            // Submit form via fetch
+            fetch(formAction, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(async response => {
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                const responseText = await response.text();
+                console.log('Response text:', responseText);
+                
+                if (response.ok || response.status === 302) {
+                    // Success - remove job from active list
+                    const jobCard = document.querySelector(`[data-job-id="${jobId}"]`);
+                    console.log('Job card found:', jobCard);
+                    
+                    if (jobCard) {
+                        // Add fade out animation
+                        jobCard.style.transition = 'all 0.5s ease';
+                        jobCard.style.opacity = '0';
+                        jobCard.style.transform = 'translateX(-20px)';
+                        
+                        setTimeout(() => {
+                            jobCard.remove();
+                            
+                            // Check if no jobs left
+                            const remainingJobs = document.querySelectorAll('.job-card');
+                            if (remainingJobs.length === 0) {
+                                const jobCards = document.querySelector('.job-cards');
+                                jobCards.innerHTML = `
+                                    <div style="text-align: center; padding: 40px; color: #6b7280;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                                        <h3 style="margin: 0 0 8px 0; color: #374151;">Tidak Ada Pekerjaan Aktif</h3>
+                                        <p style="margin: 0; font-size: 14px;">Semua pekerjaan telah ditutup atau belum ada yang dibuat.</p>
+                                    </div>
+                                `;
+                            }
+                        }, 500);
+                    }
+                    
+                    // Close modal
+                    closeCloseJobModal();
+                    
+                    // Show success message
+                    showToast('Lowongan berhasil ditutup dan dipindahkan ke riwayat!', 'success');
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                } else {
+                    throw new Error(`Server error: ${response.status} - ${responseText}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Gagal menutup lowongan. Silakan coba lagi.', 'error');
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-            }, 3000);
+            });
         });
 
         function toggleProfileDropdown(event) {

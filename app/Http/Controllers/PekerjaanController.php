@@ -83,8 +83,48 @@ class PekerjaanController extends Controller
 
     public function update(Request $request, $id)
     {
+        \Log::info('Update pekerjaan called', [
+            'id' => $id,
+            'request_data' => $request->all(),
+            'user_id' => auth()->id()
+        ]);
+
         $pekerjaan = Pekerjaan::findOrFail($id);
         
+        \Log::info('Pekerjaan found', [
+            'pekerjaan' => $pekerjaan->toArray()
+        ]);
+
+        // If only status is being updated (close job functionality)
+        if ($request->has('status') && $request->input('status') === 'tutup') {
+            \Log::info('Closing job - status update only');
+            
+            $request->validate([
+                'status' => 'required|in:aktif,tutup',
+            ], [
+                'status.required' => 'Status wajib dipilih.',
+                'status.in' => 'Status harus berupa aktif atau tutup.',
+            ]);
+
+            $pekerjaan->update(['status' => 'tutup']);
+            
+            \Log::info('Job closed successfully', [
+                'id' => $id,
+                'new_status' => $pekerjaan->fresh()->status
+            ]);
+
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pekerjaan berhasil ditutup!',
+                    'data' => $pekerjaan->fresh()
+                ]);
+            }
+
+            return redirect()->route('pekerjaan.index')->with('success', 'Pekerjaan berhasil ditutup!');
+        }
+
+        // Full update validation for other cases
         // Normalize and auto-append category if title only has 2 words
         $title = trim(preg_replace('/\s+/', ' ', $request->input('judul_pekerjaan', '')));
         $kategori = trim(preg_replace('/\s+/', ' ', $request->input('kategori_pekerjaan', '')));
@@ -119,6 +159,11 @@ class PekerjaanController extends Controller
         ]);
 
         $pekerjaan->update($request->all());
+
+        \Log::info('Pekerjaan updated successfully', [
+            'id' => $id,
+            'updated_data' => $pekerjaan->fresh()->toArray()
+        ]);
 
         return redirect()->route('pekerjaan.index')->with('success', 'Pekerjaan berhasil diperbarui!');
     }

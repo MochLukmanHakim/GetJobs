@@ -278,6 +278,15 @@
             object-fit: cover;
         }
 
+        .profile-avatar img.company-logo {
+            object-fit: contain;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            padding: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
         .profile-info {
             display: flex;
             flex-direction: column;
@@ -471,7 +480,20 @@
                         </button>
                         <div class="profile-section">
                             <div class="profile-avatar">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name ?? 'User') }}&background=3B82F6&color=fff&size=32" alt="Profile">
+                                @php
+                                    $user = Auth::user();
+                                    $isIndoGroup = $user && $user->email === 'indo@gmail.com';
+                                    $hasLogo = $user && !empty($user->logo);
+                                @endphp
+                                
+                                {{-- Force show Indo Group logo --}}
+                                @if($isIndoGroup)
+                                    <img src="{{ asset('images/indogroup.png') }}" alt="Indo Group" class="company-logo" title="Indo Group Logo">
+                                @elseif($hasLogo)
+                                    <img src="{{ $user->logo_url }}" alt="{{ $user->name }}" class="company-logo" title="Logo: {{ $user->logo }}">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name ?? 'User') }}&background=3B82F6&color=fff&size=32" alt="Profile" title="Fallback Avatar">
+                                @endif
                             </div>
                             <div class="profile-info">
                                 <div class="profile-name">{{ Auth::user()->name ?? 'User Name' }}</div>

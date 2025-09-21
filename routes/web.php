@@ -26,6 +26,9 @@ Route::middleware(['company.access'])->group(function () {
     
     // API endpoint untuk histori pekerjaan
     Route::get('/api/job-history', [PekerjaanController::class, 'getJobHistory'])->name('api.job-history');
+    
+    // API endpoint untuk histori pelamar yang diterima
+    Route::get('/api/accepted-applicants-history', [UserController::class, 'getAcceptedApplicantsHistory'])->name('api.accepted-applicants-history');
 });
 
 // Rute untuk halaman perusahaan
@@ -71,5 +74,41 @@ Route::post('/signup', [UserController::class, 'registercheck'])->name('register
 
 Route::get('/dashboard', [UserController::class, 'godashboard'])->name('dashboard');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+// Debug route untuk login sebagai Indo Group (hapus di production)
+Route::get('/login-indo', function() {
+    // Force logout first
+    Auth::logout();
+    
+    $user = App\Models\User::where('email', 'indo@gmail.com')->first();
+    if ($user) {
+        Auth::login($user);
+        
+        // Clear any cached data
+        cache()->flush();
+        
+        return redirect('/dashboard')->with('success', 'Logged in as Indo Group with logo');
+    }
+    return redirect('/')->with('error', 'Indo Group user not found');
+})->name('login.indo');
+
+// Route untuk refresh header (debug)
+Route::get('/refresh-header', function() {
+    $user = Auth::user();
+    if ($user) {
+        return response()->json([
+            'success' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'logo' => $user->logo,
+                'logo_url' => $user->logo_url ?? null,
+                'is_indo_group' => $user->email === 'indo@gmail.com'
+            ]
+        ]);
+    }
+    return response()->json(['success' => false, 'message' => 'Not authenticated']);
+})->name('refresh.header');
 
 
