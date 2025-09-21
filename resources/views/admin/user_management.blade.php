@@ -437,13 +437,7 @@
             <div id="users-tab" class="tab-content">
                 <div class="section">
                     <div class="section-header">
-                        <h2 class="section-title">User Management</h2>
-                        <button class="btn btn-primary" onclick="openModal('userModal')">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 4v16m8-8H4"/>
-                            </svg>
-                            Add New User
-                        </button>
+                        <h2 class="section-title">User Management Log</h2>
                     </div>
 
                     <div class="card">
@@ -467,7 +461,6 @@
                                         <th>Peran</th>
                                         <th>Status</th>
                                         <th>Dibuat</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -478,12 +471,6 @@
                                         <td>Job Seeker</td>
                                         <td><span class="status-badge status-active">Active</span></td>
                                         <td>2024-08-15</td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn btn-secondary btn-sm" onclick="editUser(1)">Edit</button>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(1)">Delete</button>
-                                            </div>
-                                        </td>
                                     </tr>
                                     <tr>
                                         <td>002</td>
@@ -492,12 +479,6 @@
                                         <td>Employer</td>
                                         <td><span class="status-badge status-active">Active</span></td>
                                         <td>2024-08-10</td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn btn-secondary btn-sm" onclick="editUser(2)">Edit</button>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(2)">Delete</button>
-                                            </div>
-                                        </td>
                                     </tr>
                                     <tr>
                                         <td>003</td>
@@ -506,12 +487,6 @@
                                         <td>Job Seeker</td>
                                         <td><span class="status-badge status-pending">Pending</span></td>
                                         <td>2024-08-12</td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <button class="btn btn-secondary btn-sm" onclick="editUser(3)">Edit</button>
-                                                <button class="btn btn-danger btn-sm" onclick="deleteUser(3)">Delete</button>
-                                            </div>
-                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -736,47 +711,6 @@
         </div>
     </main>
 
-    <!-- User Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Add/Edit User</h3>
-                <button class="close-btn" onclick="closeModal('userModal')">&times;</button>
-            </div>
-            <form id="userForm">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="userName" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="userEmail" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Role</label>
-                    <select class="form-select" id="userRole" required>
-                        <option value="">Select Role</option>
-                        <option value="job_seeker">Job Seeker</option>
-                        <option value="employer">Employer</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Status</label>
-                    <select class="form-select" id="userStatus" required>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="pending">Pending</option>
-                    </select>
-                </div>
-                <div class="action-buttons mt-4">
-                    <button type="submit" class="btn btn-primary">Save User</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('userModal')">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Job Modal -->
     <div id="jobModal" class="modal">
         <div class="modal-content">
@@ -868,3 +802,5 @@
             </form>
         </div>
     </div>
+</body>
+</html>

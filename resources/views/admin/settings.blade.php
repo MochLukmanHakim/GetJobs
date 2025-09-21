@@ -440,587 +440,64 @@
 
     <!-- Main Content -->
     <main class="container py-8">
-        <!-- Admin KPI Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <!-- Total Users -->
-            <div class="card p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-secondary">Total Users</p>
-                        <p class="text-3xl font-bold" id="totalUsers">24,789</p>
-                        <div class="flex items-center mt-2">
-                            <svg class="w-4 h-4 text-success mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            <span class="text-sm text-success font-medium">+8.2%</span>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Active Jobs -->
-            <div class="card p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-secondary">Active Jobs</p>
-                        <p class="text-3xl font-bold" id="activeJobs">8,547</p>
-                        <div class="flex items-center mt-2">
-                            <svg class="w-4 h-4 text-success mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                            <span class="text-sm text-success font-medium">+12.5%</span>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 bg-accent-50 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6" style="color: var(--color-accent)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pending Approvals -->
-            <div class="card p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-secondary">Pending Approvals</p>
-                        <p class="text-3xl font-bold text-warning" id="pendingApprovals">127</p>
-                        <p class="text-xs text-secondary">requires attention</p>
-                        <div class="flex items-center mt-2">
-                            <div class="w-2 h-2 bg-warning rounded-full animate-pulse mr-2"></div>
-                            <span class="text-sm text-warning font-medium">Action Required</span>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12" style="background-color: #fef3c7" class="rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- System Health -->
-            <div class="card p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-secondary">System Health</p>
-                        <p class="text-3xl font-bold text-success" id="systemHealth">98.7%</p>
-                        <p class="text-xs text-secondary">uptime</p>
-                        <div class="flex items-center mt-2">
-                            <div class="w-2 h-2 bg-success rounded-full animate-pulse mr-2"></div>
-                            <span class="text-sm text-success font-medium">Optimal</span>
-                        </div>
-                    </div>
-                    <div class="w-12 h-12 bg-accent-50 rounded-lg flex items-center justify-center">
-                        <svg class="w-6 h-6" style="color: var(--color-success)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Admin Area -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <!-- User Management Panel -->
-            <div class="lg:col-span-2">
-                <div class="card p-6">
-                    <div class="flex items-center justify-between mb-6">
-                        <div>
-                            <h3 class="text-lg font-semibold">User Management</h3>
-                            <p class="text-sm text-secondary">Manage user accounts and permissions</p>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <button class="btn-secondary">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z"/>
-                                </svg>
-                                Filter
-                            </button>
-                            <button class="btn-primary">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                                </svg>
-                                Add User
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Last Login</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="font-medium">Sarah Johnson</td>
-                                    <td>sarah@example.com</td>
-                                    <td>Job Seeker</td>
-                                    <td><span class="status-indicator status-success">Active</span></td>
-                                    <td>2 hours ago</td>
-                                    <td>
-                                        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium">Mike Chen</td>
-                                    <td>mike@techcorp.com</td>
-                                    <td>Employer</td>
-                                    <td><span class="status-indicator status-success">Active</span></td>
-                                    <td>5 hours ago</td>
-                                    <td>
-                                        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium">Emma Wilson</td>
-                                    <td>emma@startup.io</td>
-                                    <td>Recruiter</td>
-                                    <td><span class="status-indicator status-warning">Pending</span></td>
-                                    <td>1 day ago</td>
-                                    <td>
-                                        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium">James Rodriguez</td>
-                                    <td>james@freelance.com</td>
-                                    <td>Job Seeker</td>
-                                    <td><span class="status-indicator status-error">Suspended</span></td>
-                                    <td>3 days ago</td>
-                                    <td>
-                                        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-medium">Lisa Chang</td>
-                                    <td>lisa@designstudio.com</td>
-                                    <td>Employer</td>
-                                    <td><span class="status-indicator status-success">Active</span></td>
-                                    <td>6 hours ago</td>
-                                    <td>
-                                        <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Actions Panel -->
-            <div>
-                <div class="card p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold">Admin Actions</h3>
-                        <button class="text-primary">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                        </button>
-                    </div>
-                    
-                    <!-- Quick Actions -->
-                    <div class="space-y-4">
-                        <div class="p-3 bg-background rounded-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm font-medium">System Maintenance</p>
-                                    <p class="text-xs text-secondary">Schedule maintenance window</p>
-                                </div>
-                                <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Schedule</button>
-                            </div>
-                        </div>
-                        
-                        <div class="p-3 bg-background rounded-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm font-medium">Bulk Notifications</p>
-                                    <p class="text-xs text-secondary">Send system-wide messages</p>
-                                </div>
-                                <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Send</button>
-                            </div>
-                        </div>
-                        
-                        <div class="p-3 bg-background rounded-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm font-medium">Data Export</p>
-                                    <p class="text-xs text-secondary">Export platform analytics</p>
-                                </div>
-                                <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Export</button>
-                            </div>
-                        </div>
-                        
-                        <div class="p-3 bg-background rounded-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-sm font-medium">Content Moderation</p>
-                                    <p class="text-xs text-secondary">Review flagged content</p>
-                                </div>
-                                <button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Review</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- System Monitoring & Analytics -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <!-- Recent Activity Log -->
-            <div class="card p-6">
-                <h3 class="text-lg font-semibold mb-4">Recent Admin Activity</h3>
-                <div class="scroll-area space-y-3">
-                    <div class="flex items-start space-x-3 p-3 bg-background rounded-lg">
-                        <div class="w-8 h-8 bg-primary-50 rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium">User Account Updated</p>
-                            <p class="text-xs text-secondary">Modified permissions for sarah@example.com</p>
-                            <p class="text-xs text-secondary">5 minutes ago • Admin: John Doe</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start space-x-3 p-3 bg-background rounded-lg">
-                        <div class="w-8 h-8" style="background-color: #fee2e2" class="rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium">Content Flagged</p>
-                            <p class="text-xs text-secondary">Job posting reported for inappropriate content</p>
-                            <p class="text-xs text-secondary">12 minutes ago • System Alert</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start space-x-3 p-3 bg-background rounded-lg">
-                        <div class="w-8 h-8 bg-accent-50 rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4" style="color: var(--color-success)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium">Company Verified</p>
-                            <p class="text-xs text-secondary">TechStartup Inc. completed verification process</p>
-                            <p class="text-xs text-secondary">25 minutes ago • System Process</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-start space-x-3 p-3 bg-background rounded-lg">
-                        <div class="w-8 h-8" style="background-color: #fef3c7" class="rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <p class="text-sm font-medium">System Configuration</p>
-                            <p class="text-xs text-secondary">Email notification settings updated</p>
-                            <p class="text-xs text-secondary">1 hour ago • Admin: Jane Smith</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Platform Statistics -->
-            <div class="card p-6">
-                <h3 class="text-lg font-semibold mb-4">Platform Statistics</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-background rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 bg-primary rounded-full"></div>
-                            <span class="text-sm text-secondary">New Registrations Today</span>
-                        </div>
-                        <span class="text-lg font-bold">247</span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between p-3 bg-background rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3" style="background-color: var(--color-accent)" class="rounded-full"></div>
-                            <span class="text-sm text-secondary">Jobs Posted This Week</span>
-                        </div>
-                        <span class="text-lg font-bold">1,834</span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between p-3 bg-background rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 bg-warning rounded-full"></div>
-                            <span class="text-sm text-secondary">Applications This Month</span>
-                        </div>
-                        <span class="text-lg font-bold">12,547</span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between p-3 bg-background rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 bg-success rounded-full"></div>
-                            <span class="text-sm text-secondary">Successful Placements</span>
-                        </div>
-                        <span class="text-lg font-bold">892</span>
-                    </div>
-                    
-                    <div class="flex items-center justify-between p-3 bg-background rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3" style="background-color: var(--color-secondary)" class="rounded-full"></div>
-                            <span class="text-sm text-secondary">Revenue This Month</span>
-                        </div>
-                        <span class="text-lg font-bold">$84,329</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Content Management Section -->
-        <div class="card mb-8">
-            <div class="border-b" style="border-color: var(--color-border)">
-                <div class="px-6">
-                    <div class="flex space-x-8">
-                        <button class="border-b-2 border-primary text-primary py-4 px-1 text-sm font-medium" id="contentTab">
-                            Content Management
-                        </button>
-                        <button class="border-b-2 border-transparent text-secondary py-4 px-1 text-sm font-medium" id="reportsTab">
-                            Reports & Analytics
-                        </button>
-                        <button class="border-b-2 border-transparent text-secondary py-4 px-1 text-sm font-medium" id="settingsTab">
-                            System Settings
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Management Tab -->
-            <div class="p-6" id="contentContent">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Flagged Content Review</h4>
-                        <div class="overflow-x-auto">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Reporter</th>
-                                        <th>Reason</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-medium">Job Post</td>
-                                        <td>user_3847</td>
-                                        <td>Inappropriate content</td>
-                                        <td><span class="status-indicator status-warning">Under Review</span></td>
-                                        <td><button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Review</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium">Profile</td>
-                                        <td>user_2905</td>
-                                        <td>Fake information</td>
-                                        <td><span class="status-indicator status-error">Resolved</span></td>
-                                        <td><button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">View</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium">Comment</td>
-                                        <td>user_7291</td>
-                                        <td>Harassment</td>
-                                        <td><span class="status-indicator status-warning">Pending</span></td>
-                                        <td><button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Review</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Featured Content</h4>
-                        <div class="space-y-3">
-                            <div class="p-3 bg-background rounded-lg">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm font-medium">Senior Developer Position</p>
-                                        <p class="text-xs text-secondary">TechCorp Inc. • Featured until Dec 15</p>
-                                    </div>
-                                    <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                </div>
-                            </div>
-                            
-                            <div class="p-3 bg-background rounded-lg">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm font-medium">Marketing Manager Role</p>
-                                        <p class="text-xs text-secondary">StartupCo • Featured until Dec 20</p>
-                                    </div>
-                                    <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
-                                </div>
-                            </div>
-                            
-                            <div class="p-3 bg-background rounded-lg">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-sm font-medium">Add New Featured Content</p>
-                                        <p class="text-xs text-secondary">Promote jobs or companies</p>
-                                    </div>
-                                    <button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Reports & Analytics Tab -->
-            <div class="p-6 hidden" id="reportsContent">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2">
-                        <h4 class="text-lg font-semibold mb-4">Generate Reports</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="p-4 bg-background rounded-lg">
-                                <h5 class="font-medium mb-2">User Activity Report</h5>
-                                <p class="text-sm text-secondary mb-3">Detailed user engagement metrics</p>
-                                <button class="btn-primary w-full">Generate Report</button>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <h5 class="font-medium mb-2">Financial Summary</h5>
-                                <p class="text-sm text-secondary mb-3">Revenue and transaction analysis</p>
-                                <button class="btn-primary w-full">Generate Report</button>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <h5 class="font-medium mb-2">Job Performance Metrics</h5>
-                                <p class="text-sm text-secondary mb-3">Job posting success rates</p>
-                                <button class="btn-primary w-full">Generate Report</button>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <h5 class="font-medium mb-2">Platform Health Report</h5>
-                                <p class="text-sm text-secondary mb-3">System performance overview</p>
-                                <button class="btn-primary w-full">Generate Report</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Recent Reports</h4>
-                        <div class="space-y-3">
-                            <div class="p-3 bg-background rounded-lg">
-                                <p class="text-sm font-medium">Q4 User Report</p>
-                                <p class="text-xs text-secondary">Generated 2 days ago</p>
-                                <button class="btn-secondary mt-2" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Download</button>
-                            </div>
-                            
-                            <div class="p-3 bg-background rounded-lg">
-                                <p class="text-sm font-medium">Monthly Financial</p>
-                                <p class="text-xs text-secondary">Generated 5 days ago</p>
-                                <button class="btn-secondary mt-2" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Download</button>
-                            </div>
-                            
-                            <div class="p-3 bg-background rounded-lg">
-                                <p class="text-sm font-medium">Platform Analytics</p>
-                                <p class="text-xs text-secondary">Generated 1 week ago</p>
-                                <button class="btn-secondary mt-2" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Download</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- System Settings Tab -->
-            <div class="p-6 hidden" id="settingsContent">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Platform Configuration</h4>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-background rounded-lg">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium">User Registration</span>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer" checked>
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                    </label>
-                                </div>
-                                <p class="text-xs text-secondary">Allow new users to register</p>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium">Auto-approve Job Posts</span>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer">
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                    </label>
-                                </div>
-                                <p class="text-xs text-secondary">Automatically approve job postings</p>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm font-medium">Email Notifications</span>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" class="sr-only peer" checked>
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                    </label>
-                                </div>
-                                <p class="text-xs text-secondary">Send system email notifications</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-lg font-semibold mb-4">Security Settings</h4>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-background rounded-lg">
-                                <p class="text-sm font-medium mb-2">Password Requirements</p>
-                                <select class="w-full select">
-                                    <option>Standard (8+ characters)</option>
-                                    <option>Strong (12+ characters + symbols)</option>
-                                    <option>Maximum (16+ characters + complexity)</option>
-                                </select>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <p class="text-sm font-medium mb-2">Session Timeout</p>
-                                <select class="w-full select">
-                                    <option>30 minutes</option>
-                                    <option>1 hour</option>
-                                    <option>4 hours</option>
-                                    <option>24 hours</option>
-                                </select>
-                            </div>
-                            
-                            <div class="p-4 bg-background rounded-lg">
-                                <p class="text-sm font-medium mb-2">Two-Factor Authentication</p>
-                                <button class="btn-primary w-full">Configure 2FA</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Status Footer -->
-        <div style="position: fixed; bottom: 1rem; right: 1rem;">
-            <div class="flex items-center space-x-2 bg-white border rounded-lg px-3 py-2" style="border-color: var(--color-border); box-shadow: var(--shadow-md);">
-                <div class="w-2 h-2 bg-success rounded-full animate-pulse"></div>
-                <span class="text-xs text-secondary">Admin Session Active</span>
-                <span class="text-xs text-secondary">•</span>
-                <span class="text-xs text-secondary">Last sync: 30s ago</span>
+        <h2 class="text-2xl font-semibold mb-6">Settings Log</h2>
+        <div class="card p-6 mb-6">
+            <h3 class="text-lg font-semibold mb-4">Recent Settings Changes</h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Admin</th>
+                            <th>Setting Changed</th>
+                            <th>Old Value</th>
+                            <th>New Value</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-06-20 14:22</td>
+                            <td>John Doe</td>
+                            <td>Email Notifications</td>
+                            <td>Enabled</td>
+                            <td>Disabled</td>
+                            <td>Turned off for maintenance</td>
+                        </tr>
+                        <tr>
+                            <td>2024-06-18 09:10</td>
+                            <td>Jane Smith</td>
+                            <td>User Registration</td>
+                            <td>Disabled</td>
+                            <td>Enabled</td>
+                            <td>Open registration for new users</td>
+                        </tr>
+                        <tr>
+                            <td>2024-06-15 17:45</td>
+                            <td>Admin</td>
+                            <td>Password Policy</td>
+                            <td>Standard</td>
+                            <td>Strong</td>
+                            <td>Security improvement</td>
+                        </tr>
+                        <tr>
+                            <td>2024-06-12 11:30</td>
+                            <td>Mike Chen</td>
+                            <td>Session Timeout</td>
+                            <td>1 hour</td>
+                            <td>30 minutes</td>
+                            <td>Compliance update</td>
+                        </tr>
+                        <tr>
+                            <td>2024-06-10 08:05</td>
+                            <td>Lisa Chang</td>
+                            <td>Auto-approve Job Posts</td>
+                            <td>Enabled</td>
+                            <td>Disabled</td>
+                            <td>Manual review required</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>

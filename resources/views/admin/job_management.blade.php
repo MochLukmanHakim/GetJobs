@@ -440,18 +440,12 @@
             <div class="card p-6 mb-6">
                 <div class="flex items-center justify-between mb-4">
                     <div>
-                        <h2 class="title">Job Management</h2>
-                        <p class="subtitle">Manage job postings, status, and applications</p>
+                        <h2 class="title">Job Management Log</h2>
+                        <p class="subtitle">View job postings, status, and applications</p>
                     </div>
-                    <button class="btn btn-primary" onclick="openModal('add')">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                        </svg>
-                        Add New Job
-                    </button>
+                    <!-- Hapus tombol Add New Job -->
                 </div>
-
-                <!-- Filters -->
+                <!-- Filters tetap boleh dipakai untuk log -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                         <label class="form-label">Category</label>
@@ -493,28 +487,22 @@
             <!-- Jobs Table -->
             <div class="card p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-semibold">Job Listings</h3>
-                    <div class="flex gap-2">
-                        <button class="btn btn-outline" onclick="bulkAction('activate')">Bulk Activate</button>
-                        <button class="btn btn-outline" onclick="bulkAction('deactivate')">Bulk Deactivate</button>
-                        <button class="btn btn-error" onclick="bulkAction('delete')">Bulk Delete</button>
-                    </div>
+                    <h3 class="font-semibold">Job Listings Log</h3>
+                    <!-- Hapus tombol bulk action -->
                 </div>
 
                 <div class="table-container">
                     <table class="table" id="jobsTable">
                         <thead>
                             <tr>
-                                <th>
-                                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
-                                </th>
+                                <!-- Hapus checkbox select all -->
                                 <th>Job Title</th>
                                 <th>Company</th>
                                 <th>Category</th>
                                 <th>Salary Range</th>
                                 <th>Status</th>
                                 <th>Created</th>
-                                <th>Actions</th>
+                                <!-- Hapus kolom Actions -->
                             </tr>
                         </thead>
                         <tbody id="jobsTableBody">
@@ -537,65 +525,8 @@
         </div>
     </main>
 
-    <!-- Add/Edit Job Modal -->
-    <div class="modal" id="jobModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">Add New Job</h3>
-                <button onclick="closeModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="jobForm">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="form-group">
-                            <label class="form-label">Job Title *</label>
-                            <input type="text" class="form-input" id="jobTitle" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Company *</label>
-                            <input type="text" class="form-input" id="company" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Category *</label>
-                            <select class="form-select" id="category" required>
-                                <option value="">Select Category</option>
-                                <option value="Software Engineering">Software Engineering</option>
-                                <option value="Data Science">Data Science</option>
-                                <option value="Product Management">Product Management</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Sales">Sales</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Location</label>
-                            <input type="text" class="form-input" id="location" placeholder="e.g., Remote, California">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Min Salary</label>
-                            <input type="number" class="form-input" id="minSalary" placeholder="80000">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Max Salary</label>
-                            <input type="number" class="form-input" id="maxSalary" placeholder="120000">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Job Description *</label>
-                        <textarea class="form-textarea" id="jobDescription" required placeholder="Enter job description..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Requirements</label>
-                        <textarea class="form-textarea" id="requirements" placeholder="Enter job requirements..."></textarea>
-                    </div>
-                    <input type="hidden" id="jobId">
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="saveJob()">Save Job</button>
-            </div>
-        </div>
-    </div>
+    <!-- Hapus modal Add/Edit Job -->
+    <!-- <div class="modal" id="jobModal"> ... </div> -->
 
     <script>
         // Sample job data
@@ -678,7 +609,7 @@
             updatePagination();
         });
 
-        // Render table
+        // Render table (log only, no checkbox, no actions)
         function renderTable() {
             const tbody = document.getElementById('jobsTableBody');
             const start = (currentPage - 1) * jobsPerPage;
@@ -687,9 +618,6 @@
 
             tbody.innerHTML = pageJobs.map(job => `
                 <tr>
-                    <td>
-                        <input type="checkbox" class="job-checkbox" value="${job.id}">
-                    </td>
                     <td class="font-medium">${job.title}</td>
                     <td>${job.company}</td>
                     <td>
@@ -704,23 +632,6 @@
                         </span>
                     </td>
                     <td>${formatDate(job.created)}</td>
-                    <td>
-                        <div class="flex gap-2">
-                            <button class="btn btn-outline" onclick="editJob(${job.id})" style="padding: 0.25rem 0.5rem;">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                                </svg>
-                            </button>
-                            <button class="btn ${job.status === 'active' ? 'btn-warning' : 'btn-success'}" onclick="toggleJobStatus(${job.id})" style="padding: 0.25rem 0.5rem;">
-                                ${job.status === 'active' ? 'Deactivate' : 'Activate'}
-                            </button>
-                            <button class="btn btn-error" onclick="deleteJob(${job.id})" style="padding: 0.25rem 0.5rem;">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
                 </tr>
             `).join('');
 
@@ -748,50 +659,6 @@
 
             currentPage = 1;
             renderTable();
-        }
-
-        // Modal functions
-        function openModal(mode, jobId = null) {
-            const modal = document.getElementById('jobModal');
-            const modalTitle = document.getElementById('modalTitle');
-            
-            if (mode === 'add') {
-                modalTitle.textContent = 'Add New Job';
-                resetForm();
-                editingJobId = null;
-            } else if (mode === 'edit' && jobId) {
-                modalTitle.textContent = 'Edit Job';
-                editingJobId = jobId;
-                populateForm(jobId);
-            }
-            
-            modal.classList.add('show');
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('jobModal');
-            modal.classList.remove('show');
-            resetForm();
-        }
-
-        function resetForm() {
-            document.getElementById('jobForm').reset();
-            document.getElementById('jobId').value = '';
-        }
-
-        function populateForm(jobId) {
-            const job = jobs.find(j => j.id === jobId);
-            if (job) {
-                document.getElementById('jobTitle').value = job.title;
-                document.getElementById('company').value = job.company;
-                document.getElementById('category').value = job.category;
-                document.getElementById('location').value = job.location;
-                document.getElementById('minSalary').value = job.minSalary;
-                document.getElementById('maxSalary').value = job.maxSalary;
-                document.getElementById('jobDescription').value = job.description;
-                document.getElementById('requirements').value = job.requirements;
-                document.getElementById('jobId').value = job.id;
-            }
         }
 
         // CRUD Operations
@@ -851,61 +718,6 @@
                 job.status = job.status === 'active' ? 'inactive' : 'active';
                 renderTable();
                 alert(`Job ${job.status === 'active' ? 'activated' : 'deactivated'} successfully!`);
-            }
-        }
-
-        // Bulk actions
-        function toggleSelectAll() {
-            const selectAll = document.getElementById('selectAll');
-            const checkboxes = document.querySelectorAll('.job-checkbox');
-            
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAll.checked;
-            });
-        }
-
-        function getSelectedJobIds() {
-            const checkboxes = document.querySelectorAll('.job-checkbox:checked');
-            return Array.from(checkboxes).map(cb => parseInt(cb.value));
-        }
-
-        function bulkAction(action) {
-            const selectedIds = getSelectedJobIds();
-            if (selectedIds.length === 0) {
-                alert('Please select jobs to perform bulk action.');
-                return;
-            }
-
-            let confirmMessage = '';
-            switch (action) {
-                case 'activate':
-                    confirmMessage = `Activate ${selectedIds.length} job(s)?`;
-                    break;
-                case 'deactivate':
-                    confirmMessage = `Deactivate ${selectedIds.length} job(s)?`;
-                    break;
-                case 'delete':
-                    confirmMessage = `Delete ${selectedIds.length} job(s)? This action cannot be undone.`;
-                    break;
-            }
-
-            if (confirm(confirmMessage)) {
-                selectedIds.forEach(jobId => {
-                    if (action === 'delete') {
-                        jobs = jobs.filter(j => j.id !== jobId);
-                    } else {
-                        const job = jobs.find(j => j.id === jobId);
-                        if (job) {
-                            job.status = action === 'activate' ? 'active' : 'inactive';
-                        }
-                    }
-                });
-
-                // Uncheck select all
-                document.getElementById('selectAll').checked = false;
-                
-                filterJobs();
-                alert(`Bulk ${action} completed successfully!`);
             }
         }
 
