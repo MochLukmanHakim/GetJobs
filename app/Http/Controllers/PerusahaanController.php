@@ -90,10 +90,62 @@ class PerusahaanController extends Controller
         
         // Check if user owns this perusahaan
         if ($perusahaan->id_user !== Auth::id()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak memiliki akses untuk mengedit profil ini.'
+                ], 403);
+            }
             return redirect()->route('perusahaan.profile')
                 ->with('error', 'Anda tidak memiliki akses untuk mengedit profil ini.');
         }
 
+        // For inline editing (AJAX requests), we only validate the fields that are being updated
+        if ($request->ajax()) {
+            $rules = [];
+            if ($request->has('no_telp_perusahaan')) {
+                $rules['no_telp_perusahaan'] = 'nullable|string|max:20';
+            }
+            if ($request->has('bidang_industri')) {
+                $rules['bidang_industri'] = 'nullable|string|max:255';
+            }
+            if ($request->has('alamat_perusahaan')) {
+                $rules['alamat_perusahaan'] = 'nullable|string';
+            }
+            
+            $validator = Validator::make($request->all(), $rules);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            
+            // Update only the fields that are provided
+            $updateData = [];
+            if ($request->has('no_telp_perusahaan')) {
+                $updateData['no_telp_perusahaan'] = $request->no_telp_perusahaan;
+            }
+            if ($request->has('bidang_industri')) {
+                $updateData['bidang_industri'] = $request->bidang_industri;
+            }
+            if ($request->has('alamat_perusahaan')) {
+                $updateData['alamat_perusahaan'] = $request->alamat_perusahaan;
+            }
+            
+            if (!empty($updateData)) {
+                $perusahaan->update($updateData);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil berhasil diperbarui!'
+            ]);
+        }
+
+        // For regular form submissions (modal)
         $validator = Validator::make($request->all(), [
             'nama_perusahaan' => 'required|string|max:255',
             'deskripsi_perusahaan' => 'nullable|string',

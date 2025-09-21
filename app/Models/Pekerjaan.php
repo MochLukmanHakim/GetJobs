@@ -34,4 +34,20 @@ class Pekerjaan extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    /**
+     * Get all applicants for this job
+     */
+    public function pelamars()
+    {
+        return $this->hasMany(Pelamar::class, 'pekerjaan_id', 'id_pekerjaan');
+    }
+
+    /**
+     * Get the count of applicants for this job
+     */
+    public function getApplicantCountAttribute()
+    {
+        return $this->pelamars()->count();
+    }
 } 

@@ -249,7 +249,7 @@
         .profile-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.2s ease;
@@ -285,28 +285,31 @@
             justify-content: center;
             min-width: 0;
             flex: 1;
+            gap: 2px;
         }
 
         .profile-name {
             font-size: 13px;
             font-weight: 500;
             color: #111827;
-            line-height: 1.1;
+            line-height: 1.0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 120px;
-            margin-bottom: 1px;
+            margin-bottom: 0px;
+            transform: translateY(-1px);
         }
 
         .profile-email {
             font-size: 11px;
             color: #6B7280;
-            line-height: 1.1;
+            line-height: 1.0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 120px;
+            margin-top: 0px;
         }
 
         @keyframes headerSlideIn {
@@ -459,11 +462,6 @@
                         @endif
                     </div>
                     <div class="header-right">
-                        <button class="header-icon-btn message-btn">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M18.3333 9.23333C18.3405 10.2328 18.1377 11.2204 17.7392 12.1317C17.2434 13.2617 16.4662 14.2407 15.4811 14.9808C14.4959 15.7208 13.3372 16.1969 12.1333 16.3667C11.1338 16.5594 10.1045 16.5594 9.10499 16.3667L6.66666 18.3333L7.86833 15.8983C6.70629 15.2019 5.79131 14.1665 5.24166 12.9317C4.84312 12.0204 4.64035 11.0328 4.64749 10.0333C4.64749 8.68678 5.06653 7.37174 5.84581 6.26616C6.62509 5.16058 7.72601 4.32096 8.99832 3.86C9.90999 3.56167 10.8817 3.46928 11.8417 3.59C12.8017 3.71073 13.7221 4.04207 14.5317 4.56167C15.3413 5.08127 16.0169 5.77592 16.5027 6.59352C16.9884 7.41112 17.2717 8.32739 17.33 9.26833L18.3333 9.23333Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
                         <button class="header-icon-btn notification-icon" onclick="toggleNotificationSidebar()">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M15 6.66667C15 5.34058 14.4732 4.06881 13.5355 3.13115C12.5979 2.19348 11.3261 1.66667 10 1.66667C8.67392 1.66667 7.40215 2.19348 6.46447 3.13115C5.52678 4.06881 5 5.34058 5 6.66667C5 12.5 2.5 14.1667 2.5 14.1667H17.5C17.5 14.1667 15 12.5 15 6.66667Z" stroke="#6B7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

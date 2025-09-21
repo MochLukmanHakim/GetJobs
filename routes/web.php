@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PekerjaanController;
+use App\Http\Controllers\PelamarController;
 
 // Rute untuk halaman utama
 Route::get('/', function () {
@@ -18,11 +19,17 @@ Route::get('/welcome', function () {
     return view('welcome');
 })->name('welcome.alt');
 
-// Rute untuk pekerjaan
-Route::get('/pekerjaan', [PekerjaanController::class, 'index'])->name('pekerjaan.index');
-Route::post('/pekerjaan', [PekerjaanController::class, 'store'])->name('pekerjaan.store');
-Route::put('/pekerjaan/{id}', [PekerjaanController::class, 'update'])->name('pekerjaan.update');
-Route::delete('/pekerjaan/{id}', [PekerjaanController::class, 'destroy'])->name('pekerjaan.destroy');
+// Rute untuk pekerjaan (protected by company access middleware)
+Route::middleware(['company.access'])->group(function () {
+    Route::get('/pekerjaan', [PekerjaanController::class, 'index'])->name('pekerjaan.index');
+    Route::get('/pekerjaan/{id}', [PekerjaanController::class, 'show'])->name('pekerjaan.show');
+    Route::post('/pekerjaan', [PekerjaanController::class, 'store'])->name('pekerjaan.store');
+    Route::put('/pekerjaan/{id}', [PekerjaanController::class, 'update'])->name('pekerjaan.update');
+    Route::delete('/pekerjaan/{id}', [PekerjaanController::class, 'destroy'])->name('pekerjaan.destroy');
+    
+    // API endpoint untuk histori pekerjaan
+    Route::get('/api/job-history', [PekerjaanController::class, 'getJobHistory'])->name('api.job-history');
+});
 
 // Rute untuk halaman perusahaan
 Route::get('/perusahaan', [PerusahaanController::class, 'profile'])->name('perusahaan.profile');
@@ -36,40 +43,19 @@ Route::delete('/perusahaan/{id}', [PerusahaanController::class, 'destroy'])->nam
 // Rute untuk dashboard perusahaan
 Route::get('/perusahaan/dashboard', [PerusahaanController::class, 'profile'])->name('perusahaan.dashboard');
 
-// Rute untuk halaman lainnya
-Route::get('/pelamar', function () {
-    // Get all jobs with their titles and categories for search dropdown
-    $jobs = \App\Models\Pekerjaan::select('judul_pekerjaan', 'kategori_pekerjaan')
-        ->whereNotNull('judul_pekerjaan')
-        ->where('judul_pekerjaan', '!=', '')
-        ->get();
-    
-    // Apply the same display logic as in pekerjaan.blade.php
-    $categories = $jobs->map(function($job) {
-        $rawTitle = trim(preg_replace('/\s+/', ' ', $job->judul_pekerjaan ?? ''));
-        $words = $rawTitle !== '' ? preg_split('/\s+/', $rawTitle, -1, PREG_SPLIT_NO_EMPTY) : [];
-        $displayTitle = $rawTitle;
-        
-        // If only 2 words, append category
-        if (count($words) === 2) {
-            $catText = ucwords(str_replace(['-', '_'], ' ', $job->kategori_pekerjaan ?? ''));
-            if ($catText !== '') {
-                $displayTitle = $rawTitle.' '.$catText;
-            }
-        }
-        
-        return $displayTitle;
-    })
-    ->filter(function($title) {
-        return !empty($title);
-    })
-    ->unique()
-    ->sort()
-    ->values()
-    ->toArray();
-    
-    return view('pelamar', compact('categories'));
-})->name('pelamar');
+// Rute untuk pelamar (protected by company access middleware)
+Route::middleware(['company.access'])->group(function () {
+    Route::get('/pelamar', [PelamarController::class, 'index'])->name('pelamar.index');
+    Route::post('/pelamar', [PelamarController::class, 'store'])->name('pelamar.store');
+    Route::put('/pelamar/{id}/status', [PelamarController::class, 'updateStatus'])->name('pelamar.updateStatus');
+    Route::put('/pelamar/{pelamar}/pengumuman', [PelamarController::class, 'updatePengumuman'])->name('pelamar.updatePengumuman');
+    Route::post('/pelamar/{pelamar}/announcement', [PelamarController::class, 'sendAnnouncement'])->name('pelamar.sendAnnouncement');
+    Route::delete('/pelamar/{pelamar}', [PelamarController::class, 'destroy'])->name('pelamar.destroy');
+    Route::get('/pelamar/{pelamar}/cv', [PelamarController::class, 'viewCV'])->name('pelamar.viewCV');
+    Route::post('/pelamar/bulk-status', [PelamarController::class, 'bulkUpdateStatus'])->name('pelamar.bulkUpdateStatus');
+    Route::post('/pelamar/bulk-announcement', [PelamarController::class, 'bulkAnnouncement'])->name('pelamar.bulkAnnouncement');
+    Route::get('/pelamar/stats', [PelamarController::class, 'getStats'])->name('pelamar.stats');
+});
 
 Route::get('/statistik', function () {
     return view('statistik');
@@ -83,7 +69,7 @@ Route::get('/account', function () {
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::get('/signup', [UserController::class, 'signup'])->name('register');
 Route::post('/login', [UserController::class, 'logincheck'])->name('logincheck');
-Route::post('/signup', [UserController::class, 'registercheck'])->name('registercheck');
+Route::post('/signup', [UserController::class, 'registercheck'])->name('register.process');
 
 Route::get('/dashboard', [UserController::class, 'godashboard'])->name('dashboard');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');

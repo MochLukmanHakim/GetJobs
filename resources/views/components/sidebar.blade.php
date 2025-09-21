@@ -44,7 +44,7 @@
             </a>
         </div>
         <div class="nav-item">
-            <a href="/pelamar" class="nav-link {{ $activePage === 'pelamar' ? 'active' : '' }}" data-tooltip="Pelamar">
+            <a href="/pelamar" class="nav-link {{ $activePage === 'pelamar.index' ? 'active' : '' }}" data-tooltip="Pelamar">
                 <span class="nav-icon">
                     <i class="bi bi-people"></i>
                 </span>

@@ -60,23 +60,6 @@
         position: relative;
     }
 
-    .welcome-decoration {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 1;
-        pointer-events: none;
-    }
-
-    .decoration-element {
-        width: 100%;
-        height: auto;
-        opacity: 0.15;
-        filter: brightness(1.5);
-        transition: all 0.3s ease;
-    }
 
     .greeting-text {
         position: relative;
@@ -288,9 +271,6 @@
             gap: 20px;
         }
 
-        .decoration-element {
-            opacity: 0.1;
-        }
         
         .greeting-text h1 {
             font-size: 36px;
@@ -584,9 +564,6 @@
             background: #ef4444;
         }
 
-        .status-dot.draft {
-            background: #f59e0b;
-        }
 
         .status-dot.pending {
             background: #f59e0b;
@@ -609,9 +586,6 @@
             color: #dc2626;
         }
 
-        .status-text.draft {
-            color: #d97706;
-        }
 
         .status-text.pending {
             color: #d97706;
@@ -1102,9 +1076,6 @@
             <div class="greeting-text">
                 <h1>Hi, {{ Auth::user()->name ?? 'User' }}!</h1>
                 <p>Apa yang akan anda lakukan hari ini?</p>
-            </div>
-            <div class="welcome-decoration">
-                <img src="{{ asset('images/elemen-removebg-preview.png') }}" alt="Decoration" class="decoration-element">
             </div>
         </div>
         <div class="quick-actions">

@@ -36,19 +36,27 @@ class UserController extends Controller
 
     public function registercheck(Request $request){
         $validation = $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required',
+            'phone' => 'required|string|max:20',
+            'role' => 'required|in:jobseeker,company',
         ]);
 
-        // Hash password dan set userType
+        // Hash password and set userType based on role
         $validation['password'] = bcrypt($validation['password']);
-        $validation['userType'] = 'user';
+        
+        // Set userType based on role
+        if ($validation['role'] === 'company') {
+            $validation['userType'] = 'perusahaan';
+        } else {
+            $validation['userType'] = 'user';
+        }
 
         $user = User::create($validation);
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'Account created successfully!');
     }
 
     public function godashboard(){

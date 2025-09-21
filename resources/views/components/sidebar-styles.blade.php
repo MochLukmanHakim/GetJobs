@@ -294,16 +294,16 @@
     }
 
     .nav-link:hover {
-        background: #C7E0F6;
-        color: #2F4157;
+        background: rgba(0, 39, 70, 0.1);
+        color: #002746;
     }
     
 
     .nav-link.active {
-        background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+        background: #002746;
         color: white;
         font-weight: 600;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 8px rgba(0, 39, 70, 0.25);
     }
 
     .nav-icon {
@@ -348,8 +348,8 @@
     }
 
     .logout-btn:hover {
-        background: #C7E0F6;
-        color: #2F4157;
+        background: rgba(0, 39, 70, 0.1);
+        color: #002746;
     }
 
     .logout-btn .nav-icon {

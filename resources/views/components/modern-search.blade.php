@@ -5,7 +5,7 @@
             <input 
                 type="text" 
                 class="search-main-input" 
-                placeholder="Masukkan kata kunci..." 
+                placeholder="Cari nama, email, atau judul pekerjaan..." 
                 id="{{ $searchId ?? 'search-input' }}"
                 value="{{ request($searchParam ?? 'search') }}"
             >
@@ -21,7 +21,7 @@
                         <rect x="14" y="14" width="7" height="7"></rect>
                         <rect x="3" y="14" width="7" height="7"></rect>
                     </svg>
-                    <span class="dropdown-text">Categories</span>
+                    <span class="dropdown-text">Pekerjaan</span>
                     <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6,9 12,15 18,9"></polyline>
                     </svg>
@@ -57,6 +57,27 @@
                     @endforeach
                 </div>
             </div>
+            
+            @if(isset($pageType) && $pageType === 'pelamar')
+            <div class="dropdown-item">
+                <button type="button" class="search-dropdown-toggle" id="status-dropdown">
+                    <svg class="dropdown-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                    </svg>
+                    <span class="dropdown-text">Status</span>
+                    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 12,15 18,9"></polyline>
+                    </svg>
+                </button>
+                <div class="dropdown-menu" id="status-menu">
+                    <div class="dropdown-option" data-value="">Semua Status</div>
+                    <div class="dropdown-option" data-value="review">Review</div>
+                    <div class="dropdown-option" data-value="accepted">Diterima</div>
+                    <div class="dropdown-option" data-value="rejected">Ditolak</div>
+                </div>
+            </div>
+            @endif
         </div>
         
         <button type="button" class="search-button" onclick="performSearch()">
@@ -114,6 +135,8 @@
 .search-dropdown-wrapper {
     position: relative;
     flex-shrink: 0;
+    display: flex;
+    gap: 8px;
 }
 
 .dropdown-item {
@@ -214,7 +237,7 @@
 }
 
 .search-button {
-    background: #002746;
+    background: #000000;
     color: white;
     border: none;
     padding: 10px 16px;
@@ -231,7 +254,7 @@
 }
 
 .search-button:hover {
-    background: #003d5c;
+    background: #333333;
 }
 
 .search-button:active {
@@ -303,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dropdowns = document.querySelectorAll('.search-dropdown-toggle');
     const searchData = {
         category: '',
+        status: '',
         search: ''
     };
     
@@ -342,15 +366,25 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update toggle text
             const textSpan = toggle.querySelector('.dropdown-text');
-            if (value === '') {
-                textSpan.textContent = 'Categories';
-            } else {
-                textSpan.textContent = text;
+            if (toggle.id === 'categories-dropdown') {
+                if (value === '') {
+                    textSpan.textContent = 'Pekerjaan';
+                } else {
+                    textSpan.textContent = text;
+                }
+            } else if (toggle.id === 'status-dropdown') {
+                if (value === '') {
+                    textSpan.textContent = 'Status';
+                } else {
+                    textSpan.textContent = text;
+                }
             }
             
             // Store selection
             if (toggle.id === 'categories-dropdown') {
                 searchData.category = value;
+            } else if (toggle.id === 'status-dropdown') {
+                searchData.status = value;
             }
             
             // Close dropdown
@@ -404,58 +438,66 @@ function performSearch() {
 }
 
 function performApplicantSearch(searchTerm) {
-    const applicantContainers = document.querySelectorAll('.applicant-cards');
+    const applicantCards = document.querySelectorAll('.applicant-card');
     const categoryFilter = document.querySelector('#categories-dropdown .dropdown-text').textContent;
+    const statusFilter = document.querySelector('#status-dropdown .dropdown-text')?.textContent;
     
-    // First, hide all containers
-    applicantContainers.forEach(container => {
-        container.style.display = 'none';
+    console.log('Applicant search filters:', { searchTerm, categoryFilter, statusFilter });
+    
+    // Apply filters to all applicant cards
+    applicantCards.forEach(card => {
+        const name = card.querySelector('.applicant-details h4')?.textContent.toLowerCase() || '';
+        const email = card.querySelector('.applicant-email')?.textContent.toLowerCase() || '';
+        
+        // Get job title from data attribute or find it in the card
+        const jobTitle = card.getAttribute('data-job-category')?.toLowerCase() || '';
+        
+        // Get status from the card
+        let cardStatus = 'review'; // default
+        if (card.querySelector('.status-text.accepted')) {
+            cardStatus = 'accepted';
+        } else if (card.querySelector('.status-text.rejected')) {
+            cardStatus = 'rejected';
+        } else if (card.querySelector('.status-chooser')) {
+            cardStatus = 'review';
+        }
+        
+        let showCard = true;
+        
+        // Search term filter - now includes job title
+        if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            if (!name.includes(searchLower) && 
+                !email.includes(searchLower) && 
+                !jobTitle.includes(searchLower)) {
+                showCard = false;
+            }
+        }
+        
+        // Category filter (job title filter)
+        if (categoryFilter && categoryFilter !== 'Pekerjaan' && categoryFilter !== 'Semua Pekerjaan') {
+            if (jobTitle !== categoryFilter.toLowerCase()) {
+                showCard = false;
+            }
+        }
+        
+        // Status filter
+        if (statusFilter && statusFilter !== 'Status' && statusFilter !== 'Semua Status') {
+            const filterStatus = statusFilter.toLowerCase() === 'diterima' ? 'accepted' : 
+                               statusFilter.toLowerCase() === 'ditolak' ? 'rejected' : 
+                               statusFilter.toLowerCase();
+            if (cardStatus !== filterStatus) {
+                showCard = false;
+            }
+        }
+        
+        card.style.display = showCard ? 'block' : 'none';
     });
     
-    // If category filter is selected, show only matching containers
-    if (categoryFilter && categoryFilter !== 'Categories') {
-        applicantContainers.forEach(container => {
-            const containerCategory = container.id;
-            if (containerCategory === categoryFilter) {
-                container.style.display = 'block';
-                
-                // Apply search term filter within this container
-                const applicantCards = container.querySelectorAll('.applicant-card');
-                applicantCards.forEach(card => {
-                    const name = card.querySelector('.applicant-details h4')?.textContent.toLowerCase() || '';
-                    const email = card.querySelector('.applicant-email')?.textContent.toLowerCase() || '';
-                    
-                    let showCard = true;
-                    
-                    // Search term filter
-                    if (searchTerm && !name.includes(searchTerm.toLowerCase()) && !email.includes(searchTerm.toLowerCase())) {
-                        showCard = false;
-                    }
-                    
-                    card.style.display = showCard ? 'block' : 'none';
-                });
-            }
-        });
-    } else {
-        // No category filter, show all containers and apply search term filter
-        applicantContainers.forEach(container => {
-            container.style.display = 'block';
-            
-            const applicantCards = container.querySelectorAll('.applicant-card');
-            applicantCards.forEach(card => {
-                const name = card.querySelector('.applicant-details h4')?.textContent.toLowerCase() || '';
-                const email = card.querySelector('.applicant-email')?.textContent.toLowerCase() || '';
-                
-                let showCard = true;
-                
-                // Search term filter
-                if (searchTerm && !name.includes(searchTerm.toLowerCase()) && !email.includes(searchTerm.toLowerCase())) {
-                    showCard = false;
-                }
-                
-                card.style.display = showCard ? 'block' : 'none';
-            });
-        });
+    // Show/hide the applicant cards container
+    const applicantContainer = document.querySelector('.applicant-cards');
+    if (applicantContainer) {
+        applicantContainer.style.display = 'block';
     }
 }
 
@@ -566,10 +608,15 @@ function initializeJobView() {
         console.log('Showing job card:', card.querySelector('.job-details h4')?.textContent);
     });
     
-    // Reset dropdown to default state
+    // Reset dropdowns to default state
     const categoryDropdown = document.querySelector('#categories-dropdown .dropdown-text');
+    const statusDropdown = document.querySelector('#status-dropdown .dropdown-text');
+    
     if (categoryDropdown) {
-        categoryDropdown.textContent = 'Categories';
+        categoryDropdown.textContent = 'Pekerjaan';
+    }
+    if (statusDropdown) {
+        statusDropdown.textContent = 'Status';
     }
 }
 </script>

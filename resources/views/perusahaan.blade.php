@@ -615,7 +615,7 @@
         }
 
         .edit-btn, .create-btn {
-            background: linear-gradient(135deg, #577C8E 0%, #263446 100%);
+            background: #000000;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -625,11 +625,113 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .edit-btn:hover, .create-btn:hover {
+            background: #333333;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(87, 124, 142, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .edit-btn.save-mode {
+            background: #10b981;
+        }
+
+        .edit-btn.save-mode:hover {
+            background: #059669;
+        }
+
+        /* Inline Editing Styles */
+        .profile-info-value.editable {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .profile-info-value.editable:hover {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .profile-info-value.editing {
+            background: #f0f9ff;
+            border-color: #002746;
+        }
+
+        .profile-edit-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #002746;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            background: white;
+            transition: all 0.2s ease;
+            margin-top: 4px;
+        }
+
+        .profile-edit-input:focus {
+            outline: none;
+            border-color: #003a5c;
+            box-shadow: 0 0 0 3px rgba(0, 39, 70, 0.1);
+        }
+
+        .profile-edit-input[data-field="alamat_perusahaan"] {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .edit-mode-active .profile-info-value.editable {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .save-cancel-buttons {
+            display: none;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .save-cancel-buttons.show {
+            display: flex;
+        }
+
+        .btn-save-inline, .btn-cancel-inline {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-save-inline {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-save-inline:hover {
+            background: #059669;
+        }
+
+        .btn-cancel-inline {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-cancel-inline:hover {
+            background: #e5e7eb;
         }
 
         /* Responsive layout for smaller screens */
@@ -925,13 +1027,19 @@
                     <div class="profile-status">{{ $perusahaan ? 'Verified Company' : 'Unverified Company' }}</div>
                     <div class="profile-info">
                         <div class="profile-info-label">Email</div>
-                                                 <div class="profile-info-value">{{ Auth::user()->email ?? 'email@perusahaan.com' }}</div>
+                        <div class="profile-info-value" data-field="email">{{ Auth::user()->email ?? 'email@perusahaan.com' }}</div>
+                        
                         <div class="profile-info-label">Telepon</div>
-                        <div class="profile-info-value">{{ $perusahaan->no_telp_perusahaan ?? 'Belum diisi' }}</div>
+                        <div class="profile-info-value editable" data-field="no_telp_perusahaan">{{ $perusahaan->no_telp_perusahaan ?? 'Belum diisi' }}</div>
+                        <input type="text" class="profile-edit-input" data-field="no_telp_perusahaan" value="{{ $perusahaan->no_telp_perusahaan ?? '' }}" style="display: none;">
+                        
                         <div class="profile-info-label">Alamat</div>
-                        <div class="profile-info-value">{{ $perusahaan->alamat_perusahaan ?? 'Belum diisi' }}</div>
+                        <div class="profile-info-value editable" data-field="alamat_perusahaan">{{ $perusahaan->alamat_perusahaan ?? 'Belum diisi' }}</div>
+                        <textarea class="profile-edit-input" data-field="alamat_perusahaan" style="display: none;">{{ $perusahaan->alamat_perusahaan ?? '' }}</textarea>
+                        
                         <div class="profile-info-label">Bidang Industri</div>
-                        <div class="profile-info-value">{{ $perusahaan->bidang_industri ?? 'Belum diisi' }}</div>
+                        <div class="profile-info-value editable" data-field="bidang_industri">{{ $perusahaan->bidang_industri ?? 'Belum diisi' }}</div>
+                        <input type="text" class="profile-edit-input" data-field="bidang_industri" value="{{ $perusahaan->bidang_industri ?? '' }}" style="display: none;">
                         
                         <!-- Media Sosial Section -->
                         <div class="profile-info-label" style="margin-top: 16px;">Media Sosial</div>
@@ -955,16 +1063,27 @@
                                 <div class="profile-social-name">Twitter</div>
                             </a>
                         </div>
+                        
+                        <!-- Edit Button Below Social Media -->
+                        <div class="profile-actions">
+                            <button class="edit-btn" onclick="toggleInlineEdit()" id="editToggleBtn">
+                                <i class="bi bi-pencil-square"></i>
+                                <span id="editBtnText">Edit Profil</span>
+                            </button>
+                            
+                            <!-- Save/Cancel Buttons (Hidden by default) -->
+                            <div class="save-cancel-buttons" id="saveCancelButtons">
+                                <button class="btn-save-inline" onclick="saveInlineChanges()">
+                                    <i class="bi bi-check-lg"></i>
+                                    Simpan
+                                </button>
+                                <button class="btn-cancel-inline" onclick="cancelInlineEdit()">
+                                    <i class="bi bi-x-lg"></i>
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    @if($perusahaan)
-                        <div class="profile-actions">
-                            <button class="edit-btn" onclick="openEditModal()">Edit Profil</button>
-                        </div>
-                    @else
-                        <div class="profile-actions">
-                            <!-- Removed the button -->
-                        </div>
-                    @endif
                 </div>
                 <!-- Kanan: Metrik dan Info Tambahan -->
                 <div class="content-right">
@@ -1194,5 +1313,221 @@
                 openEditModal();
             });
         @endif
+
+        // Inline Editing Functionality
+        let isEditMode = false;
+        let originalValues = {};
+
+        function toggleInlineEdit() {
+            const editBtn = document.getElementById('editToggleBtn');
+            const editBtnText = document.getElementById('editBtnText');
+            const saveCancelButtons = document.getElementById('saveCancelButtons');
+            const profileCard = document.querySelector('.profile-card');
+            
+            if (!isEditMode) {
+                // Enter edit mode
+                isEditMode = true;
+                profileCard.classList.add('edit-mode-active');
+                
+                // Change button appearance
+                editBtn.classList.add('save-mode');
+                editBtnText.textContent = 'Mode Edit Aktif';
+                editBtn.querySelector('i').className = 'bi bi-pencil-fill';
+                
+                // Show save/cancel buttons
+                saveCancelButtons.classList.add('show');
+                
+                // Store original values
+                document.querySelectorAll('.profile-info-value.editable').forEach(element => {
+                    const field = element.getAttribute('data-field');
+                    originalValues[field] = element.textContent.trim();
+                });
+                
+                // Make fields clickable
+                document.querySelectorAll('.profile-info-value.editable').forEach(element => {
+                    element.addEventListener('click', editField);
+                    element.style.cursor = 'pointer';
+                });
+                
+            } else {
+                // Exit edit mode
+                exitEditMode();
+            }
+        }
+
+        function editField(event) {
+            if (!isEditMode) return;
+            
+            const valueElement = event.target;
+            const field = valueElement.getAttribute('data-field');
+            const inputElement = document.querySelector(`.profile-edit-input[data-field="${field}"]`);
+            
+            if (inputElement && valueElement.style.display !== 'none') {
+                // Hide value, show input
+                valueElement.style.display = 'none';
+                inputElement.style.display = 'block';
+                inputElement.focus();
+                
+                // Add blur event to save changes
+                inputElement.addEventListener('blur', function() {
+                    updateFieldValue(field);
+                });
+                
+                // Add enter key to save changes
+                inputElement.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && inputElement.tagName !== 'TEXTAREA') {
+                        updateFieldValue(field);
+                    }
+                });
+            }
+        }
+
+        function updateFieldValue(field) {
+            const valueElement = document.querySelector(`.profile-info-value[data-field="${field}"]`);
+            const inputElement = document.querySelector(`.profile-edit-input[data-field="${field}"]`);
+            
+            if (valueElement && inputElement) {
+                const newValue = inputElement.value.trim();
+                valueElement.textContent = newValue || 'Belum diisi';
+                
+                // Hide input, show value
+                inputElement.style.display = 'none';
+                valueElement.style.display = 'block';
+            }
+        }
+
+        function saveInlineChanges() {
+            // Collect all changed values
+            const formData = new FormData();
+            let hasChanges = false;
+            
+            document.querySelectorAll('.profile-edit-input').forEach(input => {
+                const field = input.getAttribute('data-field');
+                const newValue = input.value.trim();
+                const originalValue = originalValues[field] === 'Belum diisi' ? '' : originalValues[field];
+                
+                if (newValue !== originalValue) {
+                    formData.append(field, newValue);
+                    hasChanges = true;
+                }
+            });
+            
+            if (!hasChanges) {
+                exitEditMode();
+                return;
+            }
+            
+            // Add CSRF token and method
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('_method', 'PUT');
+            
+            // Show loading state
+            const saveBtn = document.querySelector('.btn-save-inline');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Menyimpan...';
+            saveBtn.disabled = true;
+            
+            // Send AJAX request
+            fetch('{{ route("perusahaan.update", $perusahaan->id_perusahaan ?? 0) }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    showToast('Profil berhasil diperbarui!', 'success');
+                    exitEditMode();
+                } else {
+                    showToast('Gagal memperbarui profil: ' + (data.message || 'Unknown error'), 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Terjadi kesalahan saat menyimpan perubahan', 'error');
+            })
+            .finally(() => {
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            });
+        }
+
+        function cancelInlineEdit() {
+            // Restore original values
+            document.querySelectorAll('.profile-info-value.editable').forEach(element => {
+                const field = element.getAttribute('data-field');
+                const inputElement = document.querySelector(`.profile-edit-input[data-field="${field}"]`);
+                
+                if (originalValues[field]) {
+                    element.textContent = originalValues[field];
+                    if (inputElement) {
+                        inputElement.value = originalValues[field] === 'Belum diisi' ? '' : originalValues[field];
+                    }
+                }
+                
+                // Hide input, show value
+                if (inputElement) {
+                    inputElement.style.display = 'none';
+                }
+                element.style.display = 'block';
+            });
+            
+            exitEditMode();
+        }
+
+        function exitEditMode() {
+            isEditMode = false;
+            const editBtn = document.getElementById('editToggleBtn');
+            const editBtnText = document.getElementById('editBtnText');
+            const saveCancelButtons = document.getElementById('saveCancelButtons');
+            const profileCard = document.querySelector('.profile-card');
+            
+            // Reset button appearance
+            profileCard.classList.remove('edit-mode-active');
+            editBtn.classList.remove('save-mode');
+            editBtnText.textContent = 'Edit Profil';
+            editBtn.querySelector('i').className = 'bi bi-pencil-square';
+            
+            // Hide save/cancel buttons
+            saveCancelButtons.classList.remove('show');
+            
+            // Remove click listeners
+            document.querySelectorAll('.profile-info-value.editable').forEach(element => {
+                element.removeEventListener('click', editField);
+                element.style.cursor = 'default';
+            });
+            
+            // Hide all inputs, show all values
+            document.querySelectorAll('.profile-edit-input').forEach(input => {
+                input.style.display = 'none';
+            });
+            document.querySelectorAll('.profile-info-value.editable').forEach(value => {
+                value.style.display = 'block';
+            });
+        }
+
+        function showToast(message, type = 'info') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type === 'success' ? 'success' : 'error'}`;
+            toast.style.position = 'fixed';
+            toast.style.top = '20px';
+            toast.style.right = '20px';
+            toast.style.zIndex = '9999';
+            toast.style.minWidth = '300px';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3000);
+        }
     </script>
     @endpush

@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PekerjaanSeeder::class,
             PerusahaanSeeder::class,
+            PelamarSeeder::class,
+            MultiCompanySeeder::class, // Add multi-company data
+            ClosedJobsSeeder::class, // Add closed jobs with real applicants data
         ]);
     }
 }

@@ -3,18 +3,19 @@
 @section('title', 'Manajemen Pelamar - GetJobs')
 @section('page-title', 'Manajemen Pelamar')
 
-@section('header-actions')
-@endsection
-
 @php
     $activePage = 'pelamar';
     $pageType = 'pelamar';
 @endphp
 
 @push('styles')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
     /* Pelamar page specific styles */
     /* Content specific styles */
+
+
+
 
     /* Page Header */
     .page-header {
@@ -171,6 +172,7 @@
             border-radius: 8px;
             margin-bottom: 12px;
             border: 1px solid #e5e7eb;
+            transition: margin-left 0.3s ease;
         }
 
         .header-item {
@@ -214,10 +216,10 @@
         .checkbox-column {
             position: absolute;
             left: 10px;
-            top: 60px; /* Align with first row after header */
+            top: 108px; /* Align with first applicant card after header */
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 8px; /* Match the gap between applicant cards */
             z-index: 10;
             opacity: 0;
             visibility: hidden;
@@ -230,14 +232,13 @@
         }
         
         .checkbox-item {
-            height: 64px; /* Match applicant card height */
+            height: 56px; /* Match applicant card content height (padding 16px top + bottom = 32px, content ~24px) */
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 8px;
-            
-            
-            
+            margin: 0;
+            margin-bottom: 8px; /* Match the margin-bottom of applicant cards */
+            padding: 16px 0; /* Match applicant card vertical padding */
         }
         
         .table-card {
@@ -245,10 +246,12 @@
         }
         
         .table-with-checkboxes.show-checkboxes .table-card,
-        .table-with-checkboxes.show-checkboxes .table-header-row,
-        .table-with-checkboxes.show-checkboxes .applicant-cards,
-        .table-with-checkboxes.show-checkboxes .applicant-card {
-            margin-left: 20px;
+        .table-with-checkboxes.show-checkboxes .applicant-cards {
+            margin-left: 50px;
+        }
+        
+        .table-with-checkboxes.show-checkboxes .table-header-row {
+            margin-left: 50px;
         }
 
         /* Card-based Table Design */
@@ -279,13 +282,29 @@
             gap: 12px;
             align-items: center;
         }
+        
+        .applicant-card {
+            position: relative;
+        }
+        
+        .applicant-checkbox {
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+        
         .applicant-info { 
             grid-area: info; 
             display: flex;
             align-items: center;
             justify-content: flex-start;
             gap: 12px;
-            padding-left: 12px;
         }
         .applicant-email { 
             grid-area: email; 
@@ -442,7 +461,8 @@
         }
 
         .status-text.review {
-            display: none;
+            background: #f3f4f6;
+            color: #6b7280;
         }
 
         .status-chooser {
@@ -529,17 +549,17 @@
         }
 
         .announcement-btn {
-            background: white;
-            color: rgb(6, 34, 80);
-            border: 2px solid rgb(6, 34, 80);
-            border-radius: 4px;
+            background: #f8fafc;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
             white-space: nowrap;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             z-index: 10;
             position: relative;
             display: flex;
@@ -549,9 +569,10 @@
         }
 
         .announcement-btn:hover {
-            background: rgb(6, 34, 80);
-            color: white;
+            background: #e2e8f0;
+            color: #334155;
             transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .announcement-btn:active {
@@ -667,14 +688,14 @@
         /* Controls Container */
         .controls-container {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
+            margin-bottom: 24px;
             gap: 20px;
         }
         
         .select-all-container {
-            display: flex;
+            display: flex !important;
             align-items: center;
             gap: 8px;
             padding: 8px 12px;
@@ -684,67 +705,91 @@
             font-size: 14px;
             color: #475569;
             font-weight: 500;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
         
         .right-controls {
-            display: flex;
+            display: flex !important;
             align-items: center;
             gap: 12px;
+            visibility: visible !important;
         }
-        .search-input-group {
-            position: relative;
-            width: 350px;
-            max-width: 100%;
-            margin-left: 0 !important;
+        
+
+        /* Job Group Styling */
+        .job-group {
+            margin-bottom: 32px;
         }
-        .search-input {
-            width: 100%;
-            padding: 9px 12px 9px 36px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 14px;
-            background: #fff;
-            transition: border 0.2s;
-        }
-        .search-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
-        .search-icon {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            color: #9ca3af;
-            pointer-events: none;
-        }
-        .filter-btn {
+        
+        .job-group-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 8px;
-            border: 0px solid #e5e7eb;
-            background: #fff;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s, border 0.2s;
-            margin-left: 8px;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .filter-btn:hover {
-            background: #f3f4f6;
-            border-color: #cbd5e1;
+        
+        .job-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
         }
-        .filter-btn svg {
-            display: block;
+        
+        .applicant-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Job Filter Section */
+        .job-filter-section {
+            width: 100%;
+            margin-bottom: 20px;
         }
 
         /* Job Filter Tabs */
         .job-filter-tabs {
+            display: flex;
+            gap: 8px;
             margin: 0;
-            overflow: hidden;
-            flex: 1;
+            overflow-x: auto;
+            padding: 4px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .job-filter-tab {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .job-filter-tab:hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .job-filter-tab.active {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
         }
 
         .tab-container {
@@ -932,14 +977,26 @@
         /* Announcement Area Styles */
         .announcement-area {
             display: none;
-            background: transparent;
-            border: none;
-            padding: 0;
-            margin: 0;
-            grid-column: 1 / -1;
-            margin-top: 8px;
-            transform-origin: top center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            width: 100%;
+            position: relative;
+            z-index: 1;
             overflow: visible;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Bulk announcement specific positioning */
+        #bulk-announcement-area {
+            margin-top: 16px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 10;
         }
 
         .announcement-area.show {
@@ -1115,10 +1172,36 @@
 
         /* Toolbar di dalam form */
         .announcement-toolbar {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
         }
+        
+        .add-announcement-btn {
+            background: #002746;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .add-announcement-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+        
+        .form-field {
+            margin-bottom: 12px;
+        }
+        
         .template-select {
             width: 100%;
             padding: 10px 12px;
@@ -1744,10 +1827,115 @@
             grid-template-columns: 260px 1fr;
             gap: 16px;
             align-items: start;
+            margin-top: 16px;
         }
+        
         .announcement-history {
             border-right: 1px solid #e5e7eb;
-            padding-right: 12px;
+            padding-right: 16px;
+        }
+        
+        .announcement-history h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+        
+        .history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        /* Bulk announcement specific history list styling */
+        #bulk-announcement-area .history-list {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px;
+            background: #fafafa;
+            min-height: 60px;
+            position: relative;
+            box-sizing: border-box;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 4px;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        /* Force scrollbar to always be visible */
+        #bulk-announcement-area .history-list {
+            scrollbar-width: thin;
+            scrollbar-color: #94a3b8 #e2e8f0;
+            overflow-y: scroll !important;
+        }
+        
+        /* Make scrollbar always visible on WebKit browsers */
+        #bulk-announcement-area .history-list::-webkit-scrollbar {
+            width: 10px;
+            display: block !important;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 5px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 5px;
+            border: 2px solid #f1f5f9;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        #bulk-announcement-area .history-list::-webkit-scrollbar-corner {
+            background: #f1f5f9;
+        }
+        
+        .history-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .history-date {
+            font-size: 11px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        
+        .history-content {
+            font-size: 12px;
+            color: #374151;
+            line-height: 1.4;
+        }
+        
+        .no-history {
+            font-size: 12px;
+            color: #9ca3af;
+            font-style: italic;
+            text-align: center;
+            padding: 20px 0;
+        }
         }
         .history-header {
             display: flex;
@@ -1762,6 +1950,40 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+        }
+        
+        /* Ensure bulk announcement history items are properly spaced */
+        #bulk-announcement-area .history-item {
+            padding: 6px 8px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 3px;
+            flex-shrink: 0;
+        }
+        
+        #bulk-announcement-area .history-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        #bulk-announcement-area .history-item .title {
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        #bulk-announcement-area .history-item .meta {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        
+        #bulk-announcement-area .no-history {
+            text-align: center;
+            color: #9ca3af;
+            font-style: italic;
+            padding: 20px;
+        }
         }
         .history-item {
             display: flex;
@@ -1853,6 +2075,9 @@
             height: 18px;
             accent-color: #374151;
             cursor: pointer;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         /* Bulk Actions */
@@ -1910,13 +2135,10 @@
             background: #dc2626;
         }
 
-        .bulk-action-btn.announcement {
-            background: #6366f1;
-            color: white;
-        }
-
-        .bulk-action-btn.announcement:hover {
-            background: #4f46e5;
+        .bulk-actions .announcement-btn {
+            width: 32px;
+            height: 32px;
+            margin: 0;
         }
 </style>
 @endpush
@@ -1926,16 +2148,18 @@
             <!-- Modern Search and View Controls -->
             <div class="controls-container">
                 <!-- Modern Search Component -->
-                @include('components.modern-search', ['pageType' => 'pelamar', 'categories' => $categories ?? []])
+                @include('components.modern-search', [
+                    'pageType' => 'pelamar', 
+                    'categories' => $jobCategories->pluck('judul_pekerjaan')->toArray()
+                ])
 
                 <!-- Right Controls -->
                 <div class="right-controls">
+                    
                     <!-- Bulk Actions -->
-                    <div class="bulk-actions" id="bulk-actions">
+                    <div class="bulk-actions" id="bulk-actions" style="display: none;">
                         <span class="bulk-actions-text" id="selected-count">0 pelamar dipilih</span>
-                        <button class="bulk-action-btn accept" onclick="bulkAccept()" title="Terima Semua">✓</button>
-                        <button class="bulk-action-btn reject" onclick="bulkReject()" title="Tolak Semua">✕</button>
-                        <button class="bulk-action-btn announcement" onclick="bulkAnnouncement()" title="Kirim Pengumuman"><i class="bi bi-pencil"></i></button>
+                        <button class="announcement-btn" onclick="bulkAnnouncement()" title="Kirim Pengumuman"><i class="bi bi-pencil"></i></button>
                     </div>
                     
                     <!-- Select All Control -->
@@ -1945,56 +2169,59 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Bulk Announcement Area (moved here from bottom) -->
+            <div class="announcement-area" id="bulk-announcement-area" style="display: none; margin-top: 16px; position: relative; z-index: 10;">
+                <div class="announcement-header">
+                    <span class="announcement-title" id="bulk-announcement-title">Pengumuman ke 0 pelamar</span>
+                    <button class="close-announcement" onclick="closeBulkAnnouncementArea()">✕</button>
+                </div>
+                <div class="announcement-panel">
+                    <!-- Left: Selected Applicants List -->
+                    <div class="announcement-history" style="flex: 0 0 300px; max-width: 300px;">
+                        <h4>Pelamar yang Dipilih</h4>
+                        <div class="history-list" id="selected-applicants-list" style="height: 150px; max-height: 150px; overflow-y: auto;">
+                            <div class="no-history">Tidak ada pelamar yang dipilih</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Form Section -->
+                    <div class="announcement-form">
+                        <div class="announcement-toolbar">
+                            <button type="button" class="add-announcement-btn" onclick="showBulkAnnouncementForm()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 5v14m-7-7h14"></path>
+                                </svg>
+                                Tambah Pengumuman
+                            </button>
+                            <div class="announcement-meta">
+                                <span id="bulk-charCount">0</span>/500 karakter
+                            </div>
+                        </div>
+                        <div class="announcement-input-group" id="bulk-form-fields" style="display: none;">
+                            <div class="form-field">
+                                <label class="announcement-label">Subjek Pengumuman</label>
+                                <input type="text" class="announcement-input" id="bulk-announcement-subject" placeholder="Masukkan subjek pengumuman...">
+                            </div>
+                            <div class="form-field">
+                                <label class="announcement-label">Isi Pengumuman</label>
+                                <textarea class="announcement-input announcement-textarea" id="bulk-announcement-text" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateBulkCharCount(this)"></textarea>
+                            </div>
+                            <div class="announcement-actions">
+                                <button class="send-announcement-btn" onclick="sendBulkAnnouncement()">
+                                    <span>📨</span> Kirim Pengumuman
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Applicant Management Table -->
             <div class="table-with-checkboxes">
-                <div class="checkbox-column">
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="1" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="2" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="3" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="4" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="5" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="6" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="7" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="8" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="9" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="10" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="11" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="12" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="15" onchange="updateSelection()">
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" class="select-checkbox" data-applicant-id="16" onchange="updateSelection()">
-                    </div>
-                </div>
                 <div class="table-card">
                     <div class="table-header"></div>
-                
+                </div>
 
                 <!-- Table Header -->
                 <div class="table-header-row">
@@ -2007,25 +2234,37 @@
                     <div class="header-item">Status</div>
                 </div>
                 
-                <!-- Frontend Developer Applicants -->
-                <div class="applicant-cards" id="Frontend Developer">
-                    <!-- Applicant Card 1 -->
-                    <div class="applicant-card" data-applicant-id="1" data-has-announcement="true" data-job-category="Frontend Developer">
+                <!-- Dynamic Applicant Cards -->
+                <div class="applicant-cards">
+                    <!-- Checkbox column for main table -->
+                    <div class="checkbox-column" id="checkbox-main">
+                        @foreach($pelamars as $pelamar)
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" onchange="updateSelectionUI()">
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    @forelse($pelamars as $pelamar)
+                    <div class="applicant-card" data-applicant-id="{{ $pelamar->id }}" data-has-announcement="{{ $pelamar->pengumuman_status !== 'none' ? 'true' : 'false' }}" data-job-category="{{ $pelamar->pekerjaan->judul_pekerjaan ?? 'Unknown' }}">
                         <div class="applicant-card-content">
+                            <div class="applicant-checkbox" style="display: none;">
+                                <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" onchange="updateSelectionUI()">
+                            </div>
                             <div class="applicant-info">
-                                <div class="applicant-avatar">JJ</div>
+                                <div class="applicant-avatar">{{ $pelamar->initials }}</div>
                                 <div class="applicant-details">
-                                    <h4>Jamal bin</h4>
+                                    <h4>{{ $pelamar->nama }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">jamalmaldin@gmail.com</div>
+                            <div class="applicant-email">{{ $pelamar->email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                                 </svg>
-                                <span>+62 812-3456-7890</span>
+                                <span>{{ $pelamar->formatted_phone }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Jamal.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path ?? 'sample-cv.pdf') }}', '{{ $pelamar->cv_path ? route('pelamar.viewCV', $pelamar) : '/images/contohcv.pdf' }}')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2033,381 +2272,827 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>CV_Jamal.pdf</span>
+                                <span>{{ basename($pelamar->cv_path ?? 'sample-cv.pdf') }}</span>
                             </div>
-                            <div class="application-date">17 Agustus 2025</div>
+                            <div class="application-date">{{ $pelamar->tanggal_melamar->format('d M Y') }}</div>
                             <div class="action-menu">
                                 <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                             </div>
                             <div class="applicant-status">
-                                <span class="status-text review" id="status-label-1" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(1, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(1, false)" title="Tolak">✕</button>
-                                </span>
+                                @if($pelamar->status === 'review')
+                                    <span class="status-chooser">
+                                        <button type="button" class="status-btn approve" onclick="setApplicantStatus({{ $pelamar->id }}, 'accepted')" title="Terima">✓</button>
+                                        <button type="button" class="status-btn reject" onclick="setApplicantStatus({{ $pelamar->id }}, 'rejected')" title="Tolak">✕</button>
+                                    </span>
+                                @elseif($pelamar->status === 'accepted')
+                                    <span class="status-text accepted" id="status-label-{{ $pelamar->id }}">
+                                        Diterima
+                                    </span>
+                                @elseif($pelamar->status === 'rejected')
+                                    <span class="status-text rejected" id="status-label-{{ $pelamar->id }}">
+                                        Ditolak
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         
-                        <!-- Announcement Area -->
-                        <div class="announcement-area" id="announcement-1">
-                            <div class="announcement-header">
-                                <span class="announcement-title">Pengumuman ke Jamal bin</span>
-                                <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
+                        <!-- Announcement Area - Moved below card -->
+                    </div>
+                    
+                    <!-- Announcement Area -->
+                    <div class="announcement-area" id="announcement-{{ $pelamar->id }}">
+                        <div class="announcement-header">
+                            <span class="announcement-title">Pengumuman ke {{ $pelamar->nama }}</span>
+                            <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
+                        </div>
+                        <div class="announcement-panel">
+                            <!-- Left: History Section -->
+                            <div class="announcement-history">
+                                <h4>Riwayat Pengumuman</h4>
+                                <div class="history-list">
+                                    @if($pelamar->pengumuman_status !== 'none')
+                                        <div class="history-item">
+                                            <div class="history-date">{{ $pelamar->updated_at->format('d M Y, H:i') }}</div>
+                                            <div class="history-content">{{ $pelamar->catatan ?? 'Pengumuman dikirim' }}</div>
+                                        </div>
+                                    @else
+                                        <div class="no-history">Belum ada pengumuman yang dikirim</div>
+                                    @endif
+                                </div>
                             </div>
+                            
+                            <!-- Right: Form Section -->
                             <div class="announcement-form">
                                 <div class="announcement-toolbar">
-                                    <select class="template-select" onchange="applyAnnouncementTemplate(this, 1)">
-                                        <option value="">Pilih tipe pengumuman</option>
-                                        <option value="interview">Panggilan Wawancara</option>
-                                        <option value="test">Undangan Tes</option>
-                                        <option value="accepted">Diterima</option>
-                                        <option value="rejected">Ditolak</option>
-                                        <option value="info">Informasi</option>
-                                    </select>
+                                    <button type="button" class="add-announcement-btn" onclick="showAnnouncementForm({{ $pelamar->id }})">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 5v14m-7-7h14"></path>
+                                        </svg>
+                                        Tambah Pengumuman
+                                    </button>
                                     <div class="announcement-meta">
-                                        <span id="charCount-1">0</span>/500 karakter
+                                        <span id="charCount-{{ $pelamar->id }}">0</span>/500 karakter
                                     </div>
                                 </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Subjek Pengumuman</label>
-                                    <input type="text" class="announcement-input" placeholder="Masukkan subjek pengumuman..." value="Informasi Proses Rekrutmen">
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Isi Pengumuman</label>
-                                    <textarea class="announcement-input announcement-textarea" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount(1, this)">Halo Jamal, berikut informasi terkait proses rekrutmen Anda.</textarea>
-                                </div>
-                                <div class="announcement-actions">
-                                    <button class="send-announcement-btn" onclick="sendAnnouncement(1, 'Jamal bin')">
-                                        <span>📨</span> Kirim Pengumuman
-                                    </button>
+                                <div class="announcement-input-group" id="form-fields-{{ $pelamar->id }}" style="display: none;">
+                                    <div class="form-field">
+                                        <label class="announcement-label">Subjek Pengumuman</label>
+                                        <input type="text" class="announcement-input" id="announcement-subject-{{ $pelamar->id }}" placeholder="Masukkan subjek pengumuman...">
+                                    </div>
+                                    <div class="form-field">
+                                        <label class="announcement-label">Isi Pengumuman</label>
+                                        <textarea class="announcement-input announcement-textarea" id="announcement-text-{{ $pelamar->id }}" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount({{ $pelamar->id }}, this)">{{ $pelamar->catatan ?? '' }}</textarea>
+                                    </div>
+                                    <div class="announcement-actions">
+                                        <button class="send-announcement-btn" onclick="sendAnnouncement({{ $pelamar->id }}, '{{ $pelamar->nama }}')">
+                                            <span>📨</span> Kirim Pengumuman
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-
-
+                    @empty
+                    <div class="no-applicants">
+                        <div class="no-applicants-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <h3>Tidak ada pelamar ditemukan</h3>
+                        <p>Belum ada pelamar yang sesuai dengan kriteria pencarian Anda.</p>
+                    </div>
+                    @endforelse
                 </div>
 
-                <!-- Backend Developer Applicants -->
-                <div class="applicant-cards" id="Backend Developer" style="display: none;">
-                    <!-- Siti Aminah moved to Backend Developer -->
-                    <div class="applicant-card" data-applicant-id="2" data-has-announcement="false" data-job-category="Backend Developer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">SA</div>
-                                <div class="applicant-details">
-                                    <h4>Siti Aminah</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">siti.aminah@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 821-9876-5432</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Siti.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Siti.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-2" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(2, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(2, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">16 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+        </div>
 
-                    <!-- Applicant Card 1 -->
-                    <div class="applicant-card" data-applicant-id="3" data-has-announcement="true" data-job-category="Backend Developer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">RW</div>
-                                <div class="applicant-details">
-                                    <h4>Rina Wati</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">rina.wati@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 815-1357-9024</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Rina.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Rina.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-3" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(3, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(3, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">15 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Announcement Area -->
-                        <div class="announcement-area" id="announcement-3">
-                            <div class="announcement-header">
-                                <span class="announcement-title">Pengumuman ke Rina Wati</span>
-                                <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
-                            </div>
-                            <div class="announcement-form">
-                                <div class="announcement-toolbar">
-                                    <select class="template-select" onchange="applyAnnouncementTemplate(this, 3)">
-                                        <option value="">Pilih tipe pengumuman</option>
-                                        <option value="interview">Panggilan Wawancara</option>
-                                        <option value="test">Undangan Tes</option>
-                                        <option value="accepted">Diterima</option>
-                                        <option value="rejected">Ditolak</option>
-                                        <option value="info">Informasi</option>
-                                    </select>
-                                    <div class="announcement-meta">
-                                        <span id="charCount-3">0</span>/500 karakter
-                                    </div>
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Subjek Pengumuman</label>
-                                    <input type="text" class="announcement-input" placeholder="Masukkan subjek pengumuman..." value="Selamat! Anda diterima sebagai Admin Medsos">
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Isi Pengumuman</label>
-                                    <textarea class="announcement-input announcement-textarea" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount(3, this)">Selamat! Kami dengan senang hati mengumumkan bahwa Anda telah diterima untuk posisi Admin Medsos. Silakan hubungi HR kami untuk langkah selanjutnya.</textarea>
-                                </div>
-                                <div class="announcement-actions">
-                                    <button class="send-announcement-btn" onclick="sendAnnouncement(3, 'Rina Wati')">
-                                        <span>📨</span> Kirim Pengumuman
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+        <!-- CV Modal -->
+        <div id="cvModal" class="cv-modal" style="display: none;">
+            <div class="cv-modal-content">
+                <button class="cv-modal-close" onclick="closeCVModal()">×</button>
+                <div id="cvModalContent"></div>
+            </div>
+        </div>
+
+        <!-- Accepted Applicants History Modal -->
+        
+    </div>
+
+    <script>
+        // Update modal position when sidebar state changes
+        document.addEventListener('DOMContentLoaded', function() {
+            updateModalPosition();
+            
+            // Initialize checkbox columns and table layout - hidden by default
+            const tableWithCheckboxes = document.querySelector('.table-with-checkboxes');
+            const allApplicantCheckboxes = document.querySelectorAll('.applicant-checkbox');
+            
+            // Start with all individual checkboxes hidden
+            allApplicantCheckboxes.forEach(checkboxDiv => {
+                checkboxDiv.style.display = 'none';
+            });
+            
+            // Initialize selection UI
+            updateSelectionUI();
+            
+            // Add event listeners to all checkboxes for real-time updates
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('select-checkbox')) {
+                    updateSelectionUI();
+                }
+            });
+            
+            // Listen for sidebar toggle events - multiple selectors to catch different toggle buttons
+            const toggleSelectors = ['.sidebar-toggle', '.toggle-btn', '[data-toggle="sidebar"]', '.menu-toggle'];
+            
+            toggleSelectors.forEach(selector => {
+                const toggleBtn = document.querySelector(selector);
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function() {
+                        setTimeout(updateModalPosition, 350); // Wait for animation
+                    });
+                }
+            });
+            
+            // Also listen for window resize events
+            window.addEventListener('resize', function() {
+                setTimeout(updateModalPosition, 100);
+            });
+            
+            // Use MutationObserver to detect sidebar class changes
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            setTimeout(updateModalPosition, 50);
+                        }
+                    });
+                });
+                
+                observer.observe(sidebar, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+            }
+        });
+
+
+        // Selection functionality
+        let selectedApplicants = new Set();
+        let selectAllState = 0; // 0: hidden, 1: checked, 2: unchecked
+        
+        function updateSelectionUI() {
+            // Get all checkboxes and currently checked ones
+            const allCheckboxes = document.querySelectorAll('.select-checkbox');
+            const checkedCheckboxes = document.querySelectorAll('.select-checkbox:checked');
+            const selectAllCheckbox = document.getElementById('select-all');
+            const bulkActions = document.getElementById('bulk-actions');
+            const selectedCountText = document.getElementById('selected-count');
+            const allApplicantCheckboxes = document.querySelectorAll('.applicant-checkbox');
+            const tableWithCheckboxes = document.querySelector('.table-with-checkboxes');
+            
+            // Clear and rebuild selected applicants set based on actually checked checkboxes
+            selectedApplicants.clear();
+            const actuallyCheckedBoxes = document.querySelectorAll('.select-checkbox:checked');
+            actuallyCheckedBoxes.forEach(checkbox => {
+                if (checkbox.dataset.applicantId) {
+                    selectedApplicants.add(checkbox.dataset.applicantId);
+                }
+            });
+            
+            // Update select all checkbox state (only if not in manual toggle mode)
+            if (selectAllCheckbox && selectAllState !== 2) {
+                if (checkedCheckboxes.length === 0 && selectAllState === 0) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
                     
-                    <!-- Applicant Card 2 -->
-                    <div class="applicant-card" data-applicant-id="4" data-has-announcement="false" data-job-category="Backend Developer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">DK</div>
-                                <div class="applicant-details">
-                                    <h4>Dewi Kusuma</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">dian.kartika@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 816-8024-6813</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Dewi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Dewi.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-4" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(4, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(4, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">14 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-                        
-                        <!-- Announcement Area -->
-                        <div class="announcement-area" id="announcement-4">
-                            <div class="announcement-header">
-                                <span class="announcement-title">Pengumuman ke Dewi Kusuma</span>
-                                <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
-                            </div>
-                            <div class="announcement-form">
-                                <div class="announcement-toolbar">
-                                    <select class="template-select" onchange="applyAnnouncementTemplate(this, 4)">
-                                        <option value="">Pilih tipe pengumuman</option>
-                                        <option value="interview">Panggilan Wawancara</option>
-                                        <option value="test">Undangan Tes</option>
-                                        <option value="accepted">Diterima</option>
-                                        <option value="rejected">Ditolak</option>
-                                        <option value="info">Informasi</option>
-                                    </select>
-                                    <div class="announcement-meta">
-                                        <span id="charCount-4">0</span>/500 karakter
-                                    </div>
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Subjek Pengumuman</label>
-                                    <input type="text" class="announcement-input" placeholder="Masukkan subjek pengumuman..." value="Selamat! Anda diterima sebagai Admin Medsos">
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Isi Pengumuman</label>
-                                    <textarea class="announcement-input announcement-textarea" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount(4, this)">Selamat! Kami dengan senang hati mengumumkan bahwa Anda telah diterima untuk posisi Admin Medsos. Silakan hubungi HR kami untuk langkah selanjutnya.</textarea>
-                                </div>
-                                <div class="announcement-actions">
-                                    <button class="send-announcement-btn" onclick="sendAnnouncement(4, 'Dewi Kusuma')">
-                                        <span>📨</span> Kirim Pengumuman
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Full Stack Developer Applicants -->
-                <div class="applicant-cards" id="Full Stack Developer" style="display: none;">
-                    <!-- Applicant Card 1 -->
-                    <div class="applicant-card" data-applicant-id="5" data-has-announcement="false" data-job-category="Full Stack Developer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">AS</div>
-                                <div class="applicant-details">
-                                    <h4>Ahmad Suryadi</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">ahmad.suryadi@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 817-3691-4725</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Ahmad.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Ahmad.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-5" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(5, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(5, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">13 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Announcement Area -->
-                        <div class="announcement-area" id="announcement-5">
-                            <div class="announcement-header">
-                                <span class="announcement-title">Pengumuman ke Ahmad Suryadi</span>
-                                <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
-                            </div>
-                            <div class="announcement-form">
-                                <div class="announcement-toolbar">
-                                    <select class="template-select" onchange="applyAnnouncementTemplate(this, 5)">
-                                        <option value="">Pilih tipe pengumuman</option>
-                                        <option value="interview">Panggilan Wawancara</option>
-                                        <option value="test">Undangan Tes</option>
-                                        <option value="accepted">Diterima</option>
-                                        <option value="rejected">Ditolak</option>
-                                        <option value="info">Informasi</option>
-                                    </select>
-                                    <div class="announcement-meta">
-                                        <span id="charCount-5">0</span>/500 karakter
-                                    </div>
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Subjek Pengumuman</label>
-                                    <input type="text" class="announcement-input" placeholder="Masukkan subjek pengumuman..." value="Selamat! Anda diterima sebagai UI UX Designer">
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Isi Pengumuman</label>
-                                    <textarea class="announcement-input announcement-textarea" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount(5, this)">Selamat! Kami dengan senang hati mengumumkan bahwa Anda telah diterima untuk posisi UI UX Designer. Silakan hubungi HR kami untuk langkah selanjutnya.</textarea>
-                                </div>
-                                <div class="announcement-actions">
-                                    <button class="send-announcement-btn" onclick="sendAnnouncement(5, 'Ahmad Suryadi')">
-                                        <span>📨</span> Kirim Pengumuman
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    // Reset state when manually unchecking all
+                    selectAllState = 0;
                     
-                    <!-- Applicant Card 2 -->
-                    <div class="applicant-card" data-applicant-id="6" data-has-announcement="true" data-job-category="Full Stack Developer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">NP</div>
-                                <div class="applicant-details">
-                                    <h4>Nina Putri</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">nina.putri@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 818-7531-9642</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Nina.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Nina.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-6" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(6, true)" title="Terima">✓</button>
+                    // Hide all individual checkboxes when none are selected
+                    allApplicantCheckboxes.forEach(checkboxDiv => {
+                        checkboxDiv.style.display = 'none';
+                    });
+                    
+                    // Remove show-checkboxes class
+                    if (tableWithCheckboxes) {
+                        tableWithCheckboxes.classList.remove('show-checkboxes');
+                    }
+                } else if (checkedCheckboxes.length === allCheckboxes.length && selectAllState === 1) {
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                } else if (checkedCheckboxes.length > 0 && checkedCheckboxes.length < allCheckboxes.length) {
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = true;
+                }
+            }
+            
+            // Update bulk actions display and count based on actually checked checkboxes
+            const actualCheckedCount = document.querySelectorAll('.select-checkbox:checked').length;
+            
+            if (bulkActions && selectedCountText) {
+                if (actualCheckedCount > 0) {
+                    bulkActions.style.display = 'flex';
+                    selectedCountText.textContent = `${actualCheckedCount} pelamar dipilih`;
+                } else {
+                    bulkActions.style.display = 'none';
+                }
+            }
+        }
+
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('select-all');
+            if (!selectAllCheckbox) return;
+            
+            const allCheckboxes = document.querySelectorAll('.select-checkbox');
+            const allApplicantCheckboxes = document.querySelectorAll('.applicant-checkbox');
+            const tableWithCheckboxes = document.querySelector('.table-with-checkboxes');
+            
+            // Cycle through three states: hidden -> checked -> unchecked -> hidden
+            selectAllState = (selectAllState + 1) % 3;
+            
+            switch(selectAllState) {
+                case 1: // First click: Show and check all
+                    // Show all checkboxes
+                    allApplicantCheckboxes.forEach(checkboxDiv => {
+                        checkboxDiv.style.display = 'flex';
+                    });
+                    
+                    // Add show-checkboxes class to adjust layout
+                    if (tableWithCheckboxes) {
+                        tableWithCheckboxes.classList.add('show-checkboxes');
+                    }
+                    
+                    // Check all individual checkboxes
+                    allCheckboxes.forEach(checkbox => {
+                        checkbox.checked = true;
+                    });
+                    
+                    selectAllCheckbox.checked = true;
+                    selectAllCheckbox.indeterminate = false;
+                    break;
+                    
+                case 2: // Second click: Show but uncheck all
+                    // Keep checkboxes visible
+                    allApplicantCheckboxes.forEach(checkboxDiv => {
+                        checkboxDiv.style.display = 'flex';
+                    });
+                    
+                    // Keep show-checkboxes class
+                    if (tableWithCheckboxes) {
+                        tableWithCheckboxes.classList.add('show-checkboxes');
+                    }
+                    
+                    // Uncheck all individual checkboxes
+                    allCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                    break;
+                    
+                case 0: // Third click: Hide all checkboxes
+                    // Hide all checkboxes
+                    allApplicantCheckboxes.forEach(checkboxDiv => {
+                        checkboxDiv.style.display = 'none';
+                    });
+                    
+                    // Remove show-checkboxes class
+                    if (tableWithCheckboxes) {
+                        tableWithCheckboxes.classList.remove('show-checkboxes');
+                    }
+                    
+                    // Uncheck all individual checkboxes
+                    allCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    
+                    selectAllCheckbox.checked = false;
+                    selectAllCheckbox.indeterminate = false;
+                    break;
+            }
+            
+            // Update UI
+            updateSelectionUI();
+        }
+
+        // Bulk actions
+        function bulkAccept() {
+            const selectedIds = Array.from(document.querySelectorAll('.select-checkbox:checked'))
+                .map(cb => cb.dataset.applicantId);
+            
+            if (selectedIds.length === 0) {
+                alert('Pilih pelamar terlebih dahulu');
+                return;
+            }
+            
+            if (confirm(`Terima ${selectedIds.length} pelamar yang dipilih?`)) {
+                fetch('{{ route("pelamar.bulkUpdateStatus") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        ids: selectedIds,
+                        status: 'accepted'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memproses permintaan');
+                });
+            }
+        }
+
+        function bulkReject() {
+            const selectedIds = Array.from(document.querySelectorAll('.select-checkbox:checked'))
+                .map(cb => cb.dataset.applicantId);
+            
+            if (selectedIds.length === 0) {
+                alert('Pilih pelamar terlebih dahulu');
+                return;
+            }
+            
+            if (confirm(`Tolak ${selectedIds.length} pelamar yang dipilih?`)) {
+                fetch('{{ route("pelamar.bulkUpdateStatus") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        ids: selectedIds,
+                        status: 'rejected'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memproses permintaan');
+                });
+            }
+        }
+
+        function bulkAnnouncement() {
+            const selectedCheckboxes = document.querySelectorAll('.select-checkbox:checked');
+            
+            if (selectedCheckboxes.length === 0) {
+                alert('Pilih pelamar terlebih dahulu');
+                return;
+            }
+            
+            // Close all individual announcement areas
+            document.querySelectorAll('.announcement-area').forEach(area => {
+                if (area.id !== 'bulk-announcement-area') {
+                    area.style.display = 'none';
+                }
+            });
+            
+            // Show bulk announcement area
+            const bulkArea = document.getElementById('bulk-announcement-area');
+            const bulkTitle = document.getElementById('bulk-announcement-title');
+            const selectedList = document.getElementById('selected-applicants-list');
+            
+            if (bulkArea && bulkTitle && selectedList) {
+                // Update title with count
+                bulkTitle.textContent = `Pengumuman ke ${selectedCheckboxes.length} pelamar`;
+                
+                // Build selected applicants list
+                selectedList.innerHTML = '';
+                selectedCheckboxes.forEach(checkbox => {
+                    const applicantCard = checkbox.closest('.applicant-card');
+                    if (applicantCard) {
+                        const nameElement = applicantCard.querySelector('.applicant-details h4');
+                        const name = nameElement ? nameElement.textContent : 'Unknown';
+                        
+                        const listItem = document.createElement('div');
+                        listItem.className = 'history-item';
+                        listItem.innerHTML = `
+                            <div class="title">${name}</div>
+                            <div class="meta">ID: ${checkbox.dataset.applicantId}</div>
+                        `;
+                        selectedList.appendChild(listItem);
+                    }
+                });
+                
+                // Show the bulk announcement area
+                bulkArea.style.display = 'block';
+            }
+        }
+        
+        function closeBulkAnnouncementArea() {
+            const bulkArea = document.getElementById('bulk-announcement-area');
+            if (bulkArea) {
+                bulkArea.style.display = 'none';
+                // Clear form
+                document.getElementById('bulk-announcement-subject').value = '';
+                document.getElementById('bulk-announcement-text').value = '';
+                document.getElementById('bulk-form-fields').style.display = 'none';
+                updateBulkCharCount(document.getElementById('bulk-announcement-text'));
+            }
+        }
+        
+        function showBulkAnnouncementForm() {
+            const formFields = document.getElementById('bulk-form-fields');
+            const button = document.querySelector('#bulk-announcement-area .add-announcement-btn');
+            
+            if (formFields.style.display === 'none' || formFields.style.display === '') {
+                formFields.style.display = 'block';
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                    Batal
+                `;
+            } else {
+                formFields.style.display = 'none';
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14m-7-7h14"></path>
+                    </svg>
+                    Tambah Pengumuman
+                `;
+                // Clear form fields
+                document.getElementById('bulk-announcement-subject').value = '';
+                document.getElementById('bulk-announcement-text').value = '';
+                updateBulkCharCount(document.getElementById('bulk-announcement-text'));
+            }
+        }
+        
+        function updateBulkCharCount(textarea) {
+            const charCountElement = document.getElementById('bulk-charCount');
+            if (charCountElement) {
+                const count = textarea.value.length;
+                charCountElement.textContent = count;
+                
+                if (count > 450) {
+                    charCountElement.style.color = '#ef4444';
+                } else if (count > 400) {
+                    charCountElement.style.color = '#f59e0b';
+                } else {
+                    charCountElement.style.color = '#6b7280';
+                }
+            }
+        }
+        
+        function sendBulkAnnouncement() {
+            const subjectInput = document.getElementById('bulk-announcement-subject');
+            const textarea = document.getElementById('bulk-announcement-text');
+            const subject = subjectInput.value.trim();
+            const message = textarea.value.trim();
+            const selectedCheckboxes = document.querySelectorAll('.select-checkbox:checked');
+            
+            if (!subject) {
+                alert('Silakan masukkan subjek pengumuman terlebih dahulu');
+                return;
+            }
+            
+            if (!message) {
+                alert('Silakan tulis isi pengumuman terlebih dahulu');
+                return;
+            }
+            
+            if (selectedCheckboxes.length === 0) {
+                alert('Tidak ada pelamar yang dipilih');
+                return;
+            }
+            
+            const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.dataset.applicantId);
+            
+            if (confirm(`Kirim pengumuman "${subject}" ke ${selectedIds.length} pelamar yang dipilih?`)) {
+                fetch(`{{ url('pelamar') }}/bulk-announcement`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ 
+                        applicant_ids: selectedIds,
+                        subject: subject,
+                        message: message 
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Pengumuman berhasil dikirim ke ${selectedIds.length} pelamar!`);
+                        closeBulkAnnouncementArea();
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengirim pengumuman');
+                });
+            }
+        }
+
+        // Individual applicant actions
+        function setApplicantStatus(applicantId, status) {
+            console.log('setApplicantStatus called with:', { applicantId, status });
+            
+            if (confirm(`Yakin ingin ${status === 'accepted' ? 'menerima' : 'menolak'} pelamar ini?`)) {
+                console.log('User confirmed, sending request...');
+                
+                // Get CSRF token from meta tag or fallback to inline token
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+                
+                const requestData = { status: status };
+                console.log('Request data:', requestData);
+                
+                fetch(`/pelamar/${applicantId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error('Error response:', text);
+                            throw new Error(`HTTP ${response.status}: ${text}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+                    if (data.success) {
+                        alert(`Status berhasil diperbarui ke "${status === 'accepted' ? 'Diterima' : 'Ditolak'}"!`);
+                        window.location.reload();
+                    } else {
+                        console.error('Server error:', data);
+                        alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error details:', error);
+                    alert('Terjadi kesalahan saat memproses permintaan: ' + error.message);
+                });
+            }
+        }
+
+        // Announcement functionality
+        function openAnnouncementPanel(button) {
+            const card = button.closest('.applicant-card');
+            const applicantId = card.getAttribute('data-applicant-id');
+            const announcementArea = document.getElementById(`announcement-${applicantId}`);
+            
+            // Close all other announcement areas
+            document.querySelectorAll('.announcement-area').forEach(area => {
+                if (area !== announcementArea) {
+                    area.style.display = 'none';
+                }
+            });
+            
+            // Toggle current announcement area
+            if (announcementArea) {
+                announcementArea.style.display = announcementArea.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        function closeAnnouncementArea(button) {
+            const announcementArea = button.closest('.announcement-area');
+            announcementArea.style.display = 'none';
+        }
+
+        function applyAnnouncementTemplate(select, applicantId) {
+            const textarea = document.getElementById(`announcement-text-${applicantId}`);
+            const templates = {
+                'interview': 'Selamat! Anda telah lolos seleksi awal. Silakan datang untuk wawancara pada tanggal yang akan kami informasikan lebih lanjut.',
+                'test': 'Anda telah lolos seleksi dokumen. Silakan mengikuti tes selanjutnya sesuai jadwal yang akan kami kirimkan.',
+                'accepted': 'Selamat! Anda telah diterima untuk posisi ini. Silakan hubungi HR kami untuk proses selanjutnya.',
+                'rejected': 'Terima kasih atas minat Anda. Mohon maaf, untuk saat ini Anda belum dapat kami terima. Semoga sukses di kesempatan lainnya.'
+            };
+            
+            if (templates[select.value]) {
+                textarea.value = templates[select.value];
+            }
+        }
+
+        function sendAnnouncement(applicantId, applicantName) {
+            const subjectInput = document.getElementById(`announcement-subject-${applicantId}`);
+            const textarea = document.getElementById(`announcement-text-${applicantId}`);
+            const subject = subjectInput ? subjectInput.value.trim() : '';
+            const message = textarea ? textarea.value.trim() : '';
+            
+            if (!subject) {
+                alert('Silakan masukkan subjek pengumuman terlebih dahulu');
+                return;
+            }
+            
+            if (!message) {
+                alert('Silakan tulis isi pengumuman terlebih dahulu');
+                return;
+            }
+
+            if (confirm(`Kirim pengumuman "${subject}" ke ${applicantName}?`)) {
+                fetch(`{{ url('pelamar') }}/${applicantId}/announcement`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ 
+                        subject: subject,
+                        message: message 
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Pengumuman berhasil dikirim!');
+                        // Clear form and hide it
+                        subjectInput.value = '';
+                        textarea.value = '';
+                        const formFields = document.getElementById(`form-fields-${applicantId}`);
+                        const button = document.querySelector(`#announcement-${applicantId} .add-announcement-btn`);
+                        
+                        formFields.style.display = 'none';
+                        button.innerHTML = `
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 5v14m-7-7h14"></path>
+                            </svg>
+                            Tambah Pengumuman
+                        `;
+                        
+                        // Update character count
+                        const charCountElement = document.getElementById(`charCount-${applicantId}`);
+                        if (charCountElement) {
+                            charCountElement.textContent = '0';
+                            charCountElement.style.color = '#6b7280';
+                        }
+                        
+                        // Refresh history section
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + (data.message || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengirim pengumuman');
+                });
+            }
+        }
+
+        function showAnnouncementForm(applicantId) {
+            const formFields = document.getElementById(`form-fields-${applicantId}`);
+            const button = document.querySelector(`#announcement-${applicantId} .add-announcement-btn`);
+            
+            if (formFields.style.display === 'none' || formFields.style.display === '') {
+                formFields.style.display = 'block';
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                    Batal
+                `;
+            } else {
+                formFields.style.display = 'none';
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14m-7-7h14"></path>
+                    </svg>
+                    Tambah Pengumuman
+                `;
+                // Clear form fields
+                document.getElementById(`announcement-subject-${applicantId}`).value = '';
+                document.getElementById(`announcement-text-${applicantId}`).value = '';
+                const textarea = document.getElementById(`announcement-text-${applicantId}`);
+                const charCountElement = document.getElementById(`charCount-${applicantId}`);
+                if (charCountElement) {
+                    charCountElement.textContent = '0';
+                    charCountElement.style.color = '#6b7280';
+                }
+            }
+        }
+
+        // CV Modal functionality
+        function openCVModal(fileName, filePath) {
+            const modal = document.getElementById('cvModal');
+            const modalContent = document.getElementById('cvModalContent');
+            
+            updateModalPosition();
+            
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+            
+            if (fileExtension === 'pdf') {
+                modalContent.innerHTML = `
+                    <iframe src="${filePath}#view=FitV&zoom=page-width" 
+                            style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;">
+                        <p>Browser Anda tidak mendukung tampilan PDF. 
+                           <a href="${filePath}" target="_blank">Klik di sini untuk membuka PDF</a>
+                        </p>
+                    </iframe>
+                `;
+            } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExtension)) {
+                modalContent.innerHTML = `
+                    <img src="${filePath}" 
+                         alt="${fileName}"
+                         style="width: 100%; height: 100vh; object-fit: cover;">
+                `;
+            } else {
+                modalContent.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #6b7280;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 16px;">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14,2 14,8 20,8"></polyline>
+                        </svg>
+                        <p>File tidak dapat ditampilkan dalam preview</p>
+                        <a href="${filePath}" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                            Klik untuk mengunduh ${fileName}
+                        </a>
+                    </div>
+                `;
+            }
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateModalPosition() {
+            const modal = document.getElementById('cvModal');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (modal && sidebar) {
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                const sidebarWidth = isCollapsed ? 80 : sidebar.offsetWidth;
+                
+                modal.style.left = sidebarWidth + 'px';
+                modal.style.width = `calc(100% - ${sidebarWidth}px)`;
+                modal.style.height = '100vh';
+                modal.style.top = '0';
+                
+                // Also update the modal content to fit properly
+                const modalContent = document.getElementById('cvModalContent');
+                if (modalContent) {
+                    modalContent.style.width = '100%';
+                    modalContent.style.height = '100%';
+                }
+            }
+        }
+
+        function closeCVModal() {
+            const modal = document.getElementById('cvModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('cvModal');
+            if (e.target === modal) {
+                closeCVModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCVModal();
+            }
+        });
+    </script>
+</body>
+</html>
                                     <button type="button" class="status-btn reject" onclick="setApplicantStatus(6, false)" title="Tolak">✕</button>
                                 </span>
                             </div>
-                            <div class="application-date">12 Agustus 2025</div>
+                            
                             <div class="action-menu">
                                 <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
                                     <i class="bi bi-pencil"></i>
@@ -2415,63 +3100,38 @@
                             </div>
                         </div>
                         
-                        <!-- Announcement Area -->
-                        <div class="announcement-area" id="announcement-6">
-                            <div class="announcement-header">
-                                <span class="announcement-title">Pengumuman ke Nina Putri</span>
-                                <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
-                            </div>
-                            <div class="announcement-form">
-                                <div class="announcement-toolbar">
-                                    <select class="template-select" onchange="applyAnnouncementTemplate(this, 6)">
-                                        <option value="">Pilih tipe pengumuman</option>
-                                        <option value="interview">Panggilan Wawancara</option>
-                                        <option value="test">Undangan Tes</option>
-                                        <option value="accepted">Diterima</option>
-                                        <option value="rejected">Ditolak</option>
-                                        <option value="info">Informasi</option>
-                                    </select>
-                                    <div class="announcement-meta">
-                                        <span id="charCount-6">0</span>/500 karakter
-                                    </div>
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Subjek Pengumuman</label>
-                                    <input type="text" class="announcement-input" placeholder="Masukkan subjek pengumuman..." value="Selamat! Anda diterima sebagai UI UX Designer">
-                                </div>
-                                <div class="announcement-input-group">
-                                    <label class="announcement-label">Isi Pengumuman</label>
-                                    <textarea class="announcement-input announcement-textarea" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount(6, this)">Selamat! Kami dengan senang hati mengumumkan bahwa Anda telah diterima untuk posisi UI UX Designer. Silakan hubungi HR kami untuk langkah selanjutnya.</textarea>
-                                </div>
-                                <div class="announcement-actions">
-                                    <button class="send-announcement-btn" onclick="sendAnnouncement(6, 'Nina Putri')">
-                                        <span>📨</span> Kirim Pengumuman
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                        
                 <!-- UI/UX Designer Applicants -->
                 <div class="applicant-cards" id="UI/UX Designer" style="display: none;">
-                    <!-- Applicant Card 1 -->
-                    <div class="applicant-card" data-applicant-id="7" data-has-announcement="false" data-job-category="UI/UX Designer">
+                    <!-- Checkbox column for UI/UX Designer -->
+                    <div class="checkbox-column" id="checkbox-uiux">
+                        @foreach($pelamars->where('pekerjaan.kategori', 'UI/UX Designer') as $pelamar)
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" data-category="UI/UX Designer" onchange="updateSelectionUI()">
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    @foreach($pelamars->where('pekerjaan.kategori', 'UI/UX Designer') as $pelamar)
+                    <div class="applicant-card" data-applicant-id="{{ $pelamar->id }}" data-has-announcement="{{ $pelamar->pengumuman_status ? 'true' : 'false' }}" data-job-category="UI/UX Designer">
                         <div class="applicant-card-content">
+                            <div class="applicant-checkbox" style="display: none;">
+                                <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" data-category="UI/UX Designer" onchange="updateSelectionUI()">
+                            </div>
                             <div class="applicant-info">
-                                <div class="applicant-avatar">FH</div>
+                                <div class="applicant-avatar">{{ strtoupper(substr($pelamar->nama, 0, 2)) }}</div>
                                 <div class="applicant-details">
-                                    <h4>Fajar Hidayat</h4>
+                                    <h4>{{ $pelamar->nama }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">fajar.hidayat@email.com</div>
+                            <div class="applicant-email">{{ $pelamar->email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                                 </svg>
-                                <span>+62 819-4628-1739</span>
+                                <span>{{ $pelamar->no_telepon }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Fajar.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path) }}', '{{ asset($pelamar->cv_path) }}')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2479,17 +3139,25 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>CV_Fajar.pdf</span>
+                                <span>{{ basename($pelamar->cv_path) }}</span>
                             </div>
-
                             <div class="applicant-status">
-                                <span class="status-text review" id="status-label-7" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(7, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(7, false)" title="Tolak">✕</button>
-                                </span>
+                                @if($pelamar->status === 'review')
+                                    <span class="status-chooser">
+                                        <button type="button" class="status-btn approve" onclick="setApplicantStatus({{ $pelamar->id }}, 'accepted')" title="Terima">✓</button>
+                                        <button type="button" class="status-btn reject" onclick="setApplicantStatus({{ $pelamar->id }}, 'rejected')" title="Tolak">✕</button>
+                                    </span>
+                                @elseif($pelamar->status === 'accepted')
+                                    <span class="status-text accepted" id="status-label-{{ $pelamar->id }}">
+                                        Diterima
+                                    </span>
+                                @elseif($pelamar->status === 'rejected')
+                                    <span class="status-text rejected" id="status-label-{{ $pelamar->id }}">
+                                        Ditolak
+                                    </span>
+                                @endif
                             </div>
-                            <div class="application-date">11 Agustus 2025</div>
+                            <div class="application-date">{{ $pelamar->tanggal_melamar->format('d M Y') }}</div>
                             <div class="action-menu">
                                 <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
                                     <i class="bi bi-pencil"></i>
@@ -2497,111 +3165,40 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Applicant Card 2 -->
-                    <div class="applicant-card" data-applicant-id="8" data-has-announcement="false" data-job-category="UI/UX Designer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">RP</div>
-                                <div class="applicant-details">
-                                    <h4>Rizki Pratama</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">rizki.pratama@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 820-5739-2846</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Rizki.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Rizki.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text accepted" id="status-label-8" style="display:none;">Diterima</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(8, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(8, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">10 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <!-- Graphic Designer Applicants -->
                 <div class="applicant-cards" id="Graphic Designer" style="display: none;">
-                    <!-- Budi Kusuma moved to Graphic Designer -->
-                    <div class="applicant-card" data-applicant-id="15" data-has-announcement="false" data-job-category="Graphic Designer">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">BK</div>
-                                <div class="applicant-details">
-                                    <h4>Budi Kusuma</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">budi.kusuma@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 813-2468-1357</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Budi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Budi.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-15" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(15, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(15, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">15 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
+                    <!-- Checkbox column for Graphic Designer -->
+                    <div class="checkbox-column" id="checkbox-graphic">
+                        @foreach($pelamars->where('pekerjaan.kategori', 'Graphic Designer') as $pelamar)
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" data-category="Graphic Designer" onchange="updateSelectionUI()">
                         </div>
+                        @endforeach
                     </div>
-
-                    <!-- Applicant Card 1 -->
-                    <div class="applicant-card" data-applicant-id="9" data-has-announcement="false" data-job-category="Graphic Designer">
+                    
+                    @foreach($pelamars->where('pekerjaan.kategori', 'Graphic Designer') as $pelamar)
+                    <div class="applicant-card" data-applicant-id="{{ $pelamar->id }}" data-has-announcement="{{ $pelamar->pengumuman_status ? 'true' : 'false' }}" data-job-category="Graphic Designer">
                         <div class="applicant-card-content">
+                            <div class="applicant-checkbox" style="display: none;">
+                                <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" data-category="Graphic Designer" onchange="updateSelectionUI()">
+                            </div>
                             <div class="applicant-info">
-                                <div class="applicant-avatar">LS</div>
+                                <div class="applicant-avatar">{{ strtoupper(substr($pelamar->nama, 0, 2)) }}</div>
                                 <div class="applicant-details">
-                                    <h4>Linda Sari</h4>
+                                    <h4>{{ $pelamar->nama }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">linda.sari@email.com</div>
+                            <div class="applicant-email">{{ $pelamar->email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                                 </svg>
-                                <span>+62 821-6284-3951</span>
+                                <span>{{ $pelamar->no_telepon }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Linda.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path) }}', '{{ asset($pelamar->cv_path) }}')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2609,16 +3206,25 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>CV_Linda.pdf</span>
+                                <span>{{ basename($pelamar->cv_path) }}</span>
                             </div>
                             <div class="applicant-status">
-                                <span class="status-text review" id="status-label-9" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(9, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(9, false)" title="Tolak">✕</button>
-                                </span>
+                                @if($pelamar->status === 'review')
+                                    <span class="status-chooser">
+                                        <button type="button" class="status-btn approve" onclick="setApplicantStatus({{ $pelamar->id }}, 'accepted')" title="Terima">✓</button>
+                                        <button type="button" class="status-btn reject" onclick="setApplicantStatus({{ $pelamar->id }}, 'rejected')" title="Tolak">✕</button>
+                                    </span>
+                                @elseif($pelamar->status === 'accepted')
+                                    <span class="status-text accepted" id="status-label-{{ $pelamar->id }}">
+                                        Diterima
+                                    </span>
+                                @elseif($pelamar->status === 'rejected')
+                                    <span class="status-text rejected" id="status-label-{{ $pelamar->id }}">
+                                        Ditolak
+                                    </span>
+                                @endif
                             </div>
-                            <div class="application-date">9 Agustus 2025</div>
+                            <div class="application-date">{{ $pelamar->tanggal_melamar->format('d M Y') }}</div>
                             <div class="action-menu">
                                 <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
                                     <i class="bi bi-pencil"></i>
@@ -2626,69 +3232,40 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Applicant Card 2 -->
-                    <div class="applicant-card" data-applicant-id="10" data-has-announcement="false" data-job-category="Project Manager">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">MW</div>
-                                <div class="applicant-details">
-                                    <h4>Maya Wulandari</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">maya.wulandari@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 822-7395-4062</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Maya.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Maya.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text rejected" id="status-label-10" style="display:none;">Ditolak</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(10, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(10, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">8 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
                 <!-- Project Manager Applicants -->
                 <div class="applicant-cards" id="Project Manager" style="display: none;">
-                    <!-- Andi Pratama moved to Project Manager -->
-                    <div class="applicant-card" data-applicant-id="16" data-has-announcement="false" data-job-category="Project Manager">
+                    <!-- Checkbox column for Project Manager -->
+                    <div class="checkbox-column" id="checkbox-project">
+                        @foreach($pelamars->where('pekerjaan.kategori', 'Project Manager') as $pelamar)
+                        <div class="checkbox-item">
+                            <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" data-category="Project Manager" onchange="updateSelectionUI()">
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    @foreach($pelamars->where('pekerjaan.kategori', 'Project Manager') as $pelamar)
+                    <div class="applicant-card" data-applicant-id="{{ $pelamar->id }}" data-has-announcement="{{ $pelamar->pengumuman_status ? 'true' : 'false' }}" data-job-category="Project Manager">
                         <div class="applicant-card-content">
+                            <div class="applicant-checkbox" style="display: none;">
+                                <input type="checkbox" class="select-checkbox" data-applicant-id="{{ $pelamar->id }}" data-category="Project Manager" onchange="updateSelectionUI()">
+                            </div>
                             <div class="applicant-info">
-                                <div class="applicant-avatar">AP</div>
+                                <div class="applicant-avatar">{{ strtoupper(substr($pelamar->nama, 0, 2)) }}</div>
                                 <div class="applicant-details">
-                                    <h4>Andi Pratama</h4>
+                                    <h4>{{ $pelamar->nama }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">andi.pratama@email.com</div>
+                            <div class="applicant-email">{{ $pelamar->email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                                 </svg>
-                                <span>+62 814-5679-2468</span>
+                                <span>{{ $pelamar->no_telepon }}</span>
                             </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Andi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
+                            <div class="applicant-cv" onclick="openCVModal('{{ basename($pelamar->cv_path) }}', '{{ asset($pelamar->cv_path) }}')" style="cursor: pointer;">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                                     <polyline points="14,2 14,8 20,8"></polyline>
@@ -2696,16 +3273,25 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>CV_Andi.pdf</span>
+                                <span>{{ basename($pelamar->cv_path) }}</span>
                             </div>
                             <div class="applicant-status">
-                                <span class="status-text review" id="status-label-16" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(16, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(16, false)" title="Tolak">✕</button>
-                                </span>
+                                @if($pelamar->status === 'review')
+                                    <span class="status-chooser">
+                                        <button type="button" class="status-btn approve" onclick="setApplicantStatus({{ $pelamar->id }}, 'accepted')" title="Terima">✓</button>
+                                        <button type="button" class="status-btn reject" onclick="setApplicantStatus({{ $pelamar->id }}, 'rejected')" title="Tolak">✕</button>
+                                    </span>
+                                @elseif($pelamar->status === 'accepted')
+                                    <span class="status-text accepted" id="status-label-{{ $pelamar->id }}">
+                                        Diterima
+                                    </span>
+                                @elseif($pelamar->status === 'rejected')
+                                    <span class="status-text rejected" id="status-label-{{ $pelamar->id }}">
+                                        Ditolak
+                                    </span>
+                                @endif
                             </div>
-                            <div class="application-date">14 Agustus 2025</div>
+                            <div class="application-date">{{ $pelamar->tanggal_melamar->format('d M Y') }}</div>
                             <div class="action-menu">
                                 <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
                                     <i class="bi bi-pencil"></i>
@@ -2713,133 +3299,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Applicant Card 1 -->
-                    <div class="applicant-card" data-applicant-id="11" data-has-announcement="false" data-job-category="Product Manager">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">IA</div>
-                                <div class="applicant-details">
-                                    <h4>Indra Anggara</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">indra.anggara@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 823-8406-5173</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Indra.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Indra.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text accepted" id="status-label-11" style="display:none;">Diterima</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(11, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(11, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">7 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <!-- Applicant Card 2 -->
-                    <div class="applicant-card" data-applicant-id="12" data-has-announcement="false" data-job-category="Product Manager">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">SP</div>
-                                <div class="applicant-details">
-                                    <h4>Sari Puspita</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">sari.puspita@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 824-9517-6284</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Sari.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Sari.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text review" id="status-label-12" style="display:none;">Review</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(12, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(12, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">6 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Applicant Card 3 -->
-                    <div class="applicant-card" data-applicant-id="13" data-has-announcement="false" data-job-category="Product Manager">
-                        <div class="applicant-card-content">
-                            <div class="applicant-info">
-                                <div class="applicant-avatar">DH</div>
-                                <div class="applicant-details">
-                                    <h4>Dedi Hermawan</h4>
-                                </div>
-                            </div>
-                            <div class="applicant-email">dedi.hermawan@email.com</div>
-                            <div class="applicant-phone">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                </svg>
-                                <span>+62 825-0628-7395</span>
-                            </div>
-                            <div class="applicant-cv" onclick="openCVModal('CV_Dedi.pdf', '/images/contohcv.pdf')" style="cursor: pointer;">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14,2 14,8 20,8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10,9 9,9 8,9"></polyline>
-                                </svg>
-                                <span>CV_Dedi.pdf</span>
-                            </div>
-                            <div class="applicant-status">
-                                <span class="status-text rejected" id="status-label-13" style="display:none;">Ditolak</span>
-                                <span class="status-chooser">
-                                    <button type="button" class="status-btn approve" onclick="setApplicantStatus(13, true)" title="Terima">✓</button>
-                                    <button type="button" class="status-btn reject" onclick="setApplicantStatus(13, false)" title="Tolak">✕</button>
-                                </span>
-                            </div>
-                            <div class="application-date">5 Agustus 2025</div>
-                            <div class="action-menu">
-                                <button class="announcement-btn" onclick="openAnnouncementPanel(this)">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
 
 
@@ -3239,7 +3699,6 @@
         }
 
         function sendGlobalAnnouncement() {
-            if (!currentAnnouncementApplicantId) return;
             const subject = document.getElementById('globalAnnouncementSubject');
             const body = document.getElementById('globalAnnouncementBody');
             const btn = document.querySelector('#globalAnnouncementPanel .send-announcement-btn');
@@ -3252,22 +3711,73 @@
             btn.disabled = true;
             btn.innerHTML = '<span>⌛</span> Mengirim...';
 
-            setTimeout(() => {
-                // Simulasi tersimpan ke histori
-                const items = getHistory(currentAnnouncementApplicantId);
-                const newItem = {
-                    id: Date.now(),
-                    subject: subject.value.trim(),
-                    body: body.value.trim(),
-                    date: new Date(),
-                };
-                items.push(newItem);
+            // Check if this is bulk announcement or single announcement
+            if (window.bulkAnnouncementApplicants && window.bulkAnnouncementApplicants.length > 0) {
+                // Bulk announcement
+                const applicantIds = window.bulkAnnouncementApplicants;
+                let successCount = 0;
+                let errorCount = 0;
 
-                // refresh UI
-                renderHistory(currentAnnouncementApplicantId);
-                openHistoryItem(currentAnnouncementApplicantId, newItem.id);
+                const promises = applicantIds.map(applicantId => {
+                    return fetch(`{{ url('pelamar') }}/${applicantId}/announcement`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            subject: subject.value.trim(),
+                            message: body.value.trim()
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            successCount++;
+                        } else {
+                            errorCount++;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        errorCount++;
+                    });
+                });
 
-                btn.disabled = false;
+                Promise.all(promises).then(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>📨</span> Kirim';
+                    
+                    if (successCount > 0) {
+                        alert(`Pengumuman berhasil dikirim ke ${successCount} pelamar!`);
+                        if (errorCount > 0) {
+                            alert(`${errorCount} pengumuman gagal dikirim.`);
+                        }
+                        closeGlobalAnnouncementPanel();
+                        clearSelection();
+                        location.reload();
+                    } else {
+                        alert('Semua pengumuman gagal dikirim.');
+                    }
+                });
+            } else if (currentAnnouncementApplicantId) {
+                // Single announcement
+                setTimeout(() => {
+                    // Simulasi tersimpan ke histori
+                    const items = getHistory(currentAnnouncementApplicantId);
+                    const newItem = {
+                        id: Date.now(),
+                        subject: subject.value.trim(),
+                        body: body.value.trim(),
+                        date: new Date(),
+                    };
+                    items.push(newItem);
+
+                    // refresh UI
+                    renderHistory(currentAnnouncementApplicantId);
+                    openHistoryItem(currentAnnouncementApplicantId, newItem.id);
+
+                    btn.disabled = false;
                 btn.innerHTML = '<span>📨</span> Kirim';
                 alert(`Pengumuman terkirim ke ${currentAnnouncementApplicantName}!`);
             }, 900);
@@ -3283,61 +3793,94 @@
             return `${pad(date.getDate())}/${pad(date.getMonth()+1)}/${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
         }
 
-        function setApplicantStatus(applicantId, isAccepted) {
-            const statusDiv = document.querySelector(`[data-applicant-id="${applicantId}"] .applicant-status`);
-            if (!statusDiv) return;
-            let label = statusDiv.querySelector('.status-text');
-            if (!label) {
-                label = document.createElement('span');
-                label.className = 'status-text review';
-                label.style.display = 'none';
-                statusDiv.insertBefore(label, statusDiv.firstChild);
-            }
-            const chooser = statusDiv.querySelector('.status-chooser');
-            if (isAccepted) {
-                label.className = 'status-text accepted';
-                label.style.display = '';
-                label.textContent = 'Diterima';
-            } else {
-                label.className = 'status-text rejected';
-                label.style.display = '';
-                label.textContent = 'Ditolak';
-            }
-            if (chooser) chooser.style.display = 'none';
-        }
-
-        // Inject chooser ke semua baris
-        function ensureStatusChoosers() {
-            document.querySelectorAll('.applicant-status').forEach((statusDiv, idx) => {
-                // set label ke Review secara default dan sembunyikan
-                const anyLabel = statusDiv.querySelector('.status-text');
-                if (anyLabel) {
-                    anyLabel.className = 'status-text review';
-                    anyLabel.textContent = 'Review';
-                    anyLabel.style.display = 'none';
-                }
-                // jika belum punya chooser, tambahkan
-                if (!statusDiv.querySelector('.status-chooser')) {
-                    const id = statusDiv.closest('.applicant-card')?.getAttribute('data-applicant-id') || idx + 1;
-                    const chooser = document.createElement('span');
-                    chooser.className = 'status-chooser';
-                    chooser.innerHTML = `
-                        <button type=\"button\" class=\"status-btn approve\" title=\"Terima\">✓</button>
-                        <button type=\"button\" class=\"status-btn reject\" title=\"Tolak\">✕</button>
-                    `;
-                    const [approveBtn, rejectBtn] = chooser.querySelectorAll('button');
-                    approveBtn.addEventListener('click', () => setApplicantStatus(id, true));
-                    rejectBtn.addEventListener('click', () => setApplicantStatus(id, false));
-                    statusDiv.appendChild(chooser);
-                }
-            });
-        }
-
-        // jalankan saat load
-        document.addEventListener('DOMContentLoaded', ensureStatusChoosers);
 
         // Selection functionality
         let selectedApplicants = new Set();
+        
+        // Initialize page state
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded - initializing...');
+            
+            // Hide all checkboxes initially
+            document.querySelectorAll('.applicant-checkbox').forEach(checkboxDiv => {
+                checkboxDiv.style.display = 'none';
+            });
+            
+            // Hide bulk actions initially
+            const bulkActions = document.getElementById('bulk-actions');
+            if (bulkActions) {
+                bulkActions.style.display = 'none';
+                bulkActions.classList.remove('show');
+            }
+            
+            // Test select all functionality with timeout to ensure DOM is ready
+            setTimeout(() => {
+                const selectAllCheckbox = document.getElementById('select-all');
+                if (selectAllCheckbox) {
+                    console.log('Select all checkbox found');
+                    selectAllCheckbox.addEventListener('click', function(e) {
+                        console.log('Select all clicked, checked:', this.checked);
+                        toggleSelectAll();
+                    });
+                } else {
+                    console.error('Select all checkbox not found!');
+                }
+            }, 100);
+            
+            // Add event listeners to show checkboxes when clicked
+            document.querySelectorAll('.applicant-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on buttons or links
+                    if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.announcement-btn')) {
+                        return;
+                    }
+                    
+                    // Show all checkboxes
+                    document.querySelectorAll('.applicant-checkbox').forEach(checkboxDiv => {
+                        checkboxDiv.style.display = 'flex';
+                    });
+                    
+                    const tableWithCheckboxes = document.querySelector('.table-with-checkboxes');
+                    if (tableWithCheckboxes) {
+                        tableWithCheckboxes.classList.add('show-checkboxes');
+                    }
+                });
+            });
+            
+            console.log('Page initialized - checkboxes and bulk actions hidden');
+        });
+
+        function getCurrentActiveCheckboxColumn() {
+            // Check which applicant-cards container is currently visible
+            const mainCards = document.querySelector('.applicant-cards:not([id])');
+            const uiuxCards = document.getElementById('UI/UX Designer');
+            const graphicCards = document.getElementById('Graphic Designer');
+            const projectCards = document.getElementById('Project Manager');
+
+            console.log('mainCards:', mainCards);
+            console.log('uiuxCards:', uiuxCards);
+            console.log('graphicCards:', graphicCards);
+            console.log('projectCards:', projectCards);
+
+            // Check visibility using getComputedStyle for more accurate detection
+            if (uiuxCards && getComputedStyle(uiuxCards).display !== 'none') {
+                console.log('Active: UI/UX Designer');
+                return document.getElementById('checkbox-uiux');
+            } else if (graphicCards && getComputedStyle(graphicCards).display !== 'none') {
+                console.log('Active: Graphic Designer');
+                return document.getElementById('checkbox-graphic');
+            } else if (projectCards && getComputedStyle(projectCards).display !== 'none') {
+                console.log('Active: Project Manager');
+                return document.getElementById('checkbox-project');
+            } else if (mainCards && getComputedStyle(mainCards).display !== 'none') {
+                console.log('Active: Main Cards');
+                return document.getElementById('checkbox-main');
+            }
+            
+            console.log('Default: Main checkbox column');
+            // Default to main checkbox column (when "Semua" is active)
+            return document.getElementById('checkbox-main');
+        }
 
         function updateSelection() {
             const checkboxes = document.querySelectorAll('.select-checkbox');
@@ -3353,25 +3896,55 @@
         }
 
         function updateSelectionUI() {
+            // Update selectedApplicants set based on checked checkboxes
+            selectedApplicants.clear();
+            document.querySelectorAll('.select-checkbox:checked').forEach(checkbox => {
+                selectedApplicants.add(checkbox.dataset.applicantId);
+            });
+
             const count = selectedApplicants.size;
             const bulkActions = document.getElementById('bulk-actions');
             const selectedCountText = document.getElementById('selected-count');
             const selectAllCheckbox = document.getElementById('select-all');
-            const checkboxColumn = document.querySelector('.checkbox-column');
             const tableWithCheckboxes = document.querySelector('.table-with-checkboxes');
 
-            // Update selected count text
-            selectedCountText.textContent = `${count} pelamar dipilih`;
+            console.log('updateSelectionUI called, count:', count);
 
-            // Show/hide bulk actions and checkboxes
+            // Show bulk actions ONLY when items are selected
             if (count > 0) {
-                bulkActions.classList.add('show');
-                checkboxColumn.classList.add('show');
-                tableWithCheckboxes.classList.add('show-checkboxes');
+                if (bulkActions) {
+                    bulkActions.style.display = 'flex';
+                    bulkActions.classList.add('show');
+                    console.log('Bulk actions shown for', count, 'selected items');
+                }
+                if (selectedCountText) {
+                    selectedCountText.textContent = `${count} pelamar dipilih`;
+                }
+                
+                // Ensure checkboxes are visible when items are selected
+                document.querySelectorAll('.applicant-checkbox').forEach(checkboxDiv => {
+                    checkboxDiv.style.display = 'flex';
+                });
+                
+                if (tableWithCheckboxes) {
+                    tableWithCheckboxes.classList.add('show-checkboxes');
+                }
             } else {
-                bulkActions.classList.remove('show');
-                checkboxColumn.classList.remove('show');
-                tableWithCheckboxes.classList.remove('show-checkboxes');
+                // Hide bulk actions when nothing is selected
+                if (bulkActions) {
+                    bulkActions.style.display = 'none';
+                    bulkActions.classList.remove('show');
+                    console.log('Bulk actions hidden - no items selected');
+                }
+                
+                // Hide checkboxes when nothing is selected
+                document.querySelectorAll('.applicant-checkbox').forEach(checkboxDiv => {
+                    checkboxDiv.style.display = 'none';
+                });
+                
+                if (tableWithCheckboxes) {
+                    tableWithCheckboxes.classList.remove('show-checkboxes');
+                }
             }
 
             // Update select all checkbox state
@@ -3388,16 +3961,6 @@
             }
         }
 
-        function toggleSelectAll() {
-            const selectAllCheckbox = document.getElementById('select-all');
-            const checkboxes = document.querySelectorAll('.select-checkbox');
-            
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-
-            updateSelection();
-        }
 
         function bulkAccept() {
             if (selectedApplicants.size === 0) {
@@ -3406,13 +3969,32 @@
             }
 
             if (confirm(`Terima ${selectedApplicants.size} pelamar yang dipilih?`)) {
-                selectedApplicants.forEach(applicantId => {
-                    setApplicantStatus(applicantId, true);
-                });
+                const applicantIds = Array.from(selectedApplicants);
                 
-                // Clear selection
-                clearSelection();
-                alert(`${selectedApplicants.size} pelamar berhasil diterima!`);
+                fetch('{{ route("pelamar.bulkUpdateStatus") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        pelamar_ids: applicantIds,
+                        status: 'accepted'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`${data.updated_count} pelamar berhasil diterima!`);
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memperbarui status');
+                });
             }
         }
 
@@ -3423,23 +4005,50 @@
             }
 
             if (confirm(`Tolak ${selectedApplicants.size} pelamar yang dipilih?`)) {
-                selectedApplicants.forEach(applicantId => {
-                    setApplicantStatus(applicantId, false);
-                });
+                const applicantIds = Array.from(selectedApplicants);
                 
-                // Clear selection
-                clearSelection();
-                alert(`${selectedApplicants.size} pelamar berhasil ditolak!`);
+                fetch('{{ route("pelamar.bulkUpdateStatus") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        pelamar_ids: applicantIds,
+                        status: 'rejected'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`${data.updated_count} pelamar berhasil ditolak!`);
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat memperbarui status');
+                });
             }
         }
 
         function bulkAnnouncement() {
+            console.log('bulkAnnouncement called');
+            console.log('selectedApplicants:', selectedApplicants);
+            
             if (selectedApplicants.size === 0) {
                 alert('Pilih pelamar terlebih dahulu');
                 return;
             }
 
-            alert(`Fitur pengumuman massal untuk ${selectedApplicants.size} pelamar akan segera tersedia!`);
+            const panel = document.getElementById('globalAnnouncementPanel');
+            window.bulkAnnouncementApplicants = Array.from(selectedApplicants);
+            
+            // Show the panel
+            panel.style.display = 'block';
+            renderHistory(null); // Clear history for bulk announcement
         }
 
         function clearSelection() {
@@ -3449,6 +4058,77 @@
             });
             document.getElementById('select-all').checked = false;
             updateSelectionUI();
+        }
+
+        // Job filtering functionality
+        function filterByJob(jobTitle) {
+            const tabs = document.querySelectorAll('.job-filter-tab');
+            const jobGroups = document.querySelectorAll('.job-group');
+            
+            // Update active tab
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.job === jobTitle) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Show/hide job groups
+            if (jobTitle === 'all') {
+                jobGroups.forEach(group => {
+                    group.style.display = 'block';
+                });
+            } else {
+                jobGroups.forEach(group => {
+                    if (group.dataset.jobTitle === jobTitle) {
+                        group.style.display = 'block';
+                    } else {
+                        group.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Clear selection when filtering
+            clearSelection();
+        }
+
+        // Search functionality for job titles
+        function searchByJobTitle(searchTerm) {
+            const jobGroups = document.querySelectorAll('.job-group');
+            const tabs = document.querySelectorAll('.job-filter-tab');
+            
+            if (!searchTerm) {
+                // Show all groups if no search term
+                jobGroups.forEach(group => {
+                    group.style.display = 'block';
+                });
+                // Reset active tab to "all"
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.dataset.job === 'all') {
+                        tab.classList.add('active');
+                    }
+                });
+                return;
+            }
+            
+            searchTerm = searchTerm.toLowerCase();
+            let hasVisibleGroups = false;
+            
+            jobGroups.forEach(group => {
+                const jobTitle = group.dataset.jobTitle.toLowerCase();
+                if (jobTitle.includes(searchTerm)) {
+                    group.style.display = 'block';
+                    hasVisibleGroups = true;
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+            
+            // Update tabs - remove active from all
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
         }
 
         // CV Modal Functions
@@ -3499,16 +4179,20 @@
             const modal = document.getElementById('cvModal');
             const sidebar = document.querySelector('.sidebar');
             
-            if (sidebar) {
-                const sidebarWidth = sidebar.offsetWidth;
+            if (modal && sidebar) {
                 const isCollapsed = sidebar.classList.contains('collapsed');
+                const sidebarWidth = isCollapsed ? 80 : sidebar.offsetWidth;
                 
-                if (isCollapsed) {
-                    modal.style.left = '80px'; // Collapsed sidebar width
-                    modal.style.width = 'calc(100% - 80px)';
-                } else {
-                    modal.style.left = sidebarWidth + 'px';
-                    modal.style.width = `calc(100% - ${sidebarWidth}px)`;
+                modal.style.left = sidebarWidth + 'px';
+                modal.style.width = `calc(100% - ${sidebarWidth}px)`;
+                modal.style.height = '100vh';
+                modal.style.top = '0';
+                
+                // Also update the modal content to fit properly
+                const modalContent = document.getElementById('cvModalContent');
+                if (modalContent) {
+                    modalContent.style.width = '100%';
+                    modalContent.style.height = '100%';
                 }
             }
         }
@@ -3533,6 +4217,8 @@
                 closeCVModal();
             }
         });
+
     </script>
+    <script src="{{ asset('js/pelamar_functions.js') }}"></script>
 </body>
-</html> 
+</html>
