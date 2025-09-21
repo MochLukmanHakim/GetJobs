@@ -87,34 +87,35 @@
 
         /* Navigation */
         .nav {
-            background-color: var(--color-surface);
-            border-bottom: 1px solid var(--color-border);
+            background: white;
+            padding: 0 20px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .nav-content {
+        .nav ul {
+            list-style: none;
             display: flex;
-            gap: 2rem;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
         }
 
-        .nav-link {
+        .nav li a {
             display: block;
-            padding: 1rem 0.25rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-text-secondary);
-            text-decoration: none;
+            padding: 15px 0;
             border-bottom: 2px solid transparent;
-            transition: all 150ms ease;
+            text-decoration: none;
+            color: black;
+            transition: all 0.3s ease;
         }
 
-        .nav-link:hover {
-            color: var(--color-text-primary);
-            border-bottom-color: var(--color-border);
+        .nav li a.active {
+            border-bottom-color: #4285f4;
+            color: #4285f4;
         }
 
-        .nav-link.active {
-            color: var(--color-primary);
-            border-bottom-color: var(--color-primary);
+        .nav li a:hover {
+            color: #4285f4;
         }
 
         /* Main Content */
@@ -416,31 +417,20 @@
 
     <!-- Navigation -->
     <nav class="nav">
-        <div class="container">
-            <div class="nav-content">
-                <div class="flex space-x-4 p-4">
-                    <a href="{{ route('admin.dashboard') }}" class="card px-6 py-4 text-center no-underline">
-                        <h2 class="text-lg font-semibold">Dashboard</h2>
-                        <p class="text-sm text-secondary">Statistik</p>
-                    </a>
-
-                    <a href="{{ route('admin.user-management') }}" class="card px-6 py-4 text-center no-underline">
-                        <h2 class="text-lg font-semibold">User Management</h2>
-                        <p class="text-sm text-secondary">Pengguna</p>
-                    </a>
-
-                    <a href="{{ route('admin.job-management') }}" class="card px-6 py-4 text-center no-underline">
-                        <h2 class="text-lg font-semibold">Job Management</h2>
-                        <p class="text-sm text-secondary">Lowongan</p>
-                    </a>
-
-                    <a href="{{ route('admin.settings') }}" class="card px-6 py-4 text-center no-underline">
-                        <h2 class="text-lg font-semibold">Settings</h2>
-                        <p class="text-sm text-secondary">Pengaturan</p>
-                    </a>
-                </div>
-            </div>
-        </div>
+        <ul>
+            <li>
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.user-management') }}" class="{{ request()->routeIs('admin.user-management') ? 'active' : '' }}">User Management</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.job-management') }}" class="{{ request()->routeIs('admin.job-management') ? 'active' : '' }}">Job Management</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">Settings</a>
+            </li>
+        </ul>
     </nav>
 
     <!-- Main Content -->

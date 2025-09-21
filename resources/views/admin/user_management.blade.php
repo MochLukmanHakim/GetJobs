@@ -50,63 +50,69 @@
             background-color: var(--color-surface);
             border-bottom: 1px solid var(--color-border);
             box-shadow: var(--shadow-sm);
-            padding: 1rem 0;
         }
 
         .header-content {
             display: flex;
             align-items: center;
-            justify-content: between;
+            justify-content: space-between;
+            height: 4rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo svg {
             width: 2rem;
             height: 2rem;
             color: var(--color-primary);
         }
 
-        .logo h1 {
+        .title {
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--color-text-primary);
         }
 
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
         /* Navigation */
         .nav {
-            background-color: var(--color-surface);
-            border-bottom: 1px solid var(--color-border);
+            background: white;
+            padding: 0 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
             padding: 0;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            padding: 1rem 0.25rem;
-            text-decoration: none;
-            color: var(--color-text-secondary);
-            font-weight: 500;
-            font-size: 0.875rem;
+        .nav li a {
+            display: block;
+            padding: 15px 0;
             border-bottom: 2px solid transparent;
-            transition: all 150ms ease;
+            text-decoration: none;
+            color: black;
+            transition: all 0.3s ease;
         }
 
-        .nav-link.active {
-            color: var(--color-primary);
-            border-bottom-color: var(--color-primary);
+        .nav li a.active {
+            border-bottom-color: #4285f4;
+            color: #4285f4;
         }
 
-        .nav-link:hover {
-            color: var(--color-text-primary);
-            border-bottom-color: var(--color-border);
+        .nav li a:hover {
+            color: #4285f4;
         }
 
         /* Main Content */
@@ -393,11 +399,14 @@
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <svg fill="currentColor" viewBox="0 0 24 24">
+                <div class="logo-section">
+                    <svg class="logo" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                     </svg>
-                    <h1>Dashboard Admin GetJobs</h1>
+                    <div>
+                        <h1 class="title">GetJobs Admin</h1>
+                        <p class="subtitle">Job Management Dashboard</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -405,14 +414,20 @@
 
     <!-- Navigation -->
     <nav class="nav">
-        <div class="container">
-            <div class="nav-links">
-                <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('admin.user-management') }}">User Management</a></li>
-                <li><a href="{{ route('admin.job-management') }}">Job Management</a></li>
-                <li><a href="{{ route('admin.settings') }}">Settings</a></li>
-            </div>
-        </div>
+        <ul>
+            <li>
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.user-management') }}" class="{{ request()->routeIs('admin.user-management') ? 'active' : '' }}">User Management</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.job-management') }}" class="{{ request()->routeIs('admin.job-management') ? 'active' : '' }}">Job Management</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">Settings</a>
+            </li>
+        </ul>
     </nav>
 
     <!-- Main Content -->

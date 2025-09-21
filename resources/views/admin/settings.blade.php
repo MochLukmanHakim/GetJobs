@@ -297,35 +297,71 @@
 
         /* Header Styles */
         .header {
-            background-color: white;
+            background-color: var(--color-surface);
             border-bottom: 1px solid var(--color-border);
             box-shadow: var(--shadow-sm);
         }
 
-        .nav {
-            background-color: white;
-            border-bottom: 1px solid var(--color-border);
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
         }
 
-        .nav-link {
-            display: block;
-            padding: 1rem 0.25rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
-            transition: all var(--transition-fast);
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .nav-link:hover {
-            color: var(--color-text-primary);
-            border-bottom-color: var(--color-border);
-        }
-
-        .nav-link.active {
+        .logo {
+            width: 2rem;
+            height: 2rem;
             color: var(--color-primary);
-            border-bottom-color: var(--color-primary);
+        }
+
+        .title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        .nav {
+            background: white;
+            padding: 0 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav li a {
+            display: block;
+            padding: 15px 0;
+            border-bottom: 2px solid transparent;
+            text-decoration: none;
+            color: black;
+            transition: all 0.3s ease;
+        }
+
+        .nav li a.active {
+            border-bottom-color: #4285f4;
+            color: #4285f4;
+        }
+
+        .nav li a:hover {
+            color: #4285f4;
         }
 
         .select {
@@ -368,60 +404,38 @@
 </head>
 <body>
     <!-- Header Section -->
-    <header class="header">
-        <div class="container">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo and Title -->
-                <div class="flex items-center space-x-4">
-                    <div>
-                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <svg class="logo" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
                         </svg>
+                        <div>
+                            <h1 class="title">GetJobs Admin</h1>
+                            <p class="subtitle">Job Management Dashboard</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="text-xl font-semibold">GetJobs Admin Dashboard</h1>
-                        <p class="text-sm text-secondary">Central Administration Panel</p>
-                    </div>
-                </div>
-
-                <!-- Global Controls -->
-                <div class="flex items-center space-x-4">
-                    <!-- Environment Status -->
-                    <div class="flex items-center space-x-2">
-                        <div class="w-3 h-3 bg-success rounded-full animate-pulse"></div>
-                        <span class="text-sm text-secondary">Production</span>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <select class="select">
-                        <option>Quick Actions</option>
-                        <option>Export Data</option>
-                        <option>Send Notifications</option>
-                        <option>System Maintenance</option>
-                    </select>
-
-                    <!-- Admin Profile -->
-                    <button class="btn-secondary">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
-                        Admin Panel
-                    </button>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
     <!-- Navigation -->
     <nav class="nav">
-        <div class="container">
-            <div class="flex space-x-8">
-                <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ route('admin.user-management') }}">User Management</a></li>
-                <li><a href="{{ route('admin.job-management') }}">Job Management</a></li>
-                <li><a href="{{ route('admin.settings') }}">Settings</a></li>
-            </div>
-        </div>
+        <ul>
+            <li>
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.user-management') }}" class="{{ request()->routeIs('admin.user-management') ? 'active' : '' }}">User Management</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.job-management') }}" class="{{ request()->routeIs('admin.job-management') ? 'active' : '' }}">Job Management</a>
+            </li>
+            <li>
+                <a href="{{ route('admin.settings') }}" class="{{ request()->routeIs('admin.settings') ? 'active' : '' }}">Settings</a>
+            </li>
+        </ul>
     </nav>
 
     <!-- Main Content -->
