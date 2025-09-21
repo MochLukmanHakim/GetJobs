@@ -194,6 +194,7 @@
 
                 @php
                     $jobs = [
+                        // IT
                         [
                             'title' => 'Senior Frontend Developer',
                             'company' => 'TechCorp Indonesia',
@@ -203,15 +204,7 @@
                             'category' => 'IT',
                             'icon' => 'fas fa-laptop-code text-blue-500 text-2xl',
                         ],
-                        [
-                            'title' => 'Backend Developer',
-                            'company' => 'InnovateLab',
-                            'location' => 'Yogyakarta',
-                            'salary' => 'Rp 12-20 juta',
-                            'type' => 'Remote',
-                            'category' => 'IT',
-                            'icon' => 'fas fa-server text-yellow-500 text-2xl',
-                        ],
+                        // Desainer
                         [
                             'title' => 'UI/UX Designer',
                             'company' => 'AmandaCorp',
@@ -221,6 +214,7 @@
                             'category' => 'Desainer',
                             'icon' => 'fas fa-pencil-ruler text-purple-500 text-2xl',
                         ],
+                        // Customer Service
                         [
                             'title' => 'Customer Support Specialist',
                             'company' => 'HelpMe Co',
@@ -230,6 +224,7 @@
                             'category' => 'Customer Service',
                             'icon' => 'fas fa-headset text-green-500 text-2xl',
                         ],
+                        // Analis Data
                         [
                             'title' => 'Data Analyst',
                             'company' => 'DataCorp',
@@ -239,6 +234,87 @@
                             'category' => 'Analis Data',
                             'icon' => 'fas fa-chart-line text-indigo-500 text-2xl',
                         ],
+                        // Logistik
+                        [
+                            'title' => 'Staff Logistik',
+                            'company' => 'Logisindo',
+                            'location' => 'Surabaya',
+                            'salary' => 'Rp 6-10 juta',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Logistik',
+                            'icon' => 'fas fa-truck text-orange-500 text-2xl',
+                        ],
+                        // Teknik
+                        [
+                            'title' => 'Teknisi Mesin',
+                            'company' => 'IndoTeknik',
+                            'location' => 'Bandung',
+                            'salary' => 'Rp 8-14 juta',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Teknik',
+                            'icon' => 'fas fa-cogs text-gray-700 text-2xl',
+                        ],
+                        // Medis
+                        [
+                            'title' => 'Perawat',
+                            'company' => 'RS Sehat Sentosa',
+                            'location' => 'Jakarta',
+                            'salary' => 'Rp 7-12 juta',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Medis',
+                            'icon' => 'fas fa-user-nurse text-pink-500 text-2xl',
+                        ],
+                        // Keuangan
+                        [
+                            'title' => 'Staf Keuangan',
+                            'company' => 'Finansia Group',
+                            'location' => 'Jakarta',
+                            'salary' => 'Rp 10-18 juta',
+                            'type' => 'Hybrid',
+                            'category' => 'Keuangan',
+                            'icon' => 'fas fa-coins text-yellow-500 text-2xl',
+                        ],
+                        // Pendidikan
+                        [
+                            'title' => 'Guru SD',
+                            'company' => 'Sekolah Harapan Bangsa',
+                            'location' => 'Yogyakarta',
+                            'salary' => 'Rp 5-9 juta',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Pendidikan',
+                            'icon' => 'fas fa-chalkboard-teacher text-green-700 text-2xl',
+                        ],
+                        // Penjualan
+                        [
+                            'title' => 'Sales Executive',
+                            'company' => 'GlobalMart',
+                            'location' => 'Medan',
+                            'salary' => 'Rp 7-12 juta + bonus',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Penjualan',
+                            'icon' => 'fas fa-handshake text-blue-700 text-2xl',
+                        ],
+                        // Gudang
+                        [
+                            'title' => 'Staf Gudang',
+                            'company' => 'GudangKu',
+                            'location' => 'Semarang',
+                            'salary' => 'Rp 6-10 juta',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Gudang',
+                            'icon' => 'fas fa-boxes text-gray-500 text-2xl',
+                        ],
+                        // Bengkel
+                        [
+                            'title' => 'Mekanik Mobil',
+                            'company' => 'Bengkel Jaya',
+                            'location' => 'Bali',
+                            'salary' => 'Rp 8-13 juta',
+                            'type' => 'Penuh Waktu',
+                            'category' => 'Bengkel',
+                            'icon' => 'fas fa-tools text-red-700 text-2xl',
+                        ],
+                        // Pemasaran
                         [
                             'title' => 'Marketing Executive',
                             'company' => 'StartupXYZ',
@@ -255,7 +331,7 @@
                 @endphp
 
                 <!-- Container modal + jobs -->
-                <div x-data="{ open: false, selectedJob: '' }">
+                <div x-data="{ open: false, selectedJob: '', loginModal: false }">
 
                     <!-- Modal Wrapper -->
                     <div x-show="open" x-cloak class="fixed inset-0 flex items-center justify-center z-50"
@@ -283,15 +359,27 @@
                                 x-text="Jika Anda ingin melamar posisi ${selectedJob}, silakan unggah CV Anda (PDF) melalui form berikut. Pastikan file Anda maksimal 2MB.">
                             </p>
 
-                            <form action="{{ route('send.cv') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="cv" accept="application/pdf" required
-                                    class="w-full p-3 mb-4 rounded-lg border border-gray-300 bg-gray-50 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700">
-                                <button type="submit"
-                                    class="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
-                                    Kirim CV ke Perusahaan
-                                </button>
-                            </form>
+                                                        <form x-data="{ showNotif: false }" @submit.prevent="showNotif = true" action="{{ route('send.cv') }}" method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                <input type="file" name="cv" accept="application/pdf" required
+                                                                        class="w-full p-3 mb-4 rounded-lg border border-gray-300 bg-gray-50 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-700">
+                                                                <button type="submit"
+                                                                        class="w-full bg-blue-900 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
+                                                                        Kirim CV ke Perusahaan
+                                                                </button>
+                                                                <!-- Popup Notifikasi -->
+                                                                <div x-show="showNotif" x-cloak class="fixed inset-0 flex items-center justify-center z-50" x-transition>
+                                                                    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="showNotif = false"></div>
+                                                                    <div class="relative bg-white rounded-xl w-96 p-7 shadow-2xl border border-gray-200 text-center">
+                                                                        <button @click="showNotif = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                                                                            <i class="fas fa-times"></i>
+                                                                        </button>
+                                                                        <h2 class="text-xl font-bold text-gray-900 mb-3">Pengiriman Berhasil</h2>
+                                                                        <p class="text-gray-700 mb-5">Terima kasih, CV Anda telah berhasil dikirim. Untuk memantau kelanjutan proses lamaran, silakan kunjungi halaman <b>Riwayat</b> pada akun Anda.</p>
+                                                                        <a href="{{ route('riwayat') }}" class="inline-block bg-blue-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-800 transition">Lihat Riwayat</a>
+                                                                    </div>
+                                                                </div>
+                                                        </form>
                         </div>
                     </div>
 
@@ -300,8 +388,8 @@
                     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach ($jobs as $index => $job)
                             <div x-show="(activeCategory === 'Lowongan Baru' && {{ $index }} < 6) 
-                    || activeCategory === '{{ $job['category'] }}'"
-                                class="bg-white border border-gray-200 p-6 rounded-xl hover:shadow-lg transition-shadow flex flex-col h-full">
+                        || activeCategory === '{{ $job['category'] }}'"
+                                    class="bg-white border border-gray-200 p-6 rounded-xl hover:shadow-lg transition-shadow flex flex-col h-full">
 
                                 <!-- Header -->
                                 <div class="flex items-center justify-between mb-4">
@@ -332,10 +420,30 @@
 
                                 <!-- Tombol -->
                                 <div class="mt-auto">
-                                    <button @click="open = true"
-                                        class="w-full bg-gray-100 text-gray-800 py-3 rounded-lg font-medium hover:bg-black hover:text-white transition-colors">
-                                        Lamar Sekarang
-                                    </button>
+                                    @if(auth('pelamar')->check())
+                                        <button @click="open = true; selectedJob = '{{ $job['title'] }}'"
+                                            class="w-full bg-gray-100 text-gray-800 py-3 rounded-lg font-medium hover:bg-black hover:text-white transition-colors">
+                                            Lamar Sekarang
+                                        </button>
+                                    @else
+                                        <button @click="loginModal = true"
+                                            class="w-full bg-gray-100 text-gray-800 py-3 rounded-lg font-medium hover:bg-black hover:text-white transition-colors">
+                                            Lamar Sekarang
+                                        </button>
+                                    @endif
+                    <!-- Modal Login Dulu -->
+                <!-- Modal Login Dulu universal, di luar loop -->
+                <div x-show="loginModal" x-cloak class="fixed inset-0 flex items-center justify-center z-50" x-transition>
+                    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="loginModal = false"></div>
+                    <div class="relative bg-white rounded-xl w-80 p-7 shadow-2xl border border-gray-200 text-center">
+                        <button @click="loginModal = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <h2 class="text-xl font-bold text-gray-900 mb-3">Login Dulu</h2>
+                        <p class="text-gray-600 mb-5">Silakan login dulu untuk mengirim CV ke perusahaan.</p>
+                        <a href="{{ route('login') }}" class="inline-block bg-blue-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-800 transition">Login</a>
+                    </div>
+                </div>
                                 </div>
                             </div>
                         @endforeach
@@ -402,10 +510,8 @@
                     Dalam 5 menit, semuanya siap. Pengaturan simpel dan desain halaman yang fleksibel
                     akan memanjakan mata Anda.
                 </p>
-                <button
-                    class="bg-gray-900 text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all shadow-md">
-                    Unggah Kerja
-                </button>
+                <a href ="{{ route (name:'register')}}"> <button class="bg-gray-900 text-white px-6 py-3 rounded-full font-medium hover:bg-gray-800 transition-all shadow-md"> Unggah Kerja
+                </button></a>
             </div>
         </div>
     </div>

@@ -3,179 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - GetJobs</title>
+  <title>Masuk - GetJobs</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      display: flex;
-      height: 100vh;
-      background: #fff;
-    }
-
-    .left {
-      flex: 1;
-      background: #ECEFEC;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .left img {
-      width: 140%;
-      height: auto;
-      object-fit: contain;
-      transform: translateY(27px); /* biar napak bawah */
-    }
-
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-    }
-
-    .form-box {
-      width: 100%;
-      max-width: 400px;
-    }
-
-    h2 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 25px;
-      text-align: center;
-      color: #2F4157;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 12px 15px 12px 40px; /* padding kiri buat ikon */
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .input-group i {
-      position: absolute;
-      top: 50%;
-      left: 12px;
-      transform: translateY(-50%);
-      color: #577C8E;
-      font-size: 16px;
-    }
-
-    .forgot {
-      text-align: right;
-      font-size: 12px;
-      margin-top: -10px;
-      margin-bottom: 20px;
-    }
-
-    .forgot a {
-      color: #577C8E;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #000000ff;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    .or {
-      text-align: center;
-      margin-bottom: 15px;
-      color: #666;
-    }
-
-    .social {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-
-    .social a {
-      font-size: 20px;
-      text-decoration: none;
-      color: #000;
-      font-weight: bold;
-    }
-
-    .register-link {
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .register-link a {
-      font-weight: 600;
-      color: #2F4157;
-      text-decoration: none;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="left">
-    <img src="{{ asset('images/person.png') }}" alt="person Image">
+<body class="flex h-screen overflow-hidden">
+
+  <!-- Left -->
+  <div class="flex-1 h-screen bg-[#ECEFEC] flex justify-center items-end">
+    <img src="{{ asset('images/person.png') }}" 
+         alt="Person"
+         class="h-full object-contain scale-150 translate-y-8">
   </div>
 
-  <div class="right">
-    <div class="form-box">
-      <h2>Sign In</h2>
-      <form method="POST" action="{{ route('login.process') }}">
+  <!-- Right -->
+  <div class="flex-1 flex justify-center items-center px-10">
+    <div class="w-full max-w-md">
+  <h2 class="text-[28px] font-bold text-center mb-6 text-[#2F4157]">Masuk</h2>
+
+    <!-- Formulir Masuk Laravel -->
+  <form action="{{ route('login.process') }}" method="POST">
         @csrf
-        <div class="input-group">
-          <i class="fa-solid fa-envelope"></i>
-          <input type="email" name="email" placeholder="Email" required>
+        
+  <!-- Email -->
+        <div class="relative mb-5">
+          <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-[#577C8E]"></i>
+          <input type="email" name="email" placeholder="Email"
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#577C8E]"
+            required>
         </div>
-        <div class="input-group">
-          <i class="fa-solid fa-lock"></i>
-          <input type="password" name="password" placeholder="Password" required>
+
+  <!-- Kata Sandi -->
+        <div class="relative mb-3">
+          <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-[#577C8E]"></i>
+          <input type="password" name="password" placeholder="Kata Sandi"
+            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#577C8E]"
+            required>
         </div>
-        <div class="forgot">
-          <a href="#">Forgot password?</a>
+
+        <!-- Lupa kata sandi -->
+        <div class="text-right text-xs mb-4">
+          <a href="#" class="text-[#577C8E] hover:underline">Lupa kata sandi?</a>
         </div>
-   <a href ="{{ route (name:'profil')}}" <button type="submit" class="btn">Sign In</button>
+
+        <!-- Tombol Masuk -->
+        <button type="submit"
+          class="w-full py-3 bg-black text-white rounded-lg font-semibold hover:bg-[#2F4157] transition">
+          Masuk
+        </button>
       </form>
 
-      <div class="or">or continue with :</div>
-      <div class="social">
-        <a href="#"><i class="fa-brands fa-google"></i></a>
-        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+      <!-- Login Sosial -->
+      <div class="text-center text-gray-600 my-4">atau lanjutkan dengan :</div>
+      <div class="flex justify-center gap-6 text-xl mb-5">
+        <a href="#" class="hover:text-[#2F4157]"><i class="fa-brands fa-google"></i></a>
+        <a href="#" class="hover:text-[#2F4157]"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" class="hover:text-[#2F4157]"><i class="fa-brands fa-facebook-f"></i></a>
       </div>
 
-      <div class="register-link">
-        Belum punya akun? <a href="{{ route('register.form') }}">Daftar</a>
+      <!-- Tautan Daftar -->
+      <div class="text-center text-sm">
+        Belum punya akun?
+        <a href="{{ route('register') }}" class="font-semibold text-[#2F4157] hover:underline">Daftar</a>
       </div>
     </div>
   </div>
+
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
 </body>
 </html>

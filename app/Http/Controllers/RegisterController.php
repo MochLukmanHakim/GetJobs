@@ -3,48 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Pelamar;
+use App\Models\User; // aktifkan ini
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
     /**
-     * Tampilkan halaman form registrasi
+     * Tampilkan form register
      */
     public function showForm()
     {
-        return view('register'); // ganti 'register' kalau nama blade beda
+        return view('register');
     }
 
     /**
-     * Proses registrasi user
+     * Simpan user baru ke DB getjobs
      */
     public function register(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6', 
+            'password' => 'required|confirmed|min:6',
             'phone'    => 'required|string|max:20',
-            'role'     => 'required|in:pelamar,perusahaan',
+            'role'     => 'required|in:pelamar,perusahaan,admin',
         ]);
 
-        // Buat user baru
+        // 1. Simpan ke tabel users
         $user = User::create([
             'name'     => $validated['name'],
             'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'phone'    => $validated['phone'],
             'role'     => $validated['role'],
         ]);
 
-     
+        // 2. Simpan ke tabel pelamar (pakai user_id dari tabel users)
+        Pelamar::create([
+            'user_id'      => $user->id, // relasi ke users
+            'nama'         => $validated['name'],
+            'email'        => $validated['email'],
+            'password'     => Hash::make($validated['password']),
+            'phone_number' => $validated['phone'],
+            'role'         => $validated['role'],
+        ]);
 
-        // Redirect ke halaman landing (/)
-      // Redirect ke login page
-return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan login.');
-
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan login.');
     }
 }

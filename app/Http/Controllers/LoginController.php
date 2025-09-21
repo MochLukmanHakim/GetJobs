@@ -5,46 +5,58 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Models\Pelamar;
 
 class LoginController extends Controller
 {
-    // Menampilkan halaman login
+    /**
+     * Tampilkan halaman login
+     */
     public function showLoginForm()
     {
         return view('login');
     }
 
-    // Proses login
+    /**
+     * Proses login
+     */
     public function login(Request $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
+        // Validasi input
+        $credentials = $request->validate([
+            'email'    => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        // Cari user berdasarkan email
+        $pelamar = Pelamar::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return back()->with('error', 'Email atau password salah.');
+        // Jika user tidak ditemukan atau password salah
+        if (!$pelamar || !Hash::check($credentials['password'], $pelamar->password)) {
+            return back()->withErrors([
+                'email' => 'Email atau password salah.',
+            ])->onlyInput('email');
         }
 
-        Auth::login($user);
+        // Login pakai guard "pelamar"
+        Auth::guard('pelamar')->login($pelamar);
+        $request->session()->regenerate();
 
-        // Arahkan berdasarkan jenis pengguna
-        if ($user->role === 'pelamar') {
-            return redirect()->route('pelamar.dashboard');
-        } elseif ($user->role === 'perusahaan') {
-            return redirect()->route('perusahaan.dashboard');
-        } else {
-            return redirect()->route('findjob');
-        }
+        // Redirect ke profil setelah login
+        return redirect()->route('profil');
     }
 
-    // Logout
-    public function logout()
+    /**
+     * Logout user
+     */
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect()->route('login.form');
+    Auth::guard('pelamar')->logout();
+
+    // Hapus session
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('landing');
     }
 }

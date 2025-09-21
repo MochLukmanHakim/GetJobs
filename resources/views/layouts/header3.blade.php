@@ -84,35 +84,22 @@
     <!-- Kiri: Teks + Search -->
     <div class="flex-1 max-w-[500px] z-20">
       <h1 class="text-5xl font-bold leading-snug text-[#002746] mb-5">
-        Temukan lowongan yang tepat.
+        Pertanyaan Populer yang Sering Diajukan
       </h1>
       <p class="text-lg text-gray-600 leading-relaxed mb-6">
-        Akses ribuan lowongan kerja terpercaya dan mulai bangun kariermu sekarang.
+        Butuh bantuan? Berikut beberapa pertanyaan dan jawaban yang mungkin membantu Anda.
       </p>
 
       <!-- Search Box -->
-      <form action="{{ route('findjob') }}" method="GET"
-            class="bg-white shadow-md rounded-xl border border-gray-300 p-2 flex items-center gap-0 overflow-hidden w-full max-w-lg mt-2">
-        <input type="text" name="keyword" placeholder="Cari pekerjaan..."
-               class="flex-1 px-4 py-2 text-sm border-none focus:outline-none focus:ring-0 min-w-0">
-        <span class="w-px h-6 bg-gray-300/50"></span>
-        <input type="text" name="lokasi" placeholder="Lokasi"
-               class="flex-1 px-4 py-2 text-sm border-none focus:outline-none focus:ring-0 min-w-0">
-        <span class="w-px h-6 bg-gray-300/50"></span>
-        <select name="kategori"
-                class="flex-1 px-4 py-2 text-sm border-none focus:outline-none focus:ring-0 bg-transparent min-w-0">
-          <option value="">Kategori</option>
-          <option value="IT">IT</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Finance">Finance</option>
-          <option value="Desain">Desain</option>
-          <option value="Lainnya">Lainnya</option>
-        </select>
-        <button type="submit"
-                class="bg-black text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-800 transition ml-2 text-sm">
-          Cari
-        </button>
-      </form>
+        <form action="{{ route('findjob') }}" method="GET"
+          class="bg-white shadow-md rounded-xl border border-gray-300 p-2 flex items-center gap-0 overflow-hidden w-full max-w-lg mt-2">
+          <input type="text" name="keyword" placeholder="Cari pekerjaan atau kata kunci..."
+            class="flex-1 px-4 py-2 text-sm border-none focus:outline-none focus:ring-0 min-w-0">
+          <button type="submit"
+            class="bg-black text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-800 transition ml-2 text-sm">
+            Cari
+          </button>
+        </form>
     </div>
 
     <!-- Kanan: Orang + Icon -->

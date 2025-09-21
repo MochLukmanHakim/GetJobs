@@ -6,28 +6,67 @@ use Illuminate\Http\Request;
 
 class ProfilController extends Controller
 {
-    public function edit()
+    // Tampilkan profil
+    public function show()
     {
-        return view('profil'); // ini mengarah ke resources/views/profil.blade.php
+        $user = auth('pelamar')->user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        // Ambil data nama, email, dan telepon dari field register
+        $foto = $user->foto ?? null;
+        $profil = [
+            'nama' => $user->nama,
+            'email' => $user->email,
+            'phone' => $user->phone_number,
+            'foto' => $foto,
+        ];
+        return view('profil', ['profil' => $profil]);
     }
 
+    // Update profil
     public function update(Request $request)
     {
+        $user = auth('pelamar')->user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email',
-            'phone'      => 'required|string|max:20',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:pelamar,email,' . $user->id,
+            'phone' => 'required|string|max:20',
         ]);
+        $user->update([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'phone_number' => $request->phone,
+        ]);
+    return redirect()->route('landing')->with('success', 'Profil berhasil diperbarui!');
+    }
 
-        // contoh simpan (kalau ada model User)
-        // auth()->user()->update([
-        //     'first_name' => $request->first_name,
-        //     'last_name'  => $request->last_name,
-        //     'email'      => $request->email,
-        //     'phone'      => $request->phone,
-        // ]);
-
-        return redirect()->route('profil.edit')->with('success', 'Data berhasil disimpan!');
+    // Upload foto profil
+    public function updateFoto(Request $request)
+    {
+        $user = auth('pelamar')->user();
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+        $file = $request->file('foto');
+        $folder = storage_path('app/public/profil');
+        if (!file_exists($folder)) {
+            mkdir($folder, 0777, true);
+        }
+        $filename = 'profil_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+        $file->move($folder, $filename);
+        if (!file_exists($folder . '/' . $filename)) {
+            return redirect()->route('profil')->with('error', 'Upload foto gagal, coba lagi.');
+        }
+        $user->update([
+            'foto' => $filename,
+        ]);
+        return redirect()->route('profil')->with('success', 'Foto profil berhasil diupload!');
     }
 }
