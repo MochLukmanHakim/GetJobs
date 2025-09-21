@@ -6,10 +6,7 @@ use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\PekerjaanController;
 use App\Http\Controllers\PelamarController;
 
-// Rute untuk halaman utama
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+// Rute untuk halaman utama;
 
 Route::get('/home', function () {
     return view('home');
@@ -35,6 +32,7 @@ Route::middleware(['company.access'])->group(function () {
 Route::get('/perusahaan', [PerusahaanController::class, 'profile'])->name('perusahaan.profile');
 Route::get('/perusahaan/create', [PerusahaanController::class, 'profile'])->name('perusahaan.create');
 Route::post('/perusahaan', [PerusahaanController::class, 'store'])->name('perusahaan.store');
+Route::put('/perusahaan/profile/update', [PerusahaanController::class, 'updateProfile'])->name('perusahaan.profile.update');
 Route::get('/perusahaan/{id}', [PerusahaanController::class, 'show'])->name('perusahaan.show');
 Route::get('/perusahaan/{id}/edit', [PerusahaanController::class, 'edit'])->name('perusahaan.edit');
 Route::put('/perusahaan/{id}', [PerusahaanController::class, 'update'])->name('perusahaan.update');
@@ -66,7 +64,7 @@ Route::get('/account', function () {
 })->name('account');
 
 // Rute untuk autentikasi
-Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::get('/', [UserController::class, 'login'])->name('login');
 Route::get('/signup', [UserController::class, 'signup'])->name('register');
 Route::post('/login', [UserController::class, 'logincheck'])->name('logincheck');
 Route::post('/signup', [UserController::class, 'registercheck'])->name('register.process');

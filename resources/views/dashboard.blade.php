@@ -180,21 +180,22 @@
         gap: 12px;
     }
 
-    .notification-item {
+    .notifications-panel .notification-item {
         display: flex;
         align-items: flex-start;
         gap: 12px;
         padding: 16px;
         background: rgba(255, 255, 255, 0.15);
         border-radius: 12px;
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(10px);
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.3s ease;
     }
 
-    .notification-item:hover {
-        background: rgba(51, 65, 85, 0.4);
+    .notifications-panel .notification-item:hover {
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
         transform: translateY(-2px);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
@@ -304,7 +305,7 @@
             gap: 8px;
         }
 
-        .notification-item {
+        .notifications-panel .notification-item {
             padding: 12px;
         }
     }

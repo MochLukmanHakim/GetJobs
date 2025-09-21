@@ -101,9 +101,9 @@
         }
 
         .job-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             margin-bottom: 24px;
         }
 
@@ -115,8 +115,6 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            flex: 1;
-            min-width: 200px;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -260,15 +258,26 @@
             transform: translateY(-1px);
         }
 
+        /* Profile Header - Logo and Company Name Side by Side */
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            width: 100%;
+        }
+
         .profile-logo {
-            width: 90px;
-            height: 90px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(37,99,235,0.08);
-            margin-bottom: 18px;
-            background: #f3f4f6;
+            background: #ffffff;
             position: relative;
+            flex-shrink: 0;
         }
 
         .profile-logo img {
@@ -277,18 +286,27 @@
             object-fit: cover;
         }
 
+        .profile-company-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: center;
+            align-items: center;
+        }
+
         .profile-company-name {
             font-size: 18px;
             font-weight: 700;
             color: #222;
-            margin-bottom: 2px;
+            margin-bottom: 0;
+            line-height: 1.2;
         }
 
         .profile-status {
             font-size: 13px;
-            color: #10b981;
+            color: #222;
             font-weight: 600;
-            margin-bottom: 14px;
+            margin-bottom: 0;
         }
 
         .profile-info {
@@ -469,6 +487,7 @@
 
 
 
+
         /* Company Description Styling */
         .company-description {
             width: 100%;
@@ -499,36 +518,6 @@
             text-align: justify;
         }
 
-        .company-details {
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #374151;
-            font-size: 13px;
-            min-width: 120px;
-        }
-
-        .detail-value {
-            color: #1f2937;
-            font-size: 13px;
-            text-align: right;
-            font-weight: 500;
-        }
 
         .vision-mission {
             display: flex;
@@ -559,76 +548,23 @@
             border-top: 1px solid #e5e7eb;
         }
 
-        /* Profile Social Media Section */
-        .profile-social-links {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
-        }
 
-        .profile-social-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            background: #f8fafc;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid #e2e8f0;
-        }
-
-        .profile-social-item:hover {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
-            transform: translateX(2px);
-        }
-
-        .profile-social-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-        }
-
-        .profile-social-icon.instagram {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-
-        .profile-social-icon.facebook {
-            background: #1877f2;
-        }
-
-        .profile-social-icon.twitter {
-            background: #1da1f2;
-        }
-
-        .profile-social-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: #374151;
-        }
 
         .edit-btn, .create-btn {
             background: #000000;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .edit-btn:hover, .create-btn:hover {
@@ -657,6 +593,13 @@
         .profile-info-value.editable:hover {
             background: #f8fafc;
             border-color: #e2e8f0;
+        }
+
+        /* Hover effects for description and company details */
+        .edit-mode-active .profile-info-value.editable:hover {
+            background: #f0f9ff;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
         }
 
         .profile-info-value.editing {
@@ -695,9 +638,7 @@
         .save-cancel-buttons {
             display: none;
             gap: 8px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid #e5e7eb;
+            margin-top: 20px;
         }
 
         .save-cancel-buttons.show {
@@ -706,13 +647,17 @@
 
         .btn-save-inline, .btn-cancel-inline {
             flex: 1;
-            padding: 10px 16px;
+            padding: 8px 16px;
             border-radius: 6px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-save-inline {
@@ -723,6 +668,7 @@
         .btn-save-inline:hover {
             background: #059669;
         }
+
 
         .btn-cancel-inline {
             background: #f3f4f6;
@@ -752,6 +698,40 @@
             .branch-card,
             .social-card {
                 max-width: 100%;
+            }
+        }
+
+        /* Mobile responsive for profile header */
+        @media (max-width: 480px) {
+            .profile-header {
+                gap: 12px;
+            }
+            
+            .profile-logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .profile-company-name {
+                font-size: 16px;
+            }
+            
+            .profile-status {
+                font-size: 12px;
+            }
+        }
+
+        /* Responsive job grid */
+        @media (max-width: 768px) {
+            .job-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .job-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1020,15 +1000,17 @@
     <div class="content-layout">
                 <!-- Card Profil Perusahaan -->
                 <div class="profile-card">
-                    <div class="profile-logo">
-                        <img id="logoPreview" src="/images/logo-getjobs2.png" alt="Logo Perusahaan">
+                    <!-- Profile Header with Logo and Company Info Side by Side -->
+                    <div class="profile-header">
+                        <div class="profile-logo">
+                            <img id="logoPreview" src="/images/logo-getjobs2.png" alt="Logo Perusahaan">
+                        </div>
+                        <div class="profile-company-info">
+                            <div class="profile-company-name">{{ Auth::user()->name ?? 'Nama Perusahaan' }}</div>
+                            <div class="profile-status">{{ Auth::user()->email ?? 'email@perusahaan.com' }}</div>
+                        </div>
                     </div>
-                    <div class="profile-company-name">{{ Auth::user()->name ?? 'Nama Perusahaan' }}</div>
-                    <div class="profile-status">{{ $perusahaan ? 'Verified Company' : 'Unverified Company' }}</div>
                     <div class="profile-info">
-                        <div class="profile-info-label">Email</div>
-                        <div class="profile-info-value" data-field="email">{{ Auth::user()->email ?? 'email@perusahaan.com' }}</div>
-                        
                         <div class="profile-info-label">Telepon</div>
                         <div class="profile-info-value editable" data-field="no_telp_perusahaan">{{ $perusahaan->no_telp_perusahaan ?? 'Belum diisi' }}</div>
                         <input type="text" class="profile-edit-input" data-field="no_telp_perusahaan" value="{{ $perusahaan->no_telp_perusahaan ?? '' }}" style="display: none;">
@@ -1041,37 +1023,14 @@
                         <div class="profile-info-value editable" data-field="bidang_industri">{{ $perusahaan->bidang_industri ?? 'Belum diisi' }}</div>
                         <input type="text" class="profile-edit-input" data-field="bidang_industri" value="{{ $perusahaan->bidang_industri ?? '' }}" style="display: none;">
                         
-                        <!-- Media Sosial Section -->
-                        <div class="profile-info-label" style="margin-top: 16px;">Media Sosial</div>
-                        <div class="profile-social-links">
-                            <a href="https://instagram.com/getjobs.id" target="_blank" class="profile-social-item">
-                                <div class="profile-social-icon instagram">
-                                    <i class="bi bi-instagram"></i>
-                                </div>
-                                <div class="profile-social-name">Instagram</div>
-                            </a>
-                            <a href="https://facebook.com/getjobs.id" target="_blank" class="profile-social-item">
-                                <div class="profile-social-icon facebook">
-                                    <i class="bi bi-facebook"></i>
-                                </div>
-                                <div class="profile-social-name">Facebook</div>
-                            </a>
-                            <a href="https://twitter.com/getjobs_id" target="_blank" class="profile-social-item">
-                                <div class="profile-social-icon twitter">
-                                    <i class="bi bi-twitter"></i>
-                                </div>
-                                <div class="profile-social-name">Twitter</div>
-                            </a>
-                        </div>
-                        
-                        <!-- Edit Button Below Social Media -->
+                        <!-- Edit Button -->
                         <div class="profile-actions">
                             <button class="edit-btn" onclick="toggleInlineEdit()" id="editToggleBtn">
                                 <i class="bi bi-pencil-square"></i>
                                 <span id="editBtnText">Edit Profil</span>
                             </button>
                             
-                            <!-- Save/Cancel Buttons (Hidden by default) -->
+                            <!-- Save and Cancel Buttons (Hidden by default) -->
                             <div class="save-cancel-buttons" id="saveCancelButtons">
                                 <button class="btn-save-inline" onclick="saveInlineChanges()">
                                     <i class="bi bi-check-lg"></i>
@@ -1120,63 +1079,69 @@
                         <div class="branch-card">
                             <h3 class="branch-title">Deskripsi Perusahaan</h3>
                             <div class="branch-list">
-                                                                    <div class="branch-item" style="flex-direction: column; align-items: flex-start; gap: 12px;">
-                                        <div class="company-description">
-                                            <div class="desc-section">
-                                                <p class="desc-text">
-                                                    PT. Tambang Maju Sejahtera adalah perusahaan tambang batu bara yang beroperasi di Kalimantan Timur. 
-                                                    Berdiri sejak tahun 2010, perusahaan kami fokus pada pertambangan batu bara dengan komitmen terhadap 
-                                                    keselamatan dan lingkungan.
-                                                </p>
-                                            </div>
-                                            
-                                            <div class="company-details">
-                                                <div class="detail-row">
-                                                    <span class="detail-label">Berdiri:</span>
-                                                    <span class="detail-value">2010</span>
-                                                </div>
-                                                <div class="detail-row">
-                                                    <span class="detail-label">Lokasi:</span>
-                                                    <span class="detail-value">Kalimantan Timur</span>
-                                                </div>
-                                                <div class="detail-row">
-                                                    <span class="detail-label">Bidang:</span>
-                                                    <span class="detail-value">Pertambangan Batu Bara</span>
-                                                </div>
-                                            </div>
+                                <div class="branch-item" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+                                    <div class="company-description">
+                                        <div class="desc-section">
+                                            <div class="profile-info-value editable" data-field="deskripsi_perusahaan" style="margin-bottom: 16px; cursor: pointer; padding: 8px; border-radius: 4px; transition: all 0.2s ease; border: 1px solid transparent;">{{ $perusahaan->deskripsi_perusahaan ?? 'PT. Tambang Maju Sejahtera adalah perusahaan tambang batu bara yang beroperasi di Kalimantan Timur. Berdiri sejak tahun 2010, perusahaan kami fokus pada pertambangan batu bara dengan komitmen terhadap keselamatan dan lingkungan.' }}</div>
+                                            <textarea class="profile-edit-input" data-field="deskripsi_perusahaan" style="display: none; min-height: 100px; width: 100%; padding: 8px; border: 2px solid #002746; border-radius: 6px; font-size: 14px; font-family: inherit; background: white; transition: all 0.2s ease;">{{ $perusahaan->deskripsi_perusahaan ?? '' }}</textarea>
                                         </div>
                                     </div>
+                                </div>
                             </div>
                         </div>
+                        
+                        <!-- Media Sosial -->
+                        <div class="social-card">
+                            <h3 class="social-title">Media Sosial</h3>
+                            <div class="social-list">
+                                <a href="https://instagram.com/getjobs.id" target="_blank" class="social-item">
+                                    <div class="social-icon instagram">
+                                        <i class="bi bi-instagram"></i>
+                                    </div>
+                                    <div class="social-name">Instagram</div>
+                                </a>
+                                <a href="https://facebook.com/getjobs.id" target="_blank" class="social-item">
+                                    <div class="social-icon facebook">
+                                        <i class="bi bi-facebook"></i>
+                                    </div>
+                                    <div class="social-name">Facebook</div>
+                                </a>
+                                <a href="https://twitter.com/getjobs_id" target="_blank" class="social-item">
+                                    <div class="social-icon twitter">
+                                        <i class="bi bi-twitter"></i>
+                                    </div>
+                                    <div class="social-name">Twitter</div>
+                                </a>
+                            </div>
+                        </div>
+                        
                     </div>
-                                         <!-- Pekerjaan Aktif -->
-                     <div class="job-section">
-                         <h3 class="job-title">Pekerjaan Aktif ({{ $activeJobs->count() }})</h3>
-                         
-
-                         
-                         <div class="job-grid">
-                             @forelse($activeJobs as $job)
-                                 <div class="job-card">
-                                     <div class="job-avatar">{{ strtoupper(substr($job->judul_pekerjaan, 0, 2)) }}</div>
-                                     <div class="job-info">
-                                         <div class="job-name">{{ $job->judul_pekerjaan }}</div>
-                                         <div class="job-details">{{ $job->lokasi_pekerjaan }} • {{ $job->gaji_pekerjaan }}</div>
-                                     </div>
-                                     <div class="job-status">
-                                         <div class="status-dot"></div>
-                                         <span class="status-text">Aktif</span>
-                                     </div>
-                                 </div>
-                             @empty
-                                 <div class="job-card" style="text-align: center; color: #6b7280; font-style: italic; padding: 40px 20px;">
-                                     <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
-                                     <div style="font-size: 16px;">Belum ada pekerjaan aktif</div>
-                                     <div style="font-size: 14px; margin-top: 8px; color: #9ca3af;">Buat pekerjaan pertama Anda untuk mulai merekrut</div>
-                                 </div>
-                             @endforelse
-                         </div>
-                     </div>
+                    
+                    <!-- Pekerjaan Aktif -->
+                    <div class="job-section">
+                        <h3 class="job-title">Pekerjaan Aktif ({{ $activeJobs->count() }})</h3>
+                        <div class="job-grid">
+                            @forelse($activeJobs as $job)
+                                <div class="job-card">
+                                    <div class="job-avatar">{{ strtoupper(substr($job->judul_pekerjaan, 0, 2)) }}</div>
+                                    <div class="job-info">
+                                        <div class="job-name">{{ $job->judul_pekerjaan }}</div>
+                                        <div class="job-details">{{ $job->lokasi_pekerjaan }} • {{ $job->gaji_pekerjaan }}</div>
+                                    </div>
+                                    <div class="job-status">
+                                        <div class="status-dot"></div>
+                                        <span class="status-text">Aktif</span>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="job-card" style="text-align: center; color: #6b7280; font-style: italic; padding: 40px 20px;">
+                                    <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                                    <div style="font-size: 16px;">Belum ada pekerjaan aktif</div>
+                                    <div style="font-size: 14px; margin-top: 8px; color: #9ca3af;">Buat pekerjaan pertama Anda untuk mulai merekrut</div>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -1329,12 +1294,8 @@
                 isEditMode = true;
                 profileCard.classList.add('edit-mode-active');
                 
-                // Change button appearance
-                editBtn.classList.add('save-mode');
-                editBtnText.textContent = 'Mode Edit Aktif';
-                editBtn.querySelector('i').className = 'bi bi-pencil-fill';
-                
-                // Show save/cancel buttons
+                // Hide main edit button and show save/cancel buttons
+                editBtn.style.display = 'none';
                 saveCancelButtons.classList.add('show');
                 
                 // Store original values
@@ -1347,10 +1308,12 @@
                 document.querySelectorAll('.profile-info-value.editable').forEach(element => {
                     element.addEventListener('click', editField);
                     element.style.cursor = 'pointer';
+                    // Add visual indication for editable fields
+                    element.style.border = '1px solid #e2e8f0';
                 });
                 
             } else {
-                // Exit edit mode
+                // This shouldn't happen anymore since button changes function
                 exitEditMode();
             }
         }
@@ -1407,7 +1370,13 @@
                 const originalValue = originalValues[field] === 'Belum diisi' ? '' : originalValues[field];
                 
                 if (newValue !== originalValue) {
-                    formData.append(field, newValue);
+                    // Map field names for backend compatibility
+                    let backendField = field;
+                    if (field === 'tahun_berdiri') backendField = 'tahun_berdiri';
+                    if (field === 'lokasi_kantor') backendField = 'lokasi_kantor';
+                    if (field === 'bidang_usaha') backendField = 'bidang_usaha';
+                    
+                    formData.append(backendField, newValue);
                     hasChanges = true;
                 }
             });
@@ -1421,14 +1390,14 @@
             formData.append('_token', '{{ csrf_token() }}');
             formData.append('_method', 'PUT');
             
-            // Show loading state
+            // Show loading state on save button
             const saveBtn = document.querySelector('.btn-save-inline');
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Menyimpan...';
             saveBtn.disabled = true;
             
             // Send AJAX request
-            fetch('{{ route("perusahaan.update", $perusahaan->id_perusahaan ?? 0) }}', {
+            fetch('{{ route("perusahaan.profile.update") }}', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1473,6 +1442,8 @@
                     inputElement.style.display = 'none';
                 }
                 element.style.display = 'block';
+                // Remove visual indicators
+                element.style.border = '1px solid transparent';
             });
             
             exitEditMode();
@@ -1485,8 +1456,9 @@
             const saveCancelButtons = document.getElementById('saveCancelButtons');
             const profileCard = document.querySelector('.profile-card');
             
-            // Reset button appearance
+            // Show main edit button and hide save/cancel buttons
             profileCard.classList.remove('edit-mode-active');
+            editBtn.style.display = 'flex';
             editBtn.classList.remove('save-mode');
             editBtnText.textContent = 'Edit Profil';
             editBtn.querySelector('i').className = 'bi bi-pencil-square';
@@ -1494,10 +1466,11 @@
             // Hide save/cancel buttons
             saveCancelButtons.classList.remove('show');
             
-            // Remove click listeners
+            // Remove click listeners and visual indicators
             document.querySelectorAll('.profile-info-value.editable').forEach(element => {
                 element.removeEventListener('click', editField);
                 element.style.cursor = 'default';
+                element.style.border = '1px solid transparent';
             });
             
             // Hide all inputs, show all values

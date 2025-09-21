@@ -312,6 +312,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0;
         }
         .applicant-phone { 
             grid-area: phone; 
@@ -320,21 +321,25 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+            padding: 0;
         }
         .applicant-cv { 
             grid-area: cv; 
-            text-align: center;
-            display: flex;
+            text-align: center !important;
+            display: flex !important;
             align-items: center;
-            justify-content: center;
+            justify-content: center !important;
             gap: 6px;
+            padding: 0 !important;
+            margin: 0;
         }
         .application-date { 
             grid-area: date; 
-            text-align: center;
+            text-align: right;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding-right: 0;
         }
         .action-menu { 
             grid-area: action; 
@@ -419,10 +424,12 @@
         .applicant-cv {
             display: flex;
             align-items: center;
+            justify-content: center !important;
             gap: 8px;
             font-size: 12px;
             color: #374151;
             font-weight: 500;
+            text-align: center !important;
         }
 
         .applicant-cv svg {
@@ -1143,15 +1150,15 @@
             margin-top: 8px;
         }
         .send-announcement-btn {
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            background: #1f2937;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -1161,7 +1168,7 @@
         }
 
         .send-announcement-btn:hover {
-            background: linear-gradient(135deg, #475569 0%, #334155 100%);
+            background: #374151;
             transform: translateY(-1px);
         }
 
@@ -2209,7 +2216,7 @@
                             </div>
                             <div class="announcement-actions">
                                 <button class="send-announcement-btn" onclick="sendBulkAnnouncement()">
-                                    <span>📨</span> Kirim Pengumuman
+                                    Kirim Pengumuman
                                 </button>
                             </div>
                         </div>
@@ -2254,10 +2261,10 @@
                             <div class="applicant-info">
                                 <div class="applicant-avatar">{{ $pelamar->initials }}</div>
                                 <div class="applicant-details">
-                                    <h4>{{ $pelamar->nama }}</h4>
+                                    <h4>{{ $pelamar->short_name }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">{{ $pelamar->email }}</div>
+                            <div class="applicant-email">{{ $pelamar->short_email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -2272,7 +2279,7 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>{{ basename($pelamar->cv_path ?? 'sample-cv.pdf') }}</span>
+                                <span>{{ $pelamar->short_cv_name }}</span>
                             </div>
                             <div class="application-date">{{ $pelamar->tanggal_melamar->format('d M Y') }}</div>
                             <div class="action-menu">
@@ -2304,7 +2311,7 @@
                     <!-- Announcement Area -->
                     <div class="announcement-area" id="announcement-{{ $pelamar->id }}">
                         <div class="announcement-header">
-                            <span class="announcement-title">Pengumuman ke {{ $pelamar->nama }}</span>
+                            <span class="announcement-title">Pengumuman ke {{ $pelamar->short_name }}</span>
                             <button class="close-announcement" onclick="closeAnnouncementArea(this)">✕</button>
                         </div>
                         <div class="announcement-panel">
@@ -2346,8 +2353,8 @@
                                         <textarea class="announcement-input announcement-textarea" id="announcement-text-{{ $pelamar->id }}" placeholder="Masukkan isi pengumuman..." maxlength="500" oninput="updateCharCount({{ $pelamar->id }}, this)">{{ $pelamar->catatan ?? '' }}</textarea>
                                     </div>
                                     <div class="announcement-actions">
-                                        <button class="send-announcement-btn" onclick="sendAnnouncement({{ $pelamar->id }}, '{{ $pelamar->nama }}')">
-                                            <span>📨</span> Kirim Pengumuman
+                                        <button class="send-announcement-btn" onclick="sendAnnouncement({{ $pelamar->id }}, '{{ $pelamar->short_name }}')">
+                                            Kirim Pengumuman
                                         </button>
                                     </div>
                                 </div>
@@ -3121,10 +3128,10 @@
                             <div class="applicant-info">
                                 <div class="applicant-avatar">{{ strtoupper(substr($pelamar->nama, 0, 2)) }}</div>
                                 <div class="applicant-details">
-                                    <h4>{{ $pelamar->nama }}</h4>
+                                    <h4>{{ $pelamar->short_name }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">{{ $pelamar->email }}</div>
+                            <div class="applicant-email">{{ $pelamar->short_email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -3139,7 +3146,7 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>{{ basename($pelamar->cv_path) }}</span>
+                                <span>{{ $pelamar->short_cv_name }}</span>
                             </div>
                             <div class="applicant-status">
                                 @if($pelamar->status === 'review')
@@ -3188,10 +3195,10 @@
                             <div class="applicant-info">
                                 <div class="applicant-avatar">{{ strtoupper(substr($pelamar->nama, 0, 2)) }}</div>
                                 <div class="applicant-details">
-                                    <h4>{{ $pelamar->nama }}</h4>
+                                    <h4>{{ $pelamar->short_name }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">{{ $pelamar->email }}</div>
+                            <div class="applicant-email">{{ $pelamar->short_email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -3206,7 +3213,7 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>{{ basename($pelamar->cv_path) }}</span>
+                                <span>{{ $pelamar->short_cv_name }}</span>
                             </div>
                             <div class="applicant-status">
                                 @if($pelamar->status === 'review')
@@ -3255,10 +3262,10 @@
                             <div class="applicant-info">
                                 <div class="applicant-avatar">{{ strtoupper(substr($pelamar->nama, 0, 2)) }}</div>
                                 <div class="applicant-details">
-                                    <h4>{{ $pelamar->nama }}</h4>
+                                    <h4>{{ $pelamar->short_name }}</h4>
                                 </div>
                             </div>
-                            <div class="applicant-email">{{ $pelamar->email }}</div>
+                            <div class="applicant-email">{{ $pelamar->short_email }}</div>
                             <div class="applicant-phone">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
@@ -3273,7 +3280,7 @@
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10,9 9,9 8,9"></polyline>
                                 </svg>
-                                <span>{{ basename($pelamar->cv_path) }}</span>
+                                <span>{{ $pelamar->short_cv_name }}</span>
                             </div>
                             <div class="applicant-status">
                                 @if($pelamar->status === 'review')
@@ -3335,7 +3342,7 @@
                                 </div>
                                 <div class="announcement-actions">
                                     <button class="send-announcement-btn" onclick="sendGlobalAnnouncement()">
-                                        <span>📨</span> Kirim
+                                        Kirim
                                     </button>
                                 </div>
                             </div>

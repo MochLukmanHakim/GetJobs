@@ -83,4 +83,49 @@ class Pelamar extends Model
             default => 'none'
         };
     }
+
+    /**
+     * Get shortened name (first two words)
+     */
+    public function getShortNameAttribute(): string
+    {
+        $words = explode(' ', $this->nama);
+        return implode(' ', array_slice($words, 0, 2));
+    }
+
+    /**
+     * Get shortened email (first two words only)
+     */
+    public function getShortEmailAttribute(): string
+    {
+        if (strpos($this->email, '@') === false) {
+            return $this->email;
+        }
+        
+        $parts = explode('@', $this->email);
+        $username = $parts[0];
+        $domain = $parts[1] ?? '';
+        
+        // Get first two words from username (split by dots or underscores)
+        $usernameParts = preg_split('/[._]/', $username);
+        $shortUsername = implode('.', array_slice($usernameParts, 0, 2));
+        
+        // Get first two parts from domain (split by dots)
+        $domainParts = explode('.', $domain);
+        $shortDomain = implode('.', array_slice($domainParts, 0, 2));
+        
+        return $shortUsername . '@' . $shortDomain;
+    }
+
+    /**
+     * Get shortened CV name (first two words)
+     */
+    public function getShortCvNameAttribute(): string
+    {
+        $filename = basename($this->cv_path ?? 'sample_cv.pdf');
+        $nameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+        $words = explode('_', $nameWithoutExt);
+        $shortName = implode('_', array_slice($words, 0, 2));
+        return $shortName . '.pdf';
+    }
 }

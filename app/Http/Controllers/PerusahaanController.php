@@ -195,6 +195,82 @@ class PerusahaanController extends Controller
     }
 
     /**
+     * Update profile for current user (for inline editing)
+     */
+    public function updateProfile(Request $request)
+    {
+        $perusahaan = Perusahaan::where('id_user', Auth::id())->first();
+        
+        // If no perusahaan record exists, create one first
+        if (!$perusahaan) {
+            $perusahaan = Perusahaan::create([
+                'id_user' => Auth::id(),
+                'nama_perusahaan' => Auth::user()->name ?? 'Nama Perusahaan',
+                'deskripsi_perusahaan' => null,
+                'no_telp_perusahaan' => null,
+                'bidang_industri' => null,
+                'alamat_perusahaan' => null,
+            ]);
+        }
+
+        // For inline editing (AJAX requests), we only validate the fields that are being updated
+        if ($request->ajax()) {
+            $rules = [];
+            if ($request->has('no_telp_perusahaan')) {
+                $rules['no_telp_perusahaan'] = 'nullable|string|max:20';
+            }
+            if ($request->has('bidang_industri')) {
+                $rules['bidang_industri'] = 'nullable|string|max:255';
+            }
+            if ($request->has('alamat_perusahaan')) {
+                $rules['alamat_perusahaan'] = 'nullable|string';
+            }
+            if ($request->has('deskripsi_perusahaan')) {
+                $rules['deskripsi_perusahaan'] = 'nullable|string';
+            }
+            
+            $validator = Validator::make($request->all(), $rules);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            
+            // Update only the fields that are provided
+            $updateData = [];
+            if ($request->has('no_telp_perusahaan')) {
+                $updateData['no_telp_perusahaan'] = $request->no_telp_perusahaan;
+            }
+            if ($request->has('bidang_industri')) {
+                $updateData['bidang_industri'] = $request->bidang_industri;
+            }
+            if ($request->has('alamat_perusahaan')) {
+                $updateData['alamat_perusahaan'] = $request->alamat_perusahaan;
+            }
+            if ($request->has('deskripsi_perusahaan')) {
+                $updateData['deskripsi_perusahaan'] = $request->deskripsi_perusahaan;
+            }
+            
+            if (!empty($updateData)) {
+                $perusahaan->update($updateData);
+            }
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil berhasil diperbarui!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid request'
+        ], 400);
+    }
+
+    /**
      * Get perusahaan profile for current user
      */
     public function profile()
